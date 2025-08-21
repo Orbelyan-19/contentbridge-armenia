@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ContentBridge Armenia - UGC Маркетплейс</title>
+    <title>ContentBridge Armenia - UGC Marketplace</title>
     
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-5BJ9JRVE9C"></script>
@@ -14,6 +14,11 @@
       gtag('config', 'G-5BJ9JRVE9C');
     </script>
 
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
     <style>
         * {
             margin: 0;
@@ -21,18 +26,53 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary-bg: #0a0a0a;
+            --secondary-bg: #111111;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --accent-primary: #8b5cf6;
+            --accent-secondary: #06b6d4;
+            --accent-tertiary: #10b981;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --gradient-primary: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 50%, #10b981 100%);
+            --gradient-secondary: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e40af 100%);
+            --shadow-glow: 0 0 50px rgba(139, 92, 246, 0.3);
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             line-height: 1.6;
-            color: #2D3748;
+            color: var(--text-primary);
+            background: var(--primary-bg);
             overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        /* Анимации */
+        /* Background Pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(40px);
             }
             to {
                 opacity: 1;
@@ -42,16 +82,63 @@
 
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+            50% { transform: translateY(-30px); }
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        @keyframes glow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+            }
+            50% { 
+                box-shadow: 0 0 40px rgba(139, 92, 246, 0.6), 0 0 60px rgba(6, 182, 212, 0.3);
+            }
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .animate-in {
             animation: fadeInUp 0.8s ease-out;
+        }
+
+        /* Language Switcher */
+        .language-switcher {
+            position: fixed;
+            top: 100px;
+            right: 2rem;
+            z-index: 1001;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 0.5rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .lang-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn.active {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+        }
+
+        .lang-btn:hover:not(.active) {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         /* Header */
@@ -59,15 +146,15 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(30px);
             z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid var(--border-color);
             transition: all 0.3s ease;
         }
 
         nav {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 1rem 2rem;
             display: flex;
@@ -76,51 +163,73 @@
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            background-size: 200% 200%;
+            animation: gradient-shift 3s ease infinite;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            letter-spacing: -0.02em;
         }
 
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 2rem;
+            gap: 2.5rem;
         }
 
         .nav-links a {
             text-decoration: none;
-            color: #4A5568;
+            color: var(--text-secondary);
             font-weight: 500;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
         }
 
         .nav-links a:hover {
-            color: #667eea;
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
         }
 
         .cta-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gradient-primary);
             color: white;
-            padding: 0.75rem 1.5rem;
+            padding: 0.75rem 2rem;
             border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .cta-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6);
+            animation: glow 2s ease-in-out infinite;
         }
 
         /* Hero Section */
         .hero {
             min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gradient-secondary);
             display: flex;
             align-items: center;
             padding: 0 2rem;
@@ -135,72 +244,89 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.1)" points="0,1000 1000,800 1000,1000"/></svg>');
-            background-size: cover;
+            background: 
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><filter id="noise"><feTurbulence baseFrequency="0.9" numOctaves="4" stitchTiles="stitch"/><feComponentTransfer><feFuncA type="discrete" tableValues="0 .5 0 .5 0 .5"/></feComponentTransfer></filter></defs><rect width="100%" height="100%" filter="url(%23noise)" opacity="0.05"/></svg>'),
+                linear-gradient(45deg, transparent 30%, rgba(139, 92, 246, 0.1) 50%, transparent 70%);
+            background-size: 200px 200px, 100% 100%;
+            animation: float 20s ease-in-out infinite;
         }
 
         .hero-content {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 4rem;
+            gap: 5rem;
             align-items: center;
             z-index: 1;
             position: relative;
         }
 
         .hero-text h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
+            font-size: 4rem;
+            font-weight: 900;
             color: white;
-            margin-bottom: 1.5rem;
-            line-height: 1.2;
+            margin-bottom: 2rem;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-text h1 .gradient-text {
+            background: var(--gradient-primary);
+            background-size: 200% 200%;
+            animation: gradient-shift 3s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .hero-text p {
-            font-size: 1.25rem;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 2rem;
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 3rem;
+            line-height: 1.6;
         }
 
         .hero-buttons {
             display: flex;
-            gap: 1rem;
+            gap: 1.5rem;
             flex-wrap: wrap;
         }
 
         .btn-primary {
             background: white;
-            color: #667eea;
-            padding: 1rem 2rem;
+            color: var(--primary-bg);
+            padding: 1.2rem 2.5rem;
             border-radius: 50px;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.95);
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.2);
+            background: var(--glass-bg);
             color: white;
-            padding: 1rem 2rem;
+            padding: 1.2rem 2.5rem;
             border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(20px);
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(139, 92, 246, 0.3);
         }
 
         .hero-visual {
@@ -210,19 +336,20 @@
         }
 
         .hero-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            animation: float 6s ease-in-out infinite;
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px);
+            border-radius: 25px;
+            padding: 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            animation: float 8s ease-in-out infinite;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
         .hero-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin-top: 3rem;
+            gap: 3rem;
+            margin-top: 4rem;
         }
 
         .stat {
@@ -231,103 +358,134 @@
         }
 
         .stat-number {
-            font-size: 2rem;
-            font-weight: 800;
-            display: block;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        /* Benefits Section */
-        .benefits {
-            padding: 6rem 2rem;
-            background: #F7FAFC;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            text-align: center;
             font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-weight: 900;
+            display: block;
+            background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+
+        /* Sections */
+        .section {
+            padding: 8rem 2rem;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
         .section-subtitle {
             text-align: center;
-            font-size: 1.1rem;
-            color: #718096;
-            margin-bottom: 4rem;
-            max-width: 600px;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 5rem;
+            max-width: 700px;
             margin-left: auto;
             margin-right: auto;
+            line-height: 1.6;
+        }
+
+        /* Benefits */
+        .benefits {
+            background: var(--secondary-bg);
         }
 
         .benefits-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
         }
 
         .benefit-card {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            padding: 3rem;
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
-            border: 1px solid rgba(102, 126, 234, 0.1);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .benefit-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
         }
 
         .benefit-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.2);
+            transform: translateY(-10px);
+            box-shadow: 0 30px 70px rgba(139, 92, 246, 0.2);
+        }
+
+        .benefit-card:hover::before {
+            transform: scaleX(1);
         }
 
         .benefit-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-primary);
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
         }
 
         .benefit-title {
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 1rem;
-            color: #2D3748;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
         }
 
         .benefit-description {
-            color: #718096;
-            line-height: 1.6;
+            color: var(--text-secondary);
+            line-height: 1.7;
         }
 
-        /* How it works */
+        /* Steps */
         .how-it-works {
-            padding: 6rem 2rem;
-            background: white;
+            background: var(--primary-bg);
         }
 
         .steps {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-            margin-top: 4rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 4rem;
+            margin-top: 5rem;
         }
 
         .step {
@@ -336,93 +494,109 @@
         }
 
         .step-number {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            width: 100px;
+            height: 100px;
+            background: var(--gradient-primary);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 1.5rem;
+            margin: 0 auto 2rem;
             color: white;
-            font-size: 1.5rem;
-            font-weight: 800;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            font-size: 2rem;
+            font-weight: 900;
+            box-shadow: 0 15px 40px rgba(139, 92, 246, 0.4);
+            position: relative;
+        }
+
+        .step-number::after {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            z-index: -1;
+            opacity: 0.3;
+            animation: glow 3s ease-in-out infinite;
         }
 
         .step-title {
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 1rem;
-            color: #2D3748;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
         }
 
         .step-description {
-            color: #718096;
-            line-height: 1.6;
+            color: var(--text-secondary);
+            line-height: 1.7;
         }
 
-        /* Creators Section */
+        /* Creators */
         .creators {
-            padding: 6rem 2rem;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #4facfe 100%);
+            background: var(--gradient-secondary);
+            position: relative;
         }
 
-        .creators h2 {
-            color: white;
-        }
-
-        .creators .section-subtitle {
-            color: rgba(255, 255, 255, 0.9);
+        .creators::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
         }
 
         .creators-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 4rem;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-top: 5rem;
+            position: relative;
+            z-index: 1;
         }
 
         .creator-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(30px);
+            border-radius: 25px;
+            padding: 2.5rem;
             border: 1px solid rgba(255, 255, 255, 0.2);
             transition: all 0.3s ease;
+            text-align: center;
         }
 
         .creator-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
         }
 
         .creator-avatar {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            width: 100px;
+            height: 100px;
+            background: var(--gradient-primary);
             border-radius: 50%;
-            margin: 0 auto 1rem;
+            margin: 0 auto 1.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 2rem;
+            font-weight: 900;
+            box-shadow: 0 15px 40px rgba(139, 92, 246, 0.4);
         }
 
         .creator-name {
             color: white;
-            font-size: 1.25rem;
+            font-size: 1.4rem;
             font-weight: 700;
-            text-align: center;
             margin-bottom: 0.5rem;
         }
 
         .creator-specialty {
             color: rgba(255, 255, 255, 0.8);
-            text-align: center;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
         }
 
         .creator-stats {
@@ -430,161 +604,54 @@
             justify-content: space-between;
             color: rgba(255, 255, 255, 0.9);
             font-size: 0.9rem;
+            margin-bottom: 1.5rem;
         }
 
         .creator-price {
             color: white;
             font-weight: 700;
-            text-align: center;
-            margin-top: 1rem;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
         }
 
-        /* Contact Section */
-        .contact {
-            padding: 6rem 2rem;
-            background: #2D3748;
-            color: white;
-        }
-
-        .contact-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .contact-info h3 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .contact-methods {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .contact-method {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            color: white;
-        }
-
-        .contact-method:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateX(5px);
-        }
-
-        .contact-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .contact-form {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            padding: 2rem;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 1rem;
-            border: none;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.9);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
-        }
-
-        .submit-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 1rem;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-        }
-
-        /* FAQ Section */
+        /* FAQ */
         .faq {
-            padding: 6rem 2rem;
-            background: #F7FAFC;
+            background: var(--secondary-bg);
         }
 
         .faq-container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
         .faq-item {
-            background: white;
-            border-radius: 15px;
-            margin-bottom: 1rem;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             overflow: hidden;
+            border: 1px solid var(--border-color);
         }
 
         .faq-question {
-            padding: 1.5rem;
+            padding: 2rem;
             cursor: pointer;
             font-weight: 600;
             display: flex;
             justify-content: space-between;
             align-items: center;
             transition: all 0.3s ease;
+            color: var(--text-primary);
         }
 
         .faq-question:hover {
-            background: #f8f9fa;
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .faq-answer {
-            padding: 0 1.5rem 1.5rem;
-            color: #718096;
-            line-height: 1.6;
+            padding: 0 2rem 2rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
             display: none;
         }
 
@@ -594,51 +661,192 @@
 
         .faq-toggle {
             transition: transform 0.3s ease;
+            color: var(--accent-primary);
+            font-size: 1.2rem;
         }
 
         .faq-item.active .faq-toggle {
             transform: rotate(180deg);
         }
 
-        /* Footer */
-        footer {
-            background: #1A202C;
-            color: white;
-            padding: 3rem 2rem 2rem;
+        /* Contact */
+        .contact {
+            background: var(--primary-bg);
         }
 
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            text-align: center;
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
         }
 
-        .footer-logo {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .contact-info h3 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .footer-text {
-            color: #A0AEC0;
+        .contact-info p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .contact-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .contact-method:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .contact-form {
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px);
+            padding: 3rem;
+            border-radius: 25px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-group {
             margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1.2rem;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1.2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(139, 92, 246, 0.6);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary-bg);
+            color: white;
+            padding: 4rem 2rem 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
         }
 
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
         }
 
         .social-link {
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.1);
+            width: 60px;
+            height: 60px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -646,109 +854,113 @@
             text-decoration: none;
             color: white;
             transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+            font-size: 1.5rem;
         }
 
         .social-link:hover {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            transform: translateY(-3px);
+            background: var(--gradient-primary);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(139, 92, 246, 0.4);
         }
 
         /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 3rem;
+            }
+
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .hero-text h1 {
+                font-size: 3rem;
+            }
+        }
+
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
             }
 
-            .hero-content {
-                grid-template-columns: 1fr;
-                text-align: center;
+            .language-switcher {
+                top: 80px;
+                right: 1rem;
             }
 
             .hero-text h1 {
                 font-size: 2.5rem;
             }
 
-            .contact-content {
-                grid-template-columns: 1fr;
+            .section-title {
+                font-size: 2.5rem;
             }
 
             .hero-buttons {
                 justify-content: center;
             }
+
+            .benefits-grid,
+            .steps,
+            .creators-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
-        /* Floating elements */
-        .floating-shape {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            animation: float 8s ease-in-out infinite;
-        }
-
-        .shape-1 {
-            width: 100px;
-            height: 100px;
-            top: 10%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .shape-2 {
-            width: 150px;
-            height: 150px;
-            top: 70%;
-            right: 10%;
-            animation-delay: 2s;
-        }
-
-        .shape-3 {
-            width: 80px;
-            height: 80px;
-            top: 40%;
-            left: 80%;
-            animation-delay: 4s;
+        /* Hidden class for language switching */
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
 <body>
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <button class="lang-btn active" onclick="switchLanguage('en')" data-lang="en">EN</button>
+        <button class="lang-btn" onclick="switchLanguage('ru')" data-lang="ru">RU</button>
+    </div>
+
     <!-- Header -->
     <header>
         <nav>
             <div class="logo">ContentBridge</div>
             <ul class="nav-links">
-                <li><a href="#creators">Креаторы</a></li>
-                <li><a href="#how">Как работает</a></li>
-                <li><a href="#pricing">Цены</a></li>
-                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#creators" data-translate="nav-creators">Creators</a></li>
+                <li><a href="#how" data-translate="nav-how">How it works</a></li>
+                <li><a href="#faq" data-translate="nav-faq">FAQ</a></li>
+                <li><a href="#contact" data-translate="nav-contact">Contact</a></li>
             </ul>
-            <a href="#contact" class="cta-btn">Заказать видео</a>
+            <a href="#contact" class="cta-btn" data-translate="nav-cta">Order Video</a>
         </nav>
     </header>
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="floating-shape shape-1"></div>
-        <div class="floating-shape shape-2"></div>
-        <div class="floating-shape shape-3"></div>
-        
         <div class="hero-content">
             <div class="hero-text">
-                <h1>UGC-видео от лучших креаторов Армении</h1>
-                <p>Закажите аутентичные видеообзоры, распаковки и презентации товаров от проверенных создателей контента. Безопасно, быстро, эффективно.</p>
+                <h1>
+                    <span class="gradient-text" data-translate="hero-title">UGC Videos</span><br>
+                    <span data-translate="hero-subtitle">from Top Armenian Creators</span>
+                </h1>
+                <p data-translate="hero-description">Order authentic video reviews, unboxings and product presentations from verified content creators. Safe, fast, effective.</p>
                 <div class="hero-buttons">
-                    <a href="#contact" class="btn-primary">Заказать видео</a>
-                    <a href="#creators" class="btn-secondary">Посмотреть креаторов</a>
+                    <a href="#contact" class="btn-primary" data-translate="hero-cta-primary">Order Video</a>
+                    <a href="#creators" class="btn-secondary" data-translate="hero-cta-secondary">View Creators</a>
                 </div>
             </div>
             <div class="hero-visual">
                 <div class="hero-card">
-                    <h3 style="color: white; margin-bottom: 1rem;">🎬 Ваш заказ</h3>
-                    <p style="color: rgba(255,255,255,0.9); margin-bottom: 1rem;">Распаковка iPhone 15 Pro</p>
+                    <h3 style="color: white; margin-bottom: 1rem;">🎬 <span data-translate="hero-card-title">Your Order</span></h3>
+                    <p style="color: rgba(255,255,255,0.9); margin-bottom: 1rem;" data-translate="hero-card-product">iPhone 15 Pro Unboxing</p>
                     <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 10px; margin-bottom: 1rem;">
-                        <div style="color: white; font-weight: 600;">Анна К. ⭐⭐⭐⭐⭐</div>
-                        <div style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">Бьюти-блогер • 5.2K подписчиков</div>
+                        <div style="color: white; font-weight: 600;">Anna K. ⭐⭐⭐⭐⭐</div>
+                        <div style="color: rgba(255,255,255,0.8); font-size: 0.9rem;" data-translate="hero-card-creator">Beauty Blogger • 5.2K followers</div>
                     </div>
-                    <div style="color: #4FD1C7; font-weight: 700; font-size: 1.2rem;">$120</div>
+                    <div style="color: #10b981; font-weight: 700; font-size: 1.2rem;">$120</div>
                 </div>
             </div>
         </div>
@@ -756,239 +968,239 @@
         <div class="hero-stats">
             <div class="stat">
                 <span class="stat-number">500+</span>
-                <span class="stat-label">Проверенных креаторов</span>
+                <span class="stat-label" data-translate="stat-creators">Verified Creators</span>
             </div>
             <div class="stat">
                 <span class="stat-number">2,000+</span>
-                <span class="stat-label">Выполненных заказов</span>
+                <span class="stat-label" data-translate="stat-orders">Completed Orders</span>
             </div>
             <div class="stat">
                 <span class="stat-number">4.9</span>
-                <span class="stat-label">Средний рейтинг</span>
+                <span class="stat-label" data-translate="stat-rating">Average Rating</span>
             </div>
         </div>
     </section>
 
     <!-- Benefits Section -->
-    <section class="benefits">
+    <section class="section benefits">
         <div class="container">
-            <h2 class="section-title">Почему выбирают ContentBridge?</h2>
-            <p class="section-subtitle">Мы создали безопасную экосистему для заказа качественного UGC-контента с гарантией результата</p>
+            <h2 class="section-title" data-translate="benefits-title">Why Choose ContentBridge?</h2>
+            <p class="section-subtitle" data-translate="benefits-subtitle">We've created a secure ecosystem for ordering quality UGC content with guaranteed results</p>
             
             <div class="benefits-grid">
                 <div class="benefit-card">
                     <div class="benefit-icon">🛡️</div>
-                    <h3 class="benefit-title">Гарантия безопасности</h3>
-                    <p class="benefit-description">Все платежи проходят через нашу платформу. Деньги передаются креатору только после вашего подтверждения качества работы.</p>
+                    <h3 class="benefit-title" data-translate="benefit-1-title">Security Guarantee</h3>
+                    <p class="benefit-description" data-translate="benefit-1-desc">All payments go through our platform. Money is transferred to the creator only after you confirm the quality of work.</p>
                 </div>
                 
                 <div class="benefit-card">
                     <div class="benefit-icon">⚡</div>
-                    <h3 class="benefit-title">Быстрое выполнение</h3>
-                    <p class="benefit-description">Средний срок выполнения заказа 3-5 дней. Срочные заказы доступны от 24 часов с доплатой всего 50%.</p>
+                    <h3 class="benefit-title" data-translate="benefit-2-title">Fast Delivery</h3>
+                    <p class="benefit-description" data-translate="benefit-2-desc">Average completion time is 3-5 days. Rush orders available from 24 hours with only 50% surcharge.</p>
                 </div>
                 
                 <div class="benefit-card">
                     <div class="benefit-icon">⭐</div>
-                    <h3 class="benefit-title">Проверенные креаторы</h3>
-                    <p class="benefit-description">Все создатели контента проходят строгую модерацию. Только лучшие попадают в наш каталог.</p>
+                    <h3 class="benefit-title" data-translate="benefit-3-title">Verified Creators</h3>
+                    <p class="benefit-description" data-translate="benefit-3-desc">All content creators go through strict moderation. Only the best make it to our catalog.</p>
                 </div>
                 
                 <div class="benefit-card">
                     <div class="benefit-icon">🎯</div>
-                    <h3 class="benefit-title">Точное попадание</h3>
-                    <p class="benefit-description">Подбираем креаторов под вашу нишу и целевую аудиторию для максимальной эффективности.</p>
+                    <h3 class="benefit-title" data-translate="benefit-4-title">Perfect Match</h3>
+                    <p class="benefit-description" data-translate="benefit-4-desc">We match creators to your niche and target audience for maximum effectiveness.</p>
                 </div>
                 
                 <div class="benefit-card">
                     <div class="benefit-icon">💰</div>
-                    <h3 class="benefit-title">Честные цены</h3>
-                    <p class="benefit-description">Никаких скрытых комиссий. Видите цену на сайте - получаете именно её. От $30 за простое видео.</p>
+                    <h3 class="benefit-title" data-translate="benefit-5-title">Fair Pricing</h3>
+                    <p class="benefit-description" data-translate="benefit-5-desc">No hidden fees. The price you see is what you get. Starting from $30 for simple videos.</p>
                 </div>
                 
                 <div class="benefit-card">
                     <div class="benefit-icon">📞</div>
-                    <h3 class="benefit-title">Поддержка 24/7</h3>
-                    <p class="benefit-description">Наша команда всегда готова помочь на любом этапе заказа через WhatsApp, Telegram или email.</p>
+                    <h3 class="benefit-title" data-translate="benefit-6-title">24/7 Support</h3>
+                    <p class="benefit-description" data-translate="benefit-6-desc">Our team is always ready to help at any stage via WhatsApp, Telegram or email.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- How it works -->
-    <section class="how-it-works" id="how">
+    <section class="section how-it-works" id="how">
         <div class="container">
-            <h2 class="section-title">Как это работает</h2>
-            <p class="section-subtitle">Простой процесс от заказа до получения готового видео</p>
+            <h2 class="section-title" data-translate="how-title">How It Works</h2>
+            <p class="section-subtitle" data-translate="how-subtitle">Simple process from order to receiving finished video</p>
             
             <div class="steps">
                 <div class="step">
                     <div class="step-number">1</div>
-                    <h3 class="step-title">Выберите креатора</h3>
-                    <p class="step-description">Просмотрите портфолио, прочитайте отзывы и выберите подходящего создателя контента для вашего проекта</p>
+                    <h3 class="step-title" data-translate="step-1-title">Choose Creator</h3>
+                    <p class="step-description" data-translate="step-1-desc">Browse portfolios, read reviews and select the right content creator for your project</p>
                 </div>
                 
                 <div class="step">
                     <div class="step-number">2</div>
-                    <h3 class="step-title">Оформите заказ</h3>
-                    <p class="step-description">Опишите техническое задание, укажите сроки и произведите безопасную оплату через нашу платформу</p>
+                    <h3 class="step-title" data-translate="step-2-title">Place Order</h3>
+                    <p class="step-description" data-translate="step-2-desc">Describe the brief, set deadlines and make secure payment through our platform</p>
                 </div>
                 
                 <div class="step">
                     <div class="step-number">3</div>
-                    <h3 class="step-title">Получите результат</h3>
-                    <p class="step-description">Креатор создаст видео согласно вашим требованиям. При необходимости доступны правки</p>
+                    <h3 class="step-title" data-translate="step-3-title">Get Results</h3>
+                    <p class="step-description" data-translate="step-3-desc">Creator will produce video according to your requirements. Revisions available if needed</p>
                 </div>
                 
                 <div class="step">
                     <div class="step-number">4</div>
-                    <h3 class="step-title">Используйте контент</h3>
-                    <p class="step-description">Получите готовое видео и все права на его использование для ваших маркетинговых кампаний</p>
+                    <h3 class="step-title" data-translate="step-4-title">Use Content</h3>
+                    <p class="step-description" data-translate="step-4-desc">Receive finished video and full rights to use it for your marketing campaigns</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Creators Section -->
-    <section class="creators" id="creators">
+    <section class="section creators" id="creators">
         <div class="container">
-            <h2 class="section-title">Топ креаторы</h2>
-            <p class="section-subtitle">Познакомьтесь с нашими лучшими создателями контента</p>
+            <h2 class="section-title" data-translate="creators-title">Top Creators</h2>
+            <p class="section-subtitle" data-translate="creators-subtitle">Meet our best content creators</p>
             
             <div class="creators-grid">
                 <div class="creator-card">
-                    <div class="creator-avatar">АК</div>
-                    <div class="creator-name">Анна Карапетян</div>
-                    <div class="creator-specialty">Бьюти • Лайфстайл</div>
+                    <div class="creator-avatar">AK</div>
+                    <div class="creator-name">Anna Karapetyan</div>
+                    <div class="creator-specialty" data-translate="creator-1-specialty">Beauty • Lifestyle</div>
                     <div class="creator-stats">
                         <span>⭐ 4.9</span>
-                        <span>📱 12.5K подписчиков</span>
-                        <span>✅ 89 заказов</span>
+                        <span data-translate="followers">📱 12.5K followers</span>
+                        <span data-translate="orders">✅ 89 orders</span>
                     </div>
-                    <div class="creator-price">От $80 за видео</div>
+                    <div class="creator-price" data-translate="creator-1-price">From $80 per video</div>
                 </div>
                 
                 <div class="creator-card">
-                    <div class="creator-avatar">МА</div>
-                    <div class="creator-name">Мгер Авагян</div>
-                    <div class="creator-specialty">Тех-обзоры • Гаджеты</div>
+                    <div class="creator-avatar">MA</div>
+                    <div class="creator-name">Mger Avagyan</div>
+                    <div class="creator-specialty" data-translate="creator-2-specialty">Tech Reviews • Gadgets</div>
                     <div class="creator-stats">
                         <span>⭐ 5.0</span>
-                        <span>📱 8.2K подписчиков</span>
-                        <span>✅ 127 заказов</span>
+                        <span data-translate="followers">📱 8.2K followers</span>
+                        <span data-translate="orders">✅ 127 orders</span>
                     </div>
-                    <div class="creator-price">От $120 за видео</div>
+                    <div class="creator-price" data-translate="creator-2-price">From $120 per video</div>
                 </div>
                 
                 <div class="creator-card">
-                    <div class="creator-avatar">СМ</div>
-                    <div class="creator-name">Софи Мкртчян</div>
-                    <div class="creator-specialty">Еда • Рестораны</div>
+                    <div class="creator-avatar">SM</div>
+                    <div class="creator-name">Sophie Mkrtchyan</div>
+                    <div class="creator-specialty" data-translate="creator-3-specialty">Food • Restaurants</div>
                     <div class="creator-stats">
                         <span>⭐ 4.8</span>
-                        <span>📱 15.1K подписчиков</span>
-                        <span>✅ 156 заказов</span>
+                        <span data-translate="followers">📱 15.1K followers</span>
+                        <span data-translate="orders">✅ 156 orders</span>
                     </div>
-                    <div class="creator-price">От $95 за видео</div>
+                    <div class="creator-price" data-translate="creator-3-price">From $95 per video</div>
                 </div>
                 
                 <div class="creator-card">
-                    <div class="creator-avatar">АС</div>
-                    <div class="creator-name">Арам Саркисян</div>
-                    <div class="creator-specialty">Спорт • Фитнес</div>
+                    <div class="creator-avatar">AS</div>
+                    <div class="creator-name">Aram Sargsyan</div>
+                    <div class="creator-specialty" data-translate="creator-4-specialty">Sports • Fitness</div>
                     <div class="creator-stats">
                         <span>⭐ 4.9</span>
-                        <span>📱 6.8K подписчиков</span>
-                        <span>✅ 73 заказа</span>
+                        <span data-translate="followers">📱 6.8K followers</span>
+                        <span data-translate="orders">✅ 73 orders</span>
                     </div>
-                    <div class="creator-price">От $65 за видео</div>
+                    <div class="creator-price" data-translate="creator-4-price">From $65 per video</div>
                 </div>
                 
                 <div class="creator-card">
-                    <div class="creator-avatar">ЛП</div>
-                    <div class="creator-name">Лилит Погосян</div>
-                    <div class="creator-specialty">Мода • Стиль</div>
+                    <div class="creator-avatar">LP</div>
+                    <div class="creator-name">Lilit Poghosyan</div>
+                    <div class="creator-specialty" data-translate="creator-5-specialty">Fashion • Style</div>
                     <div class="creator-stats">
                         <span>⭐ 4.7</span>
-                        <span>📱 18.9K подписчиков</span>
-                        <span>✅ 203 заказа</span>
+                        <span data-translate="followers">📱 18.9K followers</span>
+                        <span data-translate="orders">✅ 203 orders</span>
                     </div>
-                    <div class="creator-price">От $110 за видео</div>
+                    <div class="creator-price" data-translate="creator-5-price">From $110 per video</div>
                 </div>
                 
                 <div class="creator-card">
-                    <div class="creator-avatar">ДХ</div>
-                    <div class="creator-name">Давид Хачатрян</div>
-                    <div class="creator-specialty">Авто • Путешествия</div>
+                    <div class="creator-avatar">DH</div>
+                    <div class="creator-name">David Khachatryan</div>
+                    <div class="creator-specialty" data-translate="creator-6-specialty">Auto • Travel</div>
                     <div class="creator-stats">
                         <span>⭐ 5.0</span>
-                        <span>📱 9.7K подписчиков</span>
-                        <span>✅ 92 заказа</span>
+                        <span data-translate="followers">📱 9.7K followers</span>
+                        <span data-translate="orders">✅ 92 orders</span>
                     </div>
-                    <div class="creator-price">От $85 за видео</div>
+                    <div class="creator-price" data-translate="creator-6-price">From $85 per video</div>
                 </div>
             </div>
             
             <div style="text-align: center; margin-top: 3rem;">
-                <a href="#contact" class="btn-primary" style="color: #667eea;">Посмотреть всех креаторов</a>
+                <a href="#contact" class="btn-primary" style="color: var(--primary-bg);" data-translate="view-all-creators">View All Creators</a>
             </div>
         </div>
     </section>
 
     <!-- FAQ Section -->
-    <section class="faq" id="faq">
+    <section class="section faq" id="faq">
         <div class="container">
-            <h2 class="section-title">Частые вопросы</h2>
-            <p class="section-subtitle">Ответы на самые популярные вопросы о нашем сервисе</p>
+            <h2 class="section-title" data-translate="faq-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle" data-translate="faq-subtitle">Answers to the most popular questions about our service</p>
             
             <div class="faq-container">
                 <div class="faq-item active">
                     <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>Сколько стоит UGC-видео?</span>
+                        <span data-translate="faq-1-q">How much does a UGC video cost?</span>
                         <span class="faq-toggle">▼</span>
                     </div>
-                    <div class="faq-answer">
-                        Стоимость зависит от сложности проекта и популярности креатора. Простое видео (до 30 секунд) стоит от $30, стандартное (1-2 минуты) - от $80, премиум (до 5 минут) - от $150. Срочные заказы оплачиваются с доплатой 50%.
+                    <div class="faq-answer" data-translate="faq-1-a">
+                        Price depends on project complexity and creator popularity. Simple video (up to 30 seconds) costs from $30, standard (1-2 minutes) - from $80, premium (up to 5 minutes) - from $150. Rush orders are charged with 50% surcharge.
                     </div>
                 </div>
                 
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>Как долго выполняется заказ?</span>
+                        <span data-translate="faq-2-q">How long does order completion take?</span>
                         <span class="faq-toggle">▼</span>
                     </div>
-                    <div class="faq-answer">
-                        Стандартный срок выполнения 3-5 рабочих дней. Для срочных заказов доступно выполнение за 24-48 часов с доплатой. Точные сроки указывает каждый креатор в своем профиле.
+                    <div class="faq-answer" data-translate="faq-2-a">
+                        Standard completion time is 3-5 business days. Rush orders available for completion in 24-48 hours with surcharge. Exact timelines are specified by each creator in their profile.
                     </div>
                 </div>
                 
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>Какие гарантии вы предоставляете?</span>
+                        <span data-translate="faq-3-q">What guarantees do you provide?</span>
                         <span class="faq-toggle">▼</span>
                     </div>
-                    <div class="faq-answer">
-                        Мы гарантируем возврат денег, если креатор не выполнил заказ в срок без уважительной причины. Также предоставляем до 3 бесплатных правок. Оплата креатору происходит только после вашего подтверждения качества работы.
+                    <div class="faq-answer" data-translate="faq-3-a">
+                        We guarantee money back if creator doesn't complete order on time without valid reason. We also provide up to 3 free revisions. Payment to creator happens only after you confirm work quality.
                     </div>
                 </div>
                 
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>Можно ли использовать видео для рекламы?</span>
+                        <span data-translate="faq-4-q">Can I use the video for advertising?</span>
                         <span class="faq-toggle">▼</span>
                     </div>
-                    <div class="faq-answer">
-                        Да, после оплаты вы получаете полные права на использование видео в коммерческих целях. Можете размещать в соцсетях, на сайте, в рекламных кампаниях без ограничений по времени.
+                    <div class="faq-answer" data-translate="faq-4-a">
+                        Yes, after payment you receive full rights to use the video for commercial purposes. You can post on social media, website, advertising campaigns without time restrictions.
                     </div>
                 </div>
                 
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>Как выбрать подходящего креатора?</span>
+                        <span data-translate="faq-5-q">How to choose the right creator?</span>
                         <span class="faq-toggle">▼</span>
                     </div>
-                    <div class="faq-answer">
-                        Смотрите на портфолио, специализацию, рейтинг и отзывы. Обращайте внимание на качество предыдущих работ и соответствие вашей нише. Наши менеджеры также могут помочь с подбором подходящего креатора.
+                    <div class="faq-answer" data-translate="faq-5-a">
+                        Look at portfolio, specialization, rating and reviews. Pay attention to quality of previous work and match with your niche. Our managers can also help select the right creator.
                     </div>
                 </div>
             </div>
@@ -996,12 +1208,12 @@
     </section>
 
     <!-- Contact Section -->
-    <section class="contact" id="contact">
+    <section class="section contact" id="contact">
         <div class="container">
             <div class="contact-content">
                 <div class="contact-info">
-                    <h3>Готовы заказать UGC-видео?</h3>
-                    <p>Свяжитесь с нами любым удобным способом, и мы поможем подобрать идеального креатора для вашего проекта</p>
+                    <h3 data-translate="contact-title">Ready to Order UGC Video?</h3>
+                    <p data-translate="contact-subtitle">Contact us in any convenient way, and we'll help you find the perfect creator for your project</p>
                     
                     <div class="contact-methods">
                         <a href="https://wa.me/37477123456" class="contact-method">
@@ -1031,7 +1243,7 @@
                         <a href="tel:+37410123456" class="contact-method">
                             <div class="contact-icon">📞</div>
                             <div>
-                                <div>Звонок</div>
+                                <div data-translate="contact-call">Call</div>
                                 <div style="font-size: 0.9rem; opacity: 0.8;">+374 10 123 456</div>
                             </div>
                         </a>
@@ -1040,66 +1252,66 @@
                 
                 <div class="contact-form">
                     <form action="https://formspree.io/f/mgvzgvag" method="POST" id="orderForm">
-                        <input type="hidden" name="_subject" value="Новый заказ UGC-видео ContentBridge Armenia">
+                        <input type="hidden" name="_subject" value="New UGC Video Order - ContentBridge Armenia">
                         <input type="hidden" name="_next" value="https://contentbridge-armenia.vercel.app/thanks.html">
-                        <input type="hidden" name="_language" value="ru">
+                        <input type="hidden" name="_language" value="en">
                         
-                        <h4 style="margin-bottom: 1.5rem; font-size: 1.25rem;">Быстрый заказ</h4>
+                        <h4 style="margin-bottom: 2rem; font-size: 1.5rem; color: var(--text-primary);" data-translate="form-title">Quick Order</h4>
                         
                         <div class="form-group">
-                            <label>Тип видео *</label>
+                            <label data-translate="form-video-type">Video Type *</label>
                             <select name="video_type" required>
-                                <option value="">Выберите тип</option>
-                                <option value="Распаковка товара">Распаковка товара</option>
-                                <option value="Обзор продукта">Обзор продукта</option>
-                                <option value="Обзор ресторана">Обзор ресторана/кафе</option>
-                                <option value="Бьюти-контент">Бьюти-контент</option>
-                                <option value="Лайфстайл">Лайфстайл</option>
-                                <option value="Другое">Другое</option>
+                                <option value="" data-translate="form-select-type">Select type</option>
+                                <option value="Product Unboxing" data-translate="form-unboxing">Product Unboxing</option>
+                                <option value="Product Review" data-translate="form-review">Product Review</option>
+                                <option value="Restaurant Review" data-translate="form-restaurant">Restaurant/Cafe Review</option>
+                                <option value="Beauty Content" data-translate="form-beauty">Beauty Content</option>
+                                <option value="Lifestyle" data-translate="form-lifestyle">Lifestyle</option>
+                                <option value="Other" data-translate="form-other">Other</option>
                             </select>
                         </div>
                         
                         <div class="form-group">
-                            <label>Бюджет *</label>
+                            <label data-translate="form-budget">Budget *</label>
                             <select name="budget" required>
-                                <option value="">Выберите бюджет</option>
-                                <option value="$30-70 (Простое видео)">$30-70 (Простое видео)</option>
-                                <option value="$70-150 (Стандарт)">$70-150 (Стандарт)</option>
-                                <option value="$150-300 (Премиум)">$150-300 (Премиум)</option>
-                                <option value="$300+ (Эксклюзив)">$300+ (Эксклюзив)</option>
+                                <option value="" data-translate="form-select-budget">Select budget</option>
+                                <option value="$30-70 (Simple video)" data-translate="form-budget-1">$30-70 (Simple video)</option>
+                                <option value="$70-150 (Standard)" data-translate="form-budget-2">$70-150 (Standard)</option>
+                                <option value="$150-300 (Premium)" data-translate="form-budget-3">$150-300 (Premium)</option>
+                                <option value="$300+ (Exclusive)" data-translate="form-budget-4">$300+ (Exclusive)</option>
                             </select>
                         </div>
                         
                         <div class="form-group">
-                            <label>Описание проекта *</label>
-                            <textarea name="project_description" placeholder="Расскажите подробнее о вашем проекте: что нужно снять, какой стиль, особые требования..." rows="4" required></textarea>
+                            <label data-translate="form-description">Project Description *</label>
+                            <textarea name="project_description" data-translate="form-description-placeholder" placeholder="Tell us more about your project: what needs to be filmed, style, special requirements..." rows="4" required></textarea>
                         </div>
                         
                         <div class="form-group">
-                            <label>Ваше имя *</label>
-                            <input type="text" name="client_name" placeholder="Ваше имя или название компании" required>
+                            <label data-translate="form-name">Your Name *</label>
+                            <input type="text" name="client_name" data-translate="form-name-placeholder" placeholder="Your name or company name" required>
                         </div>
                         
                         <div class="form-group">
-                            <label>Контакт для связи *</label>
-                            <input type="text" name="contact_info" placeholder="Телефон или email для связи" required>
+                            <label data-translate="form-contact">Contact Information *</label>
+                            <input type="text" name="contact_info" data-translate="form-contact-placeholder" placeholder="Phone or email for contact" required>
                         </div>
                         
                         <div class="form-group">
-                            <label>Срочность</label>
+                            <label data-translate="form-urgency">Urgency</label>
                             <select name="urgency">
-                                <option value="">Выберите сроки</option>
-                                <option value="1-2 дня (срочно +50%)">1-2 дня (срочно +50%)</option>
-                                <option value="3-5 дней (стандарт)">3-5 дней (стандарт)</option>
-                                <option value="1-2 недели">1-2 недели</option>
-                                <option value="Не важно">Сроки не важны</option>
+                                <option value="" data-translate="form-select-timeline">Select timeline</option>
+                                <option value="1-2 days (rush +50%)" data-translate="form-rush">1-2 days (rush +50%)</option>
+                                <option value="3-5 days (standard)" data-translate="form-standard">3-5 days (standard)</option>
+                                <option value="1-2 weeks" data-translate="form-weeks">1-2 weeks</option>
+                                <option value="Not important" data-translate="form-flexible">Timeline not important</option>
                             </select>
                         </div>
                         
-                        <button type="submit" class="submit-btn">Отправить заявку</button>
+                        <button type="submit" class="submit-btn" data-translate="form-submit">Submit Order</button>
                         
-                        <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 1rem;">
-                            * обязательные поля
+                        <p style="font-size: 0.9rem; opacity: 0.7; margin-top: 1rem; color: var(--text-muted);" data-translate="form-required">
+                            * required fields
                         </p>
                     </form>
                 </div>
@@ -1111,7 +1323,7 @@
     <footer>
         <div class="footer-content">
             <div class="footer-logo">ContentBridge</div>
-            <p class="footer-text">Ведущий маркетплейс UGC-контента в Армении</p>
+            <p class="footer-text" data-translate="footer-text">Leading UGC content marketplace in Armenia</p>
             
             <div class="social-links">
                 <a href="#" class="social-link">📘</a>
@@ -1120,27 +1332,337 @@
                 <a href="#" class="social-link">📱</a>
             </div>
             
-            <p style="color: #718096; font-size: 0.9rem;">© 2024 ContentBridge Armenia. Все права защищены.</p>
+            <p style="color: var(--text-muted); font-size: 1rem;" data-translate="footer-copyright">© 2024 ContentBridge Armenia. All rights reserved.</p>
         </div>
     </footer>
 
     <script>
-        // Отслеживание заявок
+        // Translations
+        const translations = {
+            en: {
+                // Navigation
+                'nav-creators': 'Creators',
+                'nav-how': 'How it works',
+                'nav-faq': 'FAQ',
+                'nav-contact': 'Contact',
+                'nav-cta': 'Order Video',
+                
+                // Hero
+                'hero-title': 'UGC Videos',
+                'hero-subtitle': 'from Top Armenian Creators',
+                'hero-description': 'Order authentic video reviews, unboxings and product presentations from verified content creators. Safe, fast, effective.',
+                'hero-cta-primary': 'Order Video',
+                'hero-cta-secondary': 'View Creators',
+                'hero-card-title': 'Your Order',
+                'hero-card-product': 'iPhone 15 Pro Unboxing',
+                'hero-card-creator': 'Beauty Blogger • 5.2K followers',
+                
+                // Stats
+                'stat-creators': 'Verified Creators',
+                'stat-orders': 'Completed Orders',
+                'stat-rating': 'Average Rating',
+                
+                // Benefits
+                'benefits-title': 'Why Choose ContentBridge?',
+                'benefits-subtitle': 'We\'ve created a secure ecosystem for ordering quality UGC content with guaranteed results',
+                'benefit-1-title': 'Security Guarantee',
+                'benefit-1-desc': 'All payments go through our platform. Money is transferred to the creator only after you confirm the quality of work.',
+                'benefit-2-title': 'Fast Delivery',
+                'benefit-2-desc': 'Average completion time is 3-5 days. Rush orders available from 24 hours with only 50% surcharge.',
+                'benefit-3-title': 'Verified Creators',
+                'benefit-3-desc': 'All content creators go through strict moderation. Only the best make it to our catalog.',
+                'benefit-4-title': 'Perfect Match',
+                'benefit-4-desc': 'We match creators to your niche and target audience for maximum effectiveness.',
+                'benefit-5-title': 'Fair Pricing',
+                'benefit-5-desc': 'No hidden fees. The price you see is what you get. Starting from $30 for simple videos.',
+                'benefit-6-title': '24/7 Support',
+                'benefit-6-desc': 'Our team is always ready to help at any stage via WhatsApp, Telegram or email.',
+                
+                // How it works
+                'how-title': 'How It Works',
+                'how-subtitle': 'Simple process from order to receiving finished video',
+                'step-1-title': 'Choose Creator',
+                'step-1-desc': 'Browse portfolios, read reviews and select the right content creator for your project',
+                'step-2-title': 'Place Order',
+                'step-2-desc': 'Describe the brief, set deadlines and make secure payment through our platform',
+                'step-3-title': 'Get Results',
+                'step-3-desc': 'Creator will produce video according to your requirements. Revisions available if needed',
+                'step-4-title': 'Use Content',
+                'step-4-desc': 'Receive finished video and full rights to use it for your marketing campaigns',
+                
+                // Creators
+                'creators-title': 'Top Creators',
+                'creators-subtitle': 'Meet our best content creators',
+                'creator-1-specialty': 'Beauty • Lifestyle',
+                'creator-2-specialty': 'Tech Reviews • Gadgets',
+                'creator-3-specialty': 'Food • Restaurants',
+                'creator-4-specialty': 'Sports • Fitness',
+                'creator-5-specialty': 'Fashion • Style',
+                'creator-6-specialty': 'Auto • Travel',
+                'creator-1-price': 'From $80 per video',
+                'creator-2-price': 'From $120 per video',
+                'creator-3-price': 'From $95 per video',
+                'creator-4-price': 'From $65 per video',
+                'creator-5-price': 'From $110 per video',
+                'creator-6-price': 'From $85 per video',
+                'followers': '📱 {count} followers',
+                'orders': '✅ {count} orders',
+                'view-all-creators': 'View All Creators',
+                
+                // FAQ
+                'faq-title': 'Frequently Asked Questions',
+                'faq-subtitle': 'Answers to the most popular questions about our service',
+                'faq-1-q': 'How much does a UGC video cost?',
+                'faq-1-a': 'Price depends on project complexity and creator popularity. Simple video (up to 30 seconds) costs from $30, standard (1-2 minutes) - from $80, premium (up to 5 minutes) - from $150. Rush orders are charged with 50% surcharge.',
+                'faq-2-q': 'How long does order completion take?',
+                'faq-2-a': 'Standard completion time is 3-5 business days. Rush orders available for completion in 24-48 hours with surcharge. Exact timelines are specified by each creator in their profile.',
+                'faq-3-q': 'What guarantees do you provide?',
+                'faq-3-a': 'We guarantee money back if creator doesn\'t complete order on time without valid reason. We also provide up to 3 free revisions. Payment to creator happens only after you confirm work quality.',
+                'faq-4-q': 'Can I use the video for advertising?',
+                'faq-4-a': 'Yes, after payment you receive full rights to use the video for commercial purposes. You can post on social media, website, advertising campaigns without time restrictions.',
+                'faq-5-q': 'How to choose the right creator?',
+                'faq-5-a': 'Look at portfolio, specialization, rating and reviews. Pay attention to quality of previous work and match with your niche. Our managers can also help select the right creator.',
+                
+                // Contact
+                'contact-title': 'Ready to Order UGC Video?',
+                'contact-subtitle': 'Contact us in any convenient way, and we\'ll help you find the perfect creator for your project',
+                'contact-call': 'Call',
+                
+                // Form
+                'form-title': 'Quick Order',
+                'form-video-type': 'Video Type *',
+                'form-select-type': 'Select type',
+                'form-unboxing': 'Product Unboxing',
+                'form-review': 'Product Review',
+                'form-restaurant': 'Restaurant/Cafe Review',
+                'form-beauty': 'Beauty Content',
+                'form-lifestyle': 'Lifestyle',
+                'form-other': 'Other',
+                'form-budget': 'Budget *',
+                'form-select-budget': 'Select budget',
+                'form-budget-1': '$30-70 (Simple video)',
+                'form-budget-2': '$70-150 (Standard)',
+                'form-budget-3': '$150-300 (Premium)',
+                'form-budget-4': '$300+ (Exclusive)',
+                'form-description': 'Project Description *',
+                'form-description-placeholder': 'Tell us more about your project: what needs to be filmed, style, special requirements...',
+                'form-name': 'Your Name *',
+                'form-name-placeholder': 'Your name or company name',
+                'form-contact': 'Contact Information *',
+                'form-contact-placeholder': 'Phone or email for contact',
+                'form-urgency': 'Urgency',
+                'form-select-timeline': 'Select timeline',
+                'form-rush': '1-2 days (rush +50%)',
+                'form-standard': '3-5 days (standard)',
+                'form-weeks': '1-2 weeks',
+                'form-flexible': 'Timeline not important',
+                'form-submit': 'Submit Order',
+                'form-required': '* required fields',
+                
+                // Footer
+                'footer-text': 'Leading UGC content marketplace in Armenia',
+                'footer-copyright': '© 2024 ContentBridge Armenia. All rights reserved.'
+            },
+            ru: {
+                // Navigation
+                'nav-creators': 'Креаторы',
+                'nav-how': 'Как работает',
+                'nav-faq': 'FAQ',
+                'nav-contact': 'Контакты',
+                'nav-cta': 'Заказать видео',
+                
+                // Hero
+                'hero-title': 'UGC-видео',
+                'hero-subtitle': 'от лучших креаторов Армении',
+                'hero-description': 'Закажите аутентичные видеообзоры, распаковки и презентации товаров от проверенных создателей контента. Безопасно, быстро, эффективно.',
+                'hero-cta-primary': 'Заказать видео',
+                'hero-cta-secondary': 'Посмотреть креаторов',
+                'hero-card-title': 'Ваш заказ',
+                'hero-card-product': 'Распаковка iPhone 15 Pro',
+                'hero-card-creator': 'Бьюти-блогер • 5.2K подписчиков',
+                
+                // Stats
+                'stat-creators': 'Проверенных креаторов',
+                'stat-orders': 'Выполненных заказов',
+                'stat-rating': 'Средний рейтинг',
+                
+                // Benefits
+                'benefits-title': 'Почему выбирают ContentBridge?',
+                'benefits-subtitle': 'Мы создали безопасную экосистему для заказа качественного UGC-контента с гарантией результата',
+                'benefit-1-title': 'Гарантия безопасности',
+                'benefit-1-desc': 'Все платежи проходят через нашу платформу. Деньги передаются креатору только после вашего подтверждения качества работы.',
+                'benefit-2-title': 'Быстрое выполнение',
+                'benefit-2-desc': 'Средний срок выполнения заказа 3-5 дней. Срочные заказы доступны от 24 часов с доплатой всего 50%.',
+                'benefit-3-title': 'Проверенные креаторы',
+                'benefit-3-desc': 'Все создатели контента проходят строгую модерацию. Только лучшие попадают в наш каталог.',
+                'benefit-4-title': 'Точное попадание',
+                'benefit-4-desc': 'Подбираем креаторов под вашу нишу и целевую аудиторию для максимальной эффективности.',
+                'benefit-5-title': 'Честные цены',
+                'benefit-5-desc': 'Никаких скрытых комиссий. Видите цену на сайте - получаете именно её. От $30 за простое видео.',
+                'benefit-6-title': 'Поддержка 24/7',
+                'benefit-6-desc': 'Наша команда всегда готова помочь на любом этапе заказа через WhatsApp, Telegram или email.',
+                
+                // How it works
+                'how-title': 'Как это работает',
+                'how-subtitle': 'Простой процесс от заказа до получения готового видео',
+                'step-1-title': 'Выберите креатора',
+                'step-1-desc': 'Просмотрите портфолио, прочитайте отзывы и выберите подходящего создателя контента для вашего проекта',
+                'step-2-title': 'Оформите заказ',
+                'step-2-desc': 'Опишите техническое задание, укажите сроки и произведите безопасную оплату через нашу платформу',
+                'step-3-title': 'Получите результат',
+                'step-3-desc': 'Креатор создаст видео согласно вашим требованиям. При необходимости доступны правки',
+                'step-4-title': 'Используйте контент',
+                'step-4-desc': 'Получите готовое видео и все права на его использование для ваших маркетинговых кампаний',
+                
+                // Creators
+                'creators-title': 'Топ креаторы',
+                'creators-subtitle': 'Познакомьтесь с нашими лучшими создателями контента',
+                'creator-1-specialty': 'Бьюти • Лайфстайл',
+                'creator-2-specialty': 'Тех-обзоры • Гаджеты',
+                'creator-3-specialty': 'Еда • Рестораны',
+                'creator-4-specialty': 'Спорт • Фитнес',
+                'creator-5-specialty': 'Мода • Стиль',
+                'creator-6-specialty': 'Авто • Путешествия',
+                'creator-1-price': 'От $80 за видео',
+                'creator-2-price': 'От $120 за видео',
+                'creator-3-price': 'От $95 за видео',
+                'creator-4-price': 'От $65 за видео',
+                'creator-5-price': 'От $110 за видео',
+                'creator-6-price': 'От $85 за видео',
+                'followers': '📱 {count} подписчиков',
+                'orders': '✅ {count} заказов',
+                'view-all-creators': 'Посмотреть всех креаторов',
+                
+                // FAQ
+                'faq-title': 'Частые вопросы',
+                'faq-subtitle': 'Ответы на самые популярные вопросы о нашем сервисе',
+                'faq-1-q': 'Сколько стоит UGC-видео?',
+                'faq-1-a': 'Стоимость зависит от сложности проекта и популярности креатора. Простое видео (до 30 секунд) стоит от $30, стандартное (1-2 минуты) - от $80, премиум (до 5 минут) - от $150. Срочные заказы оплачиваются с доплатой 50%.',
+                'faq-2-q': 'Как долго выполняется заказ?',
+                'faq-2-a': 'Стандартный срок выполнения 3-5 рабочих дней. Для срочных заказов доступно выполнение за 24-48 часов с доплатой. Точные сроки указывает каждый креатор в своем профиле.',
+                'faq-3-q': 'Какие гарантии вы предоставляете?',
+                'faq-3-a': 'Мы гарантируем возврат денег, если креатор не выполнил заказ в срок без уважительной причины. Также предоставляем до 3 бесплатных правок. Оплата креатору происходит только после вашего подтверждения качества работы.',
+                'faq-4-q': 'Можно ли использовать видео для рекламы?',
+                'faq-4-a': 'Да, после оплаты вы получаете полные права на использование видео в коммерческих целях. Можете размещать в соцсетях, на сайте, в рекламных кампаниях без ограничений по времени.',
+                'faq-5-q': 'Как выбрать подходящего креатора?',
+                'faq-5-a': 'Смотрите на портфолио, специализацию, рейтинг и отзывы. Обращайте внимание на качество предыдущих работ и соответствие вашей нише. Наши менеджеры также могут помочь с подбором подходящего креатора.',
+                
+                // Contact
+                'contact-title': 'Готовы заказать UGC-видео?',
+                'contact-subtitle': 'Свяжитесь с нами любым удобным способом, и мы поможем подобрать идеального креатора для вашего проекта',
+                'contact-call': 'Звонок',
+                
+                // Form
+                'form-title': 'Быстрый заказ',
+                'form-video-type': 'Тип видео *',
+                'form-select-type': 'Выберите тип',
+                'form-unboxing': 'Распаковка товара',
+                'form-review': 'Обзор продукта',
+                'form-restaurant': 'Обзор ресторана/кафе',
+                'form-beauty': 'Бьюти-контент',
+                'form-lifestyle': 'Лайфстайл',
+                'form-other': 'Другое',
+                'form-budget': 'Бюджет *',
+                'form-select-budget': 'Выберите бюджет',
+                'form-budget-1': '$30-70 (Простое видео)',
+                'form-budget-2': '$70-150 (Стандарт)',
+                'form-budget-3': '$150-300 (Премиум)',
+                'form-budget-4': '$300+ (Эксклюзив)',
+                'form-description': 'Описание проекта *',
+                'form-description-placeholder': 'Расскажите подробнее о вашем проекте: что нужно снять, какой стиль, особые требования...',
+                'form-name': 'Ваше имя *',
+                'form-name-placeholder': 'Ваше имя или название компании',
+                'form-contact': 'Контакт для связи *',
+                'form-contact-placeholder': 'Телефон или email для связи',
+                'form-urgency': 'Срочность',
+                'form-select-timeline': 'Выберите сроки',
+                'form-rush': '1-2 дня (срочно +50%)',
+                'form-standard': '3-5 дней (стандарт)',
+                'form-weeks': '1-2 недели',
+                'form-flexible': 'Сроки не важны',
+                'form-submit': 'Отправить заявку',
+                'form-required': '* обязательные поля',
+                
+                // Footer
+                'footer-text': 'Ведущий маркетплейс UGC-контента в Армении',
+                'footer-copyright': '© 2024 ContentBridge Armenia. Все права защищены.'
+            }
+        };
+
+        // Language switching
+        let currentLanguage = 'en';
+
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            
+            // Update language buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.lang === lang) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Update document language
+            document.documentElement.lang = lang;
+            
+            // Update all translatable elements
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                const key = element.dataset.translate;
+                if (translations[lang] && translations[lang][key]) {
+                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        element.placeholder = translations[lang][key];
+                    } else {
+                        element.textContent = translations[lang][key];
+                    }
+                }
+            });
+            
+            // Update form action language
+            const form = document.getElementById('orderForm');
+            const langInput = form.querySelector('input[name="_language"]');
+            if (langInput) {
+                langInput.value = lang;
+            }
+            
+            // Update form subject
+            const subjectInput = form.querySelector('input[name="_subject"]');
+            if (subjectInput) {
+                if (lang === 'ru') {
+                    subjectInput.value = 'Новый заказ UGC-видео ContentBridge Armenia';
+                } else {
+                    subjectInput.value = 'New UGC Video Order - ContentBridge Armenia';
+                }
+            }
+            
+            // Save language preference
+            localStorage.setItem('preferred_language', lang);
+        }
+
+        // Load saved language preference
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedLang = localStorage.getItem('preferred_language');
+            if (savedLang && (savedLang === 'en' || savedLang === 'ru')) {
+                switchLanguage(savedLang);
+            }
+        });
+
+        // Analytics tracking
         document.addEventListener('DOMContentLoaded', function() {
             const orderForm = document.getElementById('orderForm');
             if (orderForm) {
                 orderForm.addEventListener('submit', function() {
-                    // Google Analytics
                     gtag('event', 'generate_lead', {
                         currency: 'USD',
                         value: 100,
-                        lead_source: 'website_form'
+                        lead_source: 'website_form',
+                        language: currentLanguage
                     });
                 });
             }
         });
 
-        // Отслеживание кликов по контактам
+        // Contact tracking
         document.querySelectorAll('a[href^="tel:"], a[href^="https://wa.me"], a[href^="https://t.me"], a[href^="mailto:"]').forEach(link => {
             link.addEventListener('click', function() {
                 let contactType = 'other';
@@ -1151,21 +1673,23 @@
                 
                 gtag('event', 'contact_attempt', {
                     method: contactType,
-                    contact_location: 'main_page'
+                    contact_location: 'main_page',
+                    language: currentLanguage
                 });
             });
         });
 
-        // Отслеживание просмотра креаторов
+        // Creator card tracking
         document.querySelectorAll('.creator-card').forEach(card => {
             card.addEventListener('click', function() {
                 gtag('event', 'view_creator', {
-                    creator_name: this.querySelector('.creator-name').textContent
+                    creator_name: this.querySelector('.creator-name').textContent,
+                    language: currentLanguage
                 });
             });
         });
 
-        // FAQ Toggle
+        // FAQ functionality
         function toggleFaq(element) {
             const faqItem = element.parentElement;
             const isActive = faqItem.classList.contains('active');
@@ -1177,7 +1701,8 @@
             if (!isActive) {
                 faqItem.classList.add('active');
                 gtag('event', 'faq_opened', {
-                    faq_question: element.querySelector('span').textContent
+                    faq_question: element.querySelector('span').textContent,
+                    language: currentLanguage
                 });
             }
         }
@@ -1214,14 +1739,14 @@
             observer.observe(section);
         });
 
-        // Header background on scroll
+        // Header scroll effect
         window.addEventListener('scroll', () => {
             const header = document.querySelector('header');
             if (window.scrollY > 100) {
-                header.style.background = 'rgba(255, 255, 255, 0.98)';
-                header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+                header.style.background = 'rgba(10, 10, 10, 0.95)';
+                header.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.3)';
             } else {
-                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.background = 'rgba(10, 10, 10, 0.8)';
                 header.style.boxShadow = 'none';
             }
         });
