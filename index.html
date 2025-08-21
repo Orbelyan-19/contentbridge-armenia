@@ -4,132 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ContentBridge Armenia - UGC Маркетплейс</title>
+    
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-5BJ9JRVE9C"></script>
-<script>
-// Отслеживание заявок
-document.addEventListener('DOMContentLoaded', function() {
-    const orderForm = document.getElementById('orderForm');
-    if (orderForm) {
-        orderForm.addEventListener('submit', function() {
-            // Google Analytics
-            gtag('event', 'generate_lead', {
-                currency: 'USD',
-                value: 100,
-                lead_source: 'website_form'
-            });
-            
-            // Yandex Metrica
-            if (typeof ym !== 'undefined') {
-                ym(XXXXXX, 'reachGoal', 'order_submitted');
-            }
-        });
-    }
-});
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5BJ9JRVE9C"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-5BJ9JRVE9C');
+    </script>
 
-// Отслеживание кликов по контактам
-document.querySelectorAll('a[href^="tel:"], a[href^="https://wa.me"], a[href^="https://t.me"], a[href^="mailto:"]').forEach(link => {
-    link.addEventListener('click', function() {
-        let contactType = 'other';
-        if (this.href.includes('wa.me')) contactType = 'whatsapp';
-        else if (this.href.includes('t.me')) contactType = 'telegram';
-        else if (this.href.includes('tel:')) contactType = 'phone';
-        else if (this.href.includes('mailto:')) contactType = 'email';
-        
-        gtag('event', 'contact_attempt', {
-            method: contactType,
-            contact_location: 'main_page'
-        });
-    });
-});
-
-// Отслеживание просмотра креаторов
-document.querySelectorAll('.creator-card').forEach(card => {
-    card.addEventListener('click', function() {
-        gtag('event', 'view_creator', {
-            creator_name: this.querySelector('.creator-name').textContent
-        });
-    });
-});
-
-// Отслеживание скролла
-let scrolled25 = false, scrolled50 = false, scrolled75 = false;
-window.addEventListener('scroll', function() {
-    const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-    
-    if (scrollPercent > 25 && !scrolled25) {
-        scrolled25 = true;
-        gtag('event', 'scroll', { percent_scrolled: 25 });
-    }
-    if (scrollPercent > 50 && !scrolled50) {
-        scrolled50 = true;
-        gtag('event', 'scroll', { percent_scrolled: 50 });
-    }
-    if (scrollPercent > 75 && !scrolled75) {
-        scrolled75 = true;
-        gtag('event', 'scroll', { percent_scrolled: 75 });
-    }
-});
-
-// FAQ Toggle (оставляем как есть)
-function toggleFaq(element) {
-    const faqItem = element.parentElement;
-    const isActive = faqItem.classList.contains('active');
-    
-    document.querySelectorAll('.faq-item').forEach(item => {
-        item.classList.remove('active');
-    });
-    
-    if (!isActive) {
-        faqItem.classList.add('active');
-        gtag('event', 'faq_opened', {
-            faq_question: element.querySelector('span').textContent
-        });
-    }
-}
-
-// Остальные функции (smooth scrolling, animations, header) остаются без изменений
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
-});
-
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('animate-in');
-        }
-    });
-}, observerOptions);
-
-document.querySelectorAll('section').forEach(section => {
-    observer.observe(section);
-});
-
-window.addEventListener('scroll', () => {
-    const header = document.querySelector('header');
-    if (window.scrollY > 100) {
-        header.style.background = 'rgba(255, 255, 255, 0.98)';
-        header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
-    } else {
-        header.style.background = 'rgba(255, 255, 255, 0.95)';
-        header.style.boxShadow = 'none';
-    }
-});
-</script>
     <style>
         * {
             margin: 0;
@@ -1155,112 +1039,68 @@ window.addEventListener('scroll', () => {
                 </div>
                 
                 <div class="contact-form">
-                    <h4 style="margin-bottom: 1.5rem; font-size: 1.25rem;">Быстрый заказ</h4>
-                  
-                    <form id="orderForm">
-                       <form action="https://formspree.io/f/mgvzgvag" method="POST" id="orderForm">
-    <input type="hidden" name="_subject" value="Новый заказ UGC-видео ContentBridge Armenia">
-    <input type="hidden" name="_next" value="https://https://contentbridge-armenia.vercel.app/thanks.html">
-    <input type="hidden" name="_language" value="ru">
-    
-    <h4 style="margin-bottom: 1.5rem; font-size: 1.25rem;">Быстрый заказ</h4>
-    
-    <div class="form-group">
-        <label>Тип видео *</label>
-        <select name="video_type" required>
-            <option value="">Выберите тип</option>
-            <option value="Распаковка товара">Распаковка товара</option>
-            <option value="Обзор продукта">Обзор продукта</option>
-            <option value="Обзор ресторана">Обзор ресторана/кафе</option>
-            <option value="Бьюти-контент">Бьюти-контент</option>
-            <option value="Лайфстайл">Лайфстайл</option>
-            <option value="Другое">Другое</option>
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label>Бюджет *</label>
-        <select name="budget" required>
-            <option value="">Выберите бюджет</option>
-            <option value="$30-70 (Простое видео)">$30-70 (Простое видео)</option>
-            <option value="$70-150 (Стандарт)">$70-150 (Стандарт)</option>
-            <option value="$150-300 (Премиум)">$150-300 (Премиум)</option>
-            <option value="$300+ (Эксклюзив)">$300+ (Эксклюзив)</option>
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label>Описание проекта *</label>
-        <textarea name="project_description" placeholder="Расскажите подробнее о вашем проекте: что нужно снять, какой стиль, особые требования..." rows="4" required></textarea>
-    </div>
-    
-    <div class="form-group">
-        <label>Ваше имя *</label>
-        <input type="text" name="client_name" placeholder="Ваше имя или название компании" required>
-    </div>
-    
-    <div class="form-group">
-        <label>Контакт для связи *</label>
-        <input type="text" name="contact_info" placeholder="Телефон или email для связи" required>
-    </div>
-    
-    <div class="form-group">
-        <label>Срочность</label>
-        <select name="urgency">
-            <option value="">Выберите сроки</option>
-            <option value="1-2 дня (срочно +50%)">1-2 дня (срочно +50%)</option>
-            <option value="3-5 дней (стандарт)">3-5 дней (стандарт)</option>
-            <option value="1-2 недели">1-2 недели</option>
-            <option value="Не важно">Сроки не важны</option>
-        </select>
-    </div>
-    
-    <button type="submit" class="submit-btn">Отправить заявку</button>
-    
-    <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 1rem;">
-        * обязательные поля
-    </p>
-</form>
+                    <form action="https://formspree.io/f/mgvzgvag" method="POST" id="orderForm">
+                        <input type="hidden" name="_subject" value="Новый заказ UGC-видео ContentBridge Armenia">
+                        <input type="hidden" name="_next" value="https://contentbridge-armenia.vercel.app/thanks.html">
+                        <input type="hidden" name="_language" value="ru">
+                        
+                        <h4 style="margin-bottom: 1.5rem; font-size: 1.25rem;">Быстрый заказ</h4>
+                        
                         <div class="form-group">
-                            <label>Тип видео</label>
-                            <select required>
+                            <label>Тип видео *</label>
+                            <select name="video_type" required>
                                 <option value="">Выберите тип</option>
-                                <option value="unboxing">Распаковка товара</option>
-                                <option value="review">Обзор продукта</option>
-                                <option value="restaurant">Обзор ресторана</option>
-                                <option value="beauty">Бьюти-контент</option>
-                                <option value="lifestyle">Лайфстайл</option>
-                                <option value="other">Другое</option>
+                                <option value="Распаковка товара">Распаковка товара</option>
+                                <option value="Обзор продукта">Обзор продукта</option>
+                                <option value="Обзор ресторана">Обзор ресторана/кафе</option>
+                                <option value="Бьюти-контент">Бьюти-контент</option>
+                                <option value="Лайфстайл">Лайфстайл</option>
+                                <option value="Другое">Другое</option>
                             </select>
                         </div>
                         
                         <div class="form-group">
-                            <label>Бюджет</label>
-                            <select required>
+                            <label>Бюджет *</label>
+                            <select name="budget" required>
                                 <option value="">Выберите бюджет</option>
-                                <option value="30-70">$30-70 (Простое видео)</option>
-                                <option value="70-150">$70-150 (Стандарт)</option>
-                                <option value="150-300">$150-300 (Премиум)</option>
-                                <option value="300+">$300+ (Эксклюзив)</option>
+                                <option value="$30-70 (Простое видео)">$30-70 (Простое видео)</option>
+                                <option value="$70-150 (Стандарт)">$70-150 (Стандарт)</option>
+                                <option value="$150-300 (Премиум)">$150-300 (Премиум)</option>
+                                <option value="$300+ (Эксклюзив)">$300+ (Эксклюзив)</option>
                             </select>
                         </div>
                         
                         <div class="form-group">
-                            <label>Описание проекта</label>
-                            <textarea placeholder="Расскажите подробнее о вашем проекте..." rows="4" required></textarea>
+                            <label>Описание проекта *</label>
+                            <textarea name="project_description" placeholder="Расскажите подробнее о вашем проекте: что нужно снять, какой стиль, особые требования..." rows="4" required></textarea>
                         </div>
                         
                         <div class="form-group">
-                            <label>Ваше имя</label>
-                            <input type="text" placeholder="Ваше имя" required>
+                            <label>Ваше имя *</label>
+                            <input type="text" name="client_name" placeholder="Ваше имя или название компании" required>
                         </div>
                         
                         <div class="form-group">
-                            <label>Контакт для связи</label>
-                            <input type="text" placeholder="Телефон или email" required>
+                            <label>Контакт для связи *</label>
+                            <input type="text" name="contact_info" placeholder="Телефон или email для связи" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Срочность</label>
+                            <select name="urgency">
+                                <option value="">Выберите сроки</option>
+                                <option value="1-2 дня (срочно +50%)">1-2 дня (срочно +50%)</option>
+                                <option value="3-5 дней (стандарт)">3-5 дней (стандарт)</option>
+                                <option value="1-2 недели">1-2 недели</option>
+                                <option value="Не важно">Сроки не важны</option>
+                            </select>
                         </div>
                         
                         <button type="submit" class="submit-btn">Отправить заявку</button>
+                        
+                        <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 1rem;">
+                            * обязательные поля
+                        </p>
                     </form>
                 </div>
             </div>
@@ -1285,19 +1125,60 @@ window.addEventListener('scroll', () => {
     </footer>
 
     <script>
+        // Отслеживание заявок
+        document.addEventListener('DOMContentLoaded', function() {
+            const orderForm = document.getElementById('orderForm');
+            if (orderForm) {
+                orderForm.addEventListener('submit', function() {
+                    // Google Analytics
+                    gtag('event', 'generate_lead', {
+                        currency: 'USD',
+                        value: 100,
+                        lead_source: 'website_form'
+                    });
+                });
+            }
+        });
+
+        // Отслеживание кликов по контактам
+        document.querySelectorAll('a[href^="tel:"], a[href^="https://wa.me"], a[href^="https://t.me"], a[href^="mailto:"]').forEach(link => {
+            link.addEventListener('click', function() {
+                let contactType = 'other';
+                if (this.href.includes('wa.me')) contactType = 'whatsapp';
+                else if (this.href.includes('t.me')) contactType = 'telegram';
+                else if (this.href.includes('tel:')) contactType = 'phone';
+                else if (this.href.includes('mailto:')) contactType = 'email';
+                
+                gtag('event', 'contact_attempt', {
+                    method: contactType,
+                    contact_location: 'main_page'
+                });
+            });
+        });
+
+        // Отслеживание просмотра креаторов
+        document.querySelectorAll('.creator-card').forEach(card => {
+            card.addEventListener('click', function() {
+                gtag('event', 'view_creator', {
+                    creator_name: this.querySelector('.creator-name').textContent
+                });
+            });
+        });
+
         // FAQ Toggle
         function toggleFaq(element) {
             const faqItem = element.parentElement;
             const isActive = faqItem.classList.contains('active');
             
-            // Close all FAQ items
             document.querySelectorAll('.faq-item').forEach(item => {
                 item.classList.remove('active');
             });
             
-            // Open clicked item if it wasn't active
             if (!isActive) {
                 faqItem.classList.add('active');
+                gtag('event', 'faq_opened', {
+                    faq_question: element.querySelector('span').textContent
+                });
             }
         }
 
@@ -1329,7 +1210,6 @@ window.addEventListener('scroll', () => {
             });
         }, observerOptions);
 
-        // Observe all sections
         document.querySelectorAll('section').forEach(section => {
             observer.observe(section);
         });
