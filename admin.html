@@ -679,8 +679,10 @@
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="logo">
-                <h1>ContentBridge</h1>
-                <p>Admin Panel</p>
+                <a href="/" style="text-decoration: none; color: inherit;">
+                    <h1>ContentBridge</h1>
+                    <p>Admin Panel</p>
+                </a>
             </div>
             
             <nav>
@@ -735,7 +737,12 @@
         <main class="main-content" id="mainContent">
             <!-- Header -->
             <header class="header">
-                <h1 class="page-title" id="pageTitle">Dashboard</h1>
+                <div style="display: flex; align-items: center; gap: 2rem;">
+                    <h1 class="page-title" id="pageTitle">Dashboard</h1>
+                    <a href="/" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.5rem 1rem;">
+                        ← Back to Site
+                    </a>
+                </div>
                 <div class="user-info">
                     <span>Admin</span>
                     <div class="user-avatar">A</div>
