@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ContentBridge Admin Panel</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-bg: #0a0a0a;
+            --secondary-bg: #111111;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --accent-primary: #8b5cf6;
+            --accent-secondary: #06b6d4;
+            --accent-tertiary: #10b981;
+            --accent-warning: #f59e0b;
+            --accent-danger: #ef4444;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --success-color: #22c55e;
+            --gradient-primary: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 50%, #10b981 100%);
+            --shadow-glow: 0 0 50px rgba(139, 92, 246, 0.3);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* Background Pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.05) 0%, transparent 50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Layout */
+        .admin-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: var(--secondary-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 0;
+            position: fixed;
+            height: 100vh;
+            width: 280px;
+            overflow-y: auto;
+        }
+
+        .logo {
+            padding: 0 2rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0 1rem;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            transform: translateX(5px);
+        }
+
+        .nav-link.active {
+            border-left: 3px solid var(--accent-primary);
+        }
+
+        .nav-icon {
+            margin-right: 0.75rem;
+            font-size: 1.2rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.2);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-title {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .stat-icon {
+            font-size: 1.5rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-change {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .stat-change.positive {
+            color: var(--success-color);
+        }
+
+        .stat-change.negative {
+            color: var(--accent-danger);
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table th {
+            background: rgba(255, 255, 255, 0.05);
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .data-table tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--accent-warning);
+        }
+
+        .status-active {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--success-color);
+        }
+
+        .status-completed {
+            background: rgba(6, 182, 212, 0.2);
+            color: var(--accent-secondary);
+        }
+
+        .status-cancelled {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--accent-danger);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-danger {
+            background: var(--accent-danger);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .filter-select,
+        .filter-input {
+            padding: 0.7rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            backdrop-filter: blur(10px);
+        }
+
+        .filter-select:focus,
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        }
+
+        /* Charts */
+        .chart-container {
+            height: 300px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: var(--glass-bg);
+            color: var(--text-primary);
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        }
+
+        /* Tabs */
+        .tab-navigation {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .tab-btn {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            color: var(--text-primary);
+            border-bottom-color: var(--accent-primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .admin-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: fixed;
+                left: -280px;
+                transition: left 0.3s ease;
+                z-index: 1000;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--secondary-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-primary);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Action buttons */
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .action-view {
+            background: rgba(6, 182, 212, 0.2);
+            color: var(--accent-secondary);
+        }
+
+        .action-edit {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--accent-warning);
+        }
+
+        .action-delete {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--accent-danger);
+        }
+
+        /* Revenue chart styles */
+        .revenue-chart {
+            background: var(--glass-bg);
+            border-radius: 12px;
+            padding: 1rem;
+            height: 200px;
+            display: flex;
+            align-items: end;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .chart-bar {
+            background: var(--gradient-primary);
+            border-radius: 4px 4px 0 0;
+            min-width: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .chart-bar:hover {
+            opacity: 0.8;
+            transform: scaleY(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h1>ContentBridge</h1>
+                <p>Admin Panel</p>
+            </div>
+            
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" onclick="showTab('dashboard')">
+                            <span class="nav-icon">📊</span>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showTab('orders')">
+                            <span class="nav-icon">📋</span>
+                            Orders
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showTab('creators')">
+                            <span class="nav-icon">👥</span>
+                            Creators
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showTab('clients')">
+                            <span class="nav-icon">🏢</span>
+                            Clients
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showTab('analytics')">
+                            <span class="nav-icon">📈</span>
+                            Analytics
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showTab('finances')">
+                            <span class="nav-icon">💰</span>
+                            Finances
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showTab('moderation')">
+                            <span class="nav-icon">🛡️</span>
+                            Moderation
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showTab('settings')">
+                            <span class="nav-icon">⚙️</span>
+                            Settings
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <h1 class="page-title" id="pageTitle">Dashboard</h1>
+                <div class="user-info">
+                    <span>Admin</span>
+                    <div class="user-avatar">A</div>
+                </div>
+            </header>
+
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content active">
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">TOTAL ORDERS</span>
+                            <span class="stat-icon">📋</span>
+                        </div>
+                        <div class="stat-value">2,347</div>
+                        <div class="stat-change positive">+12.5% from last month</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">ACTIVE CREATORS</span>
+                            <span class="stat-icon">👥</span>
+                        </div>
+                        <div class="stat-value">524</div>
+                        <div class="stat-change positive">+8.3% from last month</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">MONTHLY REVENUE</span>
+                            <span class="stat-icon">💰</span>
+                        </div>
+                        <div class="stat-value">$47,892</div>
+                        <div class="stat-change positive">+24.1% from last month</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">COMPLETION RATE</span>
+                            <span class="stat-icon">✅</span>
+                        </div>
+                        <div class="stat-value">96.8%</div>
+                        <div class="stat-change positive">+2.1% from last month</div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Recent Orders</h2>
+                        <button class="btn btn-primary" onclick="showTab('orders')">View All</button>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Client</th>
+                                    <th>Creator</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#CB2024001</td>
+                                    <td>TechCorp Armenia</td>
+                                    <td>Anna Karapetyan</td>
+                                    <td>Product Review</td>
+                                    <td><span class="status-badge status-active">In Progress</span></td>
+                                    <td>$120</td>
+                                    <td>Today</td>
+                                </tr>
+                                <tr>
+                                    <td>#CB2024002</td>
+                                    <td>BeautyShop</td>
+                                    <td>Mger Avagyan</td>
+                                    <td>Unboxing</td>
+                                    <td><span class="status-badge status-pending">Pending</span></td>
+                                    <td>$85</td>
+                                    <td>Yesterday</td>
+                                </tr>
+                                <tr>
+                                    <td>#CB2024003</td>
+                                    <td>FoodiePlace</td>
+                                    <td>Sophie Mkrtchyan</td>
+                                    <td>Restaurant Review</td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                    <td>$95</td>
+                                    <td>2 days ago</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Revenue Chart -->
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Revenue Overview</h2>
+                    </div>
+                    <div class="revenue-chart">
+                        <div class="chart-bar" style="height: 60%;" title="Jan: $32,400"></div>
+                        <div class="chart-bar" style="height: 75%;" title="Feb: $38,200"></div>
+                        <div class="chart-bar" style="height: 45%;" title="Mar: $28,900"></div>
+                        <div class="chart-bar" style="height: 90%;" title="Apr: $45,600"></div>
+                        <div class="chart-bar" style="height: 85%;" title="May: $42,100"></div>
+                        <div class="chart-bar" style="height: 100%;" title="Jun: $47,892"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Tab -->
+            <div id="orders" class="tab-content">
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Order Management</h2>
+                        <button class="btn btn-primary" onclick="openModal('orderModal')">+ New Order</button>
+                    </div>
+
+                    <!-- Filters -->
+                    <div class="filters">
+                        <div class="filter-group">
+                            <label class="filter-label">Status</label>
+                            <select class="filter-select">
+                                <option>All Status</option>
+                                <option>Pending</option>
+                                <option>In Progress</option>
+                                <option>Completed</option>
+                                <option>Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">Creator</label>
+                            <select class="filter-select">
+                                <option>All Creators</option>
+                                <option>Anna Karapetyan</option>
+                                <option>Mger Avagyan</option>
+                                <option>Sophie Mkrtchyan</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">Date Range</label>
+                            <input type="date" class="filter-input">
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">Search</label>
+                            <input type="text" class="filter-input" placeholder="Order ID, Client...">
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Client</th>
+                                    <th>Creator</th>
+                                    <th>Type</th>
+                                    <th>Budget</th>
+                                    <th>Status</th>
+                                    <th>Deadline</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#CB2024001</td>
+                                    <td>TechCorp Armenia</td>
+                                    <td>Anna Karapetyan</td>
+                                    <td>Product Review</td>
+                                    <td>$120</td>
+                                    <td><span class="status-badge status-active">In Progress</span></td>
+                                    <td>Dec 25, 2024</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-btn action-view" title="View">👁️</button>
+                                            <button class="action-btn action-edit" title="Edit">✏️</button>
+                                            <button class="action-btn action-delete" title="Delete">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#CB2024002</td>
+                                    <td>BeautyShop</td>
+                                    <td>Mger Avagyan</td>
+                                    <td>Unboxing</td>
+                                    <td>$85</td>
+                                    <td><span class="status-badge status-pending">Pending</span></td>
+                                    <td>Dec 28, 2024</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-btn action-view" title="View">👁️</button>
+                                            <button class="action-btn action-edit" title="Edit">✏️</button>
+                                            <button class="action-btn action-delete" title="Delete">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#CB2024003</td>
+                                    <td>FoodiePlace</td>
+                                    <td>Sophie Mkrtchyan</td>
+                                    <td>Restaurant Review</td>
+                                    <td>$95</td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                    <td>Dec 20, 2024</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-btn action-view" title="View">👁️</button>
+                                            <button class="action-btn action-edit" title="Edit">✏️</button>
+                                            <button class="action-btn action-delete" title="Delete">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Creators Tab -->
+            <div id="creators" class="tab-content">
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Creator Management</h2>
+                        <button class="btn btn-primary" onclick="openModal('creatorModal')">+ Add Creator</button>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Creator</th>
+                                    <th>Specialization</th>
+                                    <th>Followers</th>
+                                    <th>Rating</th>
+                                    <th>Completed Orders</th>
+                                    <th>Revenue</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 1rem;">
+                                            <div style="width: 40px; height: 40px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700;">AK</div>
+                                            <div>
+                                                <div style="font-weight: 600;">Anna Karapetyan</div>
+                                                <div style="font-size: 0.8rem; color: var(--text-muted);">@anna_beauty</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Beauty • Lifestyle</td>
+                                    <td>12.5K</td>
+                                    <td>4.9 ⭐</td>
+                                    <td>89</td>
+                                    <td>$7,120</td>
+                                    <td><span class="status-badge status-active">Active</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-btn action-view" title="View">👁️</button>
+                                            <button class="action-btn action-edit" title="Edit">✏️</button>
+                                            <button class="action-btn action-delete" title="Delete">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 1rem;">
+                                            <div style="width: 40px; height: 40px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700;">MA</div>
+                                            <div>
+                                                <div style="font-weight: 600;">Mger Avagyan</div>
+                                                <div style="font-size: 0.8rem; color: var(--text-muted);">@mger_tech</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Tech • Gadgets</td>
+                                    <td>8.2K</td>
+                                    <td>5.0 ⭐</td>
+                                    <td>127</td>
+                                    <td>$15,240</td>
+                                    <td><span class="status-badge status-active">Active</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-btn action-view" title="View">👁️</button>
+                                            <button class="action-btn action-edit" title="Edit">✏️</button>
+                                            <button class="action-btn action-delete" title="Delete">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clients Tab -->
+            <div id="clients" class="tab-content">
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Client Management</h2>
+                        <button class="btn btn-primary">+ Add Client</button>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Client</th>
+                                    <th>Contact</th>
+                                    <th>Orders</th>
+                                    <th>Total Spent</th>
+                                    <th>Last Order</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>TechCorp Armenia</td>
+                                    <td>contact@techcorp.am</td>
+                                    <td>15</td>
+                                    <td>$1,800</td>
+                                    <td>Dec 22, 2024</td>
+                                    <td><span class="status-badge status-active">Active</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-btn action-view" title="View">👁️</button>
+                                            <button class="action-btn action-edit" title="Edit">✏️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>BeautyShop</td>
+                                    <td>info@beautyshop.am</td>
+                                    <td>8</td>
+                                    <td>$680</td>
+                                    <td>Dec 20, 2024</td>
+                                    <td><span class="status-badge status-active">Active</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-btn action-view" title="View">👁️</button>
+                                            <button class="action-btn action-edit" title="Edit">✏️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Tab -->
+            <div id="analytics" class="tab-content">
+                <div class="content-section">
+                    <h2 class="section-title">Analytics & Reports</h2>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <span class="stat-title">CONVERSION RATE</span>
+                                <span class="stat-icon">📊</span>
+                            </div>
+                            <div class="stat-value">3.4%</div>
+                            <div class="stat-change positive">+0.8% from last month</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <span class="stat-title">AVG ORDER VALUE</span>
+                                <span class="stat-icon">💵</span>
+                            </div>
+                            <div class="stat-value">$104</div>
+                            <div class="stat-change positive">+$12 from last month</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <span class="stat-title">CLIENT RETENTION</span>
+                                <span class="stat-icon">🔄</span>
+                            </div>
+                            <div class="stat-value">68%</div>
+                            <div class="stat-change positive">+5% from last month</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <span class="stat-title">CREATOR SATISFACTION</span>
+                                <span class="stat-icon">😊</span>
+                            </div>
+                            <div class="stat-value">4.7</div>
+                            <div class="stat-change positive">+0.2 from last month</div>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <div style="text-align: center; color: var(--text-muted);">
+                            📈 Advanced Analytics Dashboard<br>
+                            <small>Revenue trends, user behavior, and performance metrics</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Finances Tab -->
+            <div id="finances" class="tab-content">
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Financial Management</h2>
+                        <button class="btn btn-primary">Process Payouts</button>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <span class="stat-title">PENDING PAYOUTS</span>
+                                <span class="stat-icon">⏳</span>
+                            </div>
+                            <div class="stat-value">$12,450</div>
+                            <div class="stat-change">24 creators</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <span class="stat-title">PLATFORM FEE (25%)</span>
+                                <span class="stat-icon">💰</span>
+                            </div>
+                            <div class="stat-value">$11,973</div>
+                            <div class="stat-change positive">This month</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <span class="stat-title">ESCROW BALANCE</span>
+                                <span class="stat-icon">🔒</span>
+                            </div>
+                            <div class="stat-value">$8,320</div>
+                            <div class="stat-change">15 active orders</div>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Creator</th>
+                                    <th>Completed Orders</th>
+                                    <th>Gross Revenue</th>
+                                    <th>Platform Fee (25%)</th>
+                                    <th>Net Payout</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Anna Karapetyan</td>
+                                    <td>12</td>
+                                    <td>$1,440</td>
+                                    <td>$360</td>
+                                    <td>$1,080</td>
+                                    <td><span class="status-badge status-pending">Pending</span></td>
+                                    <td>
+                                        <button class="btn btn-success">Pay Out</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Mger Avagyan</td>
+                                    <td>8</td>
+                                    <td>$960</td>
+                                    <td>$240</td>
+                                    <td>$720</td>
+                                    <td><span class="status-badge status-completed">Paid</span></td>
+                                    <td>
+                                        <button class="btn btn-secondary">View</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Moderation Tab -->
+            <div id="moderation" class="tab-content">
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Content Moderation</h2>
+                        <button class="btn btn-primary">Review Queue</button>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Content</th>
+                                    <th>Creator</th>
+                                    <th>Order ID</th>
+                                    <th>Type</th>
+                                    <th>Submitted</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 1rem;">
+                                            <div style="width: 60px; height: 40px; background: var(--glass-bg); border-radius: 8px; display: flex; align-items: center; justify-content: center;">📹</div>
+                                            <span>iPhone Review Video</span>
+                                        </div>
+                                    </td>
+                                    <td>Anna Karapetyan</td>
+                                    <td>#CB2024001</td>
+                                    <td>Product Review</td>
+                                    <td>2 hours ago</td>
+                                    <td><span class="status-badge status-pending">Pending Review</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn btn-success">Approve</button>
+                                            <button class="btn btn-danger">Reject</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings" class="tab-content">
+                <div class="content-section">
+                    <h2 class="section-title">Platform Settings</h2>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Platform Commission (%)</label>
+                        <input type="number" class="form-input" value="25" style="max-width: 200px;">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Minimum Order Value ($)</label>
+                        <input type="number" class="form-input" value="30" style="max-width: 200px;">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Rush Order Surcharge (%)</label>
+                        <input type="number" class="form-input" value="50" style="max-width: 200px;">
+                    </div>
+
+                    <button class="btn btn-primary">Save Settings</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Create New Order</h3>
+                <button class="close-btn" onclick="closeModal('orderModal')">&times;</button>
+            </div>
+            
+            <form>
+                <div class="form-group">
+                    <label class="form-label">Client</label>
+                    <select class="form-select">
+                        <option>Select Client</option>
+                        <option>TechCorp Armenia</option>
+                        <option>BeautyShop</option>
+                        <option>FoodiePlace</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Creator</label>
+                    <select class="form-select">
+                        <option>Select Creator</option>
+                        <option>Anna Karapetyan</option>
+                        <option>Mger Avagyan</option>
+                        <option>Sophie Mkrtchyan</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Video Type</label>
+                    <select class="form-select">
+                        <option>Product Review</option>
+                        <option>Unboxing</option>
+                        <option>Restaurant Review</option>
+                        <option>Beauty Content</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Budget ($)</label>
+                    <input type="number" class="form-input" placeholder="120">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-textarea" rows="4" placeholder="Project details..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Deadline</label>
+                    <input type="date" class="form-input">
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary">Create Order</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('orderModal')">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked nav link
+            event.target.classList.add('active');
+            
+            // Update page title
+            const titles = {
+                'dashboard': 'Dashboard',
+                'orders': 'Order Management',
+                'creators': 'Creator Management',
+                'clients': 'Client Management',
+                'analytics': 'Analytics & Reports',
+                'finances': 'Financial Management',
+                'moderation': 'Content Moderation',
+                'settings': 'Platform Settings'
+            };
+            
+            document.getElementById('pageTitle').textContent = titles[tabName] || 'Dashboard';
+        }
+
+        // Modal functions
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('active');
+            }
+        });
+
+        // Sample data for testing
+        const sampleData = {
+            orders: [
+                { id: 'CB2024001', client: 'TechCorp Armenia', creator: 'Anna Karapetyan', type: 'Product Review', status: 'active', amount: 120 },
+                { id: 'CB2024002', client: 'BeautyShop', creator: 'Mger Avagyan', type: 'Unboxing', status: 'pending', amount: 85 },
+                { id: 'CB2024003', client: 'FoodiePlace', creator: 'Sophie Mkrtchyan', type: 'Restaurant Review', status: 'completed', amount: 95 }
+            ],
+            creators: [
+                { name: 'Anna Karapetyan', specialty: 'Beauty • Lifestyle', followers: '12.5K', rating: 4.9, orders: 89, revenue: 7120 },
+                { name: 'Mger Avagyan', specialty: 'Tech • Gadgets', followers: '8.2K', rating: 5.0, orders: 127, revenue: 15240 }
+            ]
+        };
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add fade-in animation to stat cards
+            document.querySelectorAll('.stat-card').forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('animate-in');
+                }, index * 100);
+            });
+
+            // Add hover effects to chart bars
+            document.querySelectorAll('.chart-bar').forEach(bar => {
+                bar.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scaleY(1.05)';
+                });
+                
+                bar.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scaleY(1)';
+                });
+            });
+        });
+
+        // Real-time updates simulation
+        function updateStats() {
+            // Simulate real-time stat updates
+            const statValues = document.querySelectorAll('.stat-value');
+            statValues.forEach(stat => {
+                if (Math.random() > 0.9) { // 10% chance to update
+                    stat.style.transform = 'scale(1.05)';
+                    setTimeout(() => {
+                        stat.style.transform = 'scale(1)';
+                    }, 200);
+                }
+            });
+        }
+
+        // Update stats every 30 seconds
+        setInterval(updateStats, 30000);
+
+        // Search functionality
+        function filterTable(tableId, searchTerm) {
+            const table = document.getElementById(tableId);
+            const rows = table.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm.toLowerCase()) ? '' : 'none';
+            });
+        }
+
+        // Export functionality
+        function exportData(format) {
+            console.log(`Exporting data in ${format} format...`);
+            // Implement export logic here
+        }
+
+        // Notification system
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 2rem;
+                background: ${type === 'success' ? 'var(--success-color)' : 'var(--accent-danger)'};
+                color: white;
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                z-index: 10000;
+                animation: slideIn 0.3s ease-out;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Form submissions
+        document.addEventListener('submit', function(e) {
+            e.preventDefault();
+            showNotification('Changes saved successfully!');
+            closeModal('orderModal');
+        });
+    </script>
+</body>
+</html>
