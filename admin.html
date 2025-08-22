@@ -1525,5 +1525,46 @@ document.addEventListener('DOMContentLoaded', function() {
             closeModal('orderModal');
         });
     </script>
+    <!-- Добавляем в admin.html перед закрывающим </body> -->
+<script>
+// Получение заказов из Formspree
+async function loadOrders() {
+    try {
+        // Здесь будет API для получения заказов
+        const response = await fetch('https://formspree.io/api/forms/mgvzgvag/submissions', {
+            headers: {
+                'Authorization': 'Bearer YOUR_FORMSPREE_TOKEN'
+            }
+        });
+        const data = await response.json();
+        updateOrdersTable(data);
+    } catch (error) {
+        console.log('Using demo data');
+        // Пока используем демо-данные
+    }
+}
+
+function updateOrdersTable(orders) {
+    // Обновляем таблицу заказов реальными данными
+    const tbody = document.querySelector('#orders .data-table tbody');
+    tbody.innerHTML = orders.map(order => `
+        <tr>
+            <td>#CB${order.id}</td>
+            <td>${order.client_name}</td>
+            <td>Pending Assignment</td>
+            <td>${order.video_type}</td>
+            <td>${order.budget}</td>
+            <td><span class="status-badge status-pending">New</span></td>
+            <td>${new Date().toLocaleDateString()}</td>
+            <td>
+                <div class="action-buttons">
+                    <button class="action-btn action-view" onclick="viewOrder('${order.id}')">👁️</button>
+                    <button class="action-btn action-edit" onclick="assignCreator('${order.id}')">✏️</button>
+                </div>
+            </td>
+        </tr>
+    `).join('');
+}
+</script>
 </body>
 </html>
