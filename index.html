@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ContentBridge Armenia - UGC Marketplace</title>
+    <title data-translate="hero-title">Content Bridge Armenia</title>
+    
+    <!-- Language and Translation Scripts -->
+    <script src="js/translations.js"></script>
+    <script src="js/language-switcher.js"></script>
     
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-5BJ9JRVE9C"></script>
@@ -918,11 +922,7 @@
     </style>
 </head>
 <body>
-    <!-- Language Switcher -->
-    <div class="language-switcher">
-        <button class="lang-btn active" onclick="switchLanguage('en')" data-lang="en">EN</button>
-        <button class="lang-btn" onclick="switchLanguage('ru')" data-lang="ru">RU</button>
-    </div>
+
 
     <!-- Header -->
     <header>
@@ -943,20 +943,20 @@
         <div class="hero-content">
             <div class="hero-text">
                 <h1>
-                    <span class="gradient-text" data-translate="hero-title">UGC Videos</span><br>
-                    <span data-translate="hero-subtitle">from Top Armenian Creators</span>
+                    <span class="gradient-text" data-translate="hero-title">Content Bridge Armenia</span><br>
+                    <span data-translate="hero-subtitle">Платформа для заказа видео-контента у креаторов</span>
                 </h1>
-                <p data-translate="hero-description">Order authentic video reviews, unboxings and product presentations from verified content creators. Safe, fast, effective.</p>
-                                    <div class="hero-buttons">
-                        <a href="/create-order.html" class="btn-primary" data-translate="hero-cta-primary">Order Video</a>
-                        <a href="/creators-catalog.html" class="btn-secondary" data-translate="hero-cta-secondary">View Creators</a>
-                        <a href="/creator-register.html" class="btn-secondary" style="background: rgba(6, 182, 212, 0.1); border-color: var(--accent-secondary); color: var(--accent-secondary);">
-                            👤 Стать креатором
-                        </a>
-                        <a href="/login.html" class="btn-secondary" style="background: rgba(139, 92, 246, 0.1); border-color: var(--accent); color: var(--accent);">
-                            🔐 Войти
-                        </a>
-                    </div>
+                <p data-translate="hero-description">Заказывайте аутентичные видео-обзоры, распаковки и презентации продуктов у проверенных контент-креаторов. Безопасно, быстро, эффективно.</p>
+                <div class="hero-buttons">
+                    <a href="/create-order.html" class="btn-primary" data-translate="hero-cta-primary">Заказать видео</a>
+                    <a href="/creators-catalog.html" class="btn-secondary" data-translate="hero-cta-secondary">Посмотреть креаторов</a>
+                    <a href="/creator-register.html" class="btn-secondary" style="background: rgba(6, 182, 212, 0.1); border-color: var(--accent-secondary); color: var(--accent-secondary);" data-translate="hero-become-creator">
+                        👤 Стать креатором
+                    </a>
+                    <a href="/login.html" class="btn-secondary" style="background: rgba(139, 92, 246, 0.1); border-color: var(--accent); color: var(--accent);" data-translate="hero-login">
+                        🔐 Войти
+                    </a>
+                </div>
             </div>
             <div class="hero-visual">
                 <div class="hero-card">
@@ -974,15 +974,15 @@
         <div class="hero-stats">
             <div class="stat">
                 <span class="stat-number">500+</span>
-                <span class="stat-label" data-translate="stat-creators">Verified Creators</span>
+                <span class="stat-label" data-translate="stats-creators">Креаторов</span>
             </div>
             <div class="stat">
                 <span class="stat-number">2,000+</span>
-                <span class="stat-label" data-translate="stat-orders">Completed Orders</span>
+                <span class="stat-label" data-translate="stats-projects">Проектов</span>
             </div>
             <div class="stat">
                 <span class="stat-number">4.9</span>
-                <span class="stat-label" data-translate="stat-rating">Average Rating</span>
+                <span class="stat-label" data-translate="stats-satisfaction">Довольных клиентов</span>
             </div>
         </div>
     </section>
@@ -990,44 +990,44 @@
     <!-- Benefits Section -->
     <section class="section benefits">
         <div class="container">
-            <h2 class="section-title" data-translate="benefits-title">Why Choose ContentBridge?</h2>
-            <p class="section-subtitle" data-translate="benefits-subtitle">We've created a secure ecosystem for ordering quality UGC content with guaranteed results</p>
+            <h2 class="section-title" data-translate="section-services">Наши услуги</h2>
+            <p class="section-subtitle" data-translate="benefits-subtitle">Мы создали безопасную экосистему для заказа качественного UGC контента с гарантированными результатами</p>
             
             <div class="benefits-grid">
                 <div class="benefit-card">
                     <div class="benefit-icon">🛡️</div>
-                    <h3 class="benefit-title" data-translate="benefit-1-title">Security Guarantee</h3>
-                    <p class="benefit-description" data-translate="benefit-1-desc">All payments go through our platform. Money is transferred to the creator only after you confirm the quality of work.</p>
+                    <h3 class="benefit-title" data-translate="service-video-reviews">Видео-обзоры</h3>
+                    <p class="benefit-description">Профессиональные видео-обзоры продуктов с детальным анализом и рекомендациями от проверенных креаторов.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">📦</div>
+                    <h3 class="benefit-title" data-translate="service-unboxing">Распаковки</h3>
+                    <p class="benefit-description">Захватывающие видео распаковки с эмоциональной реакцией и демонстрацией всех деталей продукта.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">🎬</div>
+                    <h3 class="benefit-title" data-translate="service-presentations">Презентации</h3>
+                    <p class="benefit-description">Креативные презентации продуктов с акцентом на ключевые преимущества и особенности.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">📱</div>
+                    <h3 class="benefit-title" data-translate="service-live-streams">Прямые эфиры</h3>
+                    <p class="benefit-description">Интерактивные прямые эфиры с демонстрацией продукта и ответами на вопросы аудитории.</p>
                 </div>
                 
                 <div class="benefit-card">
                     <div class="benefit-icon">⚡</div>
-                    <h3 class="benefit-title" data-translate="benefit-2-title">Fast Delivery</h3>
-                    <p class="benefit-description" data-translate="benefit-2-desc">Average completion time is 3-5 days. Rush orders available from 24 hours with only 50% surcharge.</p>
-                </div>
-                
-                <div class="benefit-card">
-                    <div class="benefit-icon">⭐</div>
-                    <h3 class="benefit-title" data-translate="benefit-3-title">Verified Creators</h3>
-                    <p class="benefit-description" data-translate="benefit-3-desc">All content creators go through strict moderation. Only the best make it to our catalog.</p>
+                    <h3 class="benefit-title" data-translate="service-shorts">Короткие видео</h3>
+                    <p class="benefit-description">Краткие, но эффективные видео для социальных сетей с максимальным охватом аудитории.</p>
                 </div>
                 
                 <div class="benefit-card">
                     <div class="benefit-icon">🎯</div>
-                    <h3 class="benefit-title" data-translate="benefit-4-title">Perfect Match</h3>
-                    <p class="benefit-description" data-translate="benefit-4-desc">We match creators to your niche and target audience for maximum effectiveness.</p>
-                </div>
-                
-                <div class="benefit-card">
-                    <div class="benefit-icon">💰</div>
-                    <h3 class="benefit-title" data-translate="benefit-5-title">Fair Pricing</h3>
-                    <p class="benefit-description" data-translate="benefit-5-desc">No hidden fees. The price you see is what you get. Starting from $30 for simple videos.</p>
-                </div>
-                
-                <div class="benefit-card">
-                    <div class="benefit-icon">📞</div>
-                    <h3 class="benefit-title" data-translate="benefit-6-title">24/7 Support</h3>
-                    <p class="benefit-description" data-translate="benefit-6-desc">Our team is always ready to help at any stage via WhatsApp, Telegram or email.</p>
+                    <h3 class="benefit-title" data-translate="service-ads">Рекламные ролики</h3>
+                    <p class="benefit-description">Таргетированные рекламные ролики, созданные специально для вашей целевой аудитории.</p>
                 </div>
             </div>
         </div>
@@ -1070,86 +1070,86 @@
     <!-- Creators Section -->
     <section class="section creators" id="creators">
         <div class="container">
-            <h2 class="section-title" data-translate="creators-title">Top Creators</h2>
-            <p class="section-subtitle" data-translate="creators-subtitle">Meet our best content creators</p>
+            <h2 class="section-title" data-translate="section-creators">Популярные креаторы</h2>
+            <p class="section-subtitle" data-translate="creators-subtitle">Познакомьтесь с нашими лучшими контент-креаторами</p>
             
             <div class="creators-grid">
                 <div class="creator-card">
-                    <div class="creator-avatar">AK</div>
-                    <div class="creator-name">Anna Karapetyan</div>
-                    <div class="creator-specialty" data-translate="creator-1-specialty">Beauty • Lifestyle</div>
+                    <div class="creator-avatar">ԱԿ</div>
+                    <div class="creator-name">Անահիտ Կարապետյան</div>
+                    <div class="creator-specialty">Красота • Образ жизни</div>
                     <div class="creator-stats">
                         <span>⭐ 4.9</span>
-                        <span data-translate="followers">📱 12.5K followers</span>
-                        <span data-translate="orders">✅ 89 orders</span>
+                        <span>📱 12.5K подписчиков</span>
+                        <span>✅ 89 заказов</span>
                     </div>
-                    <div class="creator-price" data-translate="creator-1-price">From $80 per video</div>
+                    <div class="creator-price" data-price="80">$80 за видео</div>
                 </div>
                 
                 <div class="creator-card">
-                    <div class="creator-avatar">MA</div>
-                    <div class="creator-name">Mger Avagyan</div>
-                    <div class="creator-specialty" data-translate="creator-2-specialty">Tech Reviews • Gadgets</div>
+                    <div class="creator-avatar">ՄԱ</div>
+                    <div class="creator-name">Մհեր Ավագյան</div>
+                    <div class="creator-specialty">Технологии • Гаджеты</div>
                     <div class="creator-stats">
                         <span>⭐ 5.0</span>
-                        <span data-translate="followers">📱 8.2K followers</span>
-                        <span data-translate="orders">✅ 127 orders</span>
+                        <span>📱 8.2K подписчиков</span>
+                        <span>✅ 127 заказов</span>
                     </div>
-                    <div class="creator-price" data-translate="creator-2-price">From $120 per video</div>
+                    <div class="creator-price" data-price="120">$120 за видео</div>
                 </div>
                 
                 <div class="creator-card">
-                    <div class="creator-avatar">SM</div>
-                    <div class="creator-name">Sophie Mkrtchyan</div>
-                    <div class="creator-specialty" data-translate="creator-3-specialty">Food • Restaurants</div>
+                    <div class="creator-avatar">ՍՄ</div>
+                    <div class="creator-name">Սոֆի Մկրտչյան</div>
+                    <div class="creator-specialty">Еда • Рестораны</div>
                     <div class="creator-stats">
                         <span>⭐ 4.8</span>
-                        <span data-translate="followers">📱 15.1K followers</span>
-                        <span data-translate="orders">✅ 156 orders</span>
+                        <span>📱 15.1K подписчиков</span>
+                        <span>✅ 156 заказов</span>
                     </div>
-                    <div class="creator-price" data-translate="creator-3-price">From $95 per video</div>
+                    <div class="creator-price" data-price="95">$95 за видео</div>
                 </div>
                 
                 <div class="creator-card">
-                    <div class="creator-avatar">AS</div>
-                    <div class="creator-name">Aram Sargsyan</div>
-                    <div class="creator-specialty" data-translate="creator-4-specialty">Sports • Fitness</div>
+                    <div class="creator-avatar">ԱՍ</div>
+                    <div class="creator-name">Արամ Սարգսյան</div>
+                    <div class="creator-specialty">Спорт • Фитнес</div>
                     <div class="creator-stats">
                         <span>⭐ 4.9</span>
-                        <span data-translate="followers">📱 6.8K followers</span>
-                        <span data-translate="orders">✅ 73 orders</span>
+                        <span>📱 6.8K подписчиков</span>
+                        <span>✅ 73 заказа</span>
                     </div>
-                    <div class="creator-price" data-translate="creator-4-price">From $65 per video</div>
+                    <div class="creator-price" data-price="65">$65 за видео</div>
                 </div>
                 
                 <div class="creator-card">
-                    <div class="creator-avatar">LP</div>
-                    <div class="creator-name">Lilit Poghosyan</div>
-                    <div class="creator-specialty" data-translate="creator-5-specialty">Fashion • Style</div>
+                    <div class="creator-avatar">ԼՊ</div>
+                    <div class="creator-name">Լիլիթ Պողոսյան</div>
+                    <div class="creator-specialty">Мода • Стиль</div>
                     <div class="creator-stats">
                         <span>⭐ 4.7</span>
-                        <span data-translate="followers">📱 18.9K followers</span>
-                        <span data-translate="orders">✅ 203 orders</span>
+                        <span>📱 18.9K подписчиков</span>
+                        <span>✅ 203 заказа</span>
                     </div>
-                    <div class="creator-price" data-translate="creator-5-price">From $110 per video</div>
+                    <div class="creator-price" data-price="110">$110 за видео</div>
                 </div>
                 
                 <div class="creator-card">
-                    <div class="creator-avatar">DH</div>
-                    <div class="creator-name">David Khachatryan</div>
-                    <div class="creator-specialty" data-translate="creator-6-specialty">Auto • Travel</div>
+                    <div class="creator-avatar">ԴԽ</div>
+                    <div class="creator-name">Դավիթ Խաչատրյան</div>
+                    <div class="creator-specialty">Авто • Путешествия</div>
                     <div class="creator-stats">
                         <span>⭐ 5.0</span>
-                        <span data-translate="followers">📱 9.7K followers</span>
-                        <span data-translate="orders">✅ 92 orders</span>
+                        <span>📱 9.7K подписчиков</span>
+                        <span>✅ 92 заказа</span>
                     </div>
-                    <div class="creator-price" data-translate="creator-6-price">From $85 per video</div>
+                    <div class="creator-price" data-price="85">$85 за видео</div>
                 </div>
             </div>
             
             <div style="text-align: center; margin-top: 3rem;">
-                <a href="/creators-catalog.html" class="btn-primary" style="color: var(--primary-bg);" data-translate="view-all-creators">View All Creators</a>
-                <a href="/creator-register.html" class="btn-secondary" style="margin-left: 1rem; background: rgba(6, 182, 212, 0.1); border-color: var(--accent-secondary); color: var(--accent-secondary);">
+                <a href="/creators-catalog.html" class="btn-primary" style="color: var(--primary-bg);" data-translate="hero-cta-secondary">Посмотреть всех креаторов</a>
+                <a href="/creator-register.html" class="btn-secondary" style="margin-left: 1rem; background: rgba(6, 182, 212, 0.1); border-color: var(--accent-secondary); color: var(--accent-secondary);" data-translate="hero-become-creator">
                     👤 Стать креатором
                 </a>
             </div>
@@ -1159,8 +1159,8 @@
     <!-- FAQ Section -->
     <section class="section faq" id="faq">
         <div class="container">
-            <h2 class="section-title" data-translate="faq-title">Frequently Asked Questions</h2>
-            <p class="section-subtitle" data-translate="faq-subtitle">Answers to the most popular questions about our service</p>
+            <h2 class="section-title" data-translate="faq-title">Часто задаваемые вопросы</h2>
+            <p class="section-subtitle" data-translate="faq-subtitle">Ответы на самые популярные вопросы о нашем сервисе</p>
             
             <div class="faq-container">
                 <div class="faq-item active">
@@ -1221,8 +1221,8 @@
         <div class="container">
             <div class="contact-content">
                 <div class="contact-info">
-                    <h3 data-translate="contact-title">Ready to Order UGC Video?</h3>
-                    <p data-translate="contact-subtitle">Contact us in any convenient way, and we'll help you find the perfect creator for your project</p>
+                    <h3 data-translate="section-contact">Готовы заказать UGC видео?</h3>
+                    <p data-translate="contact-subtitle">Свяжитесь с нами любым удобным способом, и мы поможем найти идеального креатора для вашего проекта</p>
                     
                     <div class="contact-methods">
                         <a href="https://wa.me/37477123456" class="contact-method">
@@ -1265,59 +1265,59 @@
                         <input type="hidden" name="_next" value="https://contentbridge-armenia.vercel.app/thanks.html">
                         <input type="hidden" name="_language" value="en">
                         
-                        <h4 style="margin-bottom: 2rem; font-size: 1.5rem; color: var(--text-primary);" data-translate="form-title">Quick Order</h4>
+                        <h4 style="margin-bottom: 2rem; font-size: 1.5rem; color: var(--text-primary);" data-translate="form-title">Быстрый заказ</h4>
                         
                         <div class="form-group">
-                            <label data-translate="form-video-type">Video Type *</label>
+                            <label data-translate="form-video-type">Тип видео *</label>
                             <select name="video_type" required>
-                                <option value="" data-translate="form-select-type">Select type</option>
-                                <option value="Product Unboxing" data-translate="form-unboxing">Product Unboxing</option>
-                                <option value="Product Review" data-translate="form-review">Product Review</option>
-                                <option value="Restaurant Review" data-translate="form-restaurant">Restaurant/Cafe Review</option>
-                                <option value="Beauty Content" data-translate="form-beauty">Beauty Content</option>
-                                <option value="Lifestyle" data-translate="form-lifestyle">Lifestyle</option>
-                                <option value="Other" data-translate="form-other">Other</option>
+                                <option value="" data-translate="form-select-type">Выберите тип</option>
+                                <option value="Product Unboxing" data-translate="form-unboxing">Распаковка продукта</option>
+                                <option value="Product Review" data-translate="form-review">Обзор продукта</option>
+                                <option value="Restaurant Review" data-translate="form-restaurant">Обзор ресторана/кафе</option>
+                                <option value="Beauty Content" data-translate="form-beauty">Контент о красоте</option>
+                                <option value="Lifestyle" data-translate="form-lifestyle">Образ жизни</option>
+                                <option value="Other" data-translate="form-other">Другое</option>
                             </select>
                         </div>
                         
                         <div class="form-group">
-                            <label data-translate="form-budget">Budget *</label>
+                            <label data-translate="form-budget">Бюджет *</label>
                             <select name="budget" required>
-                                <option value="" data-translate="form-select-budget">Select budget</option>
-                                <option value="$30-70 (Simple video)" data-translate="form-budget-1">$30-70 (Simple video)</option>
-                                <option value="$70-150 (Standard)" data-translate="form-budget-2">$70-150 (Standard)</option>
-                                <option value="$150-300 (Premium)" data-translate="form-budget-3">$150-300 (Premium)</option>
-                                <option value="$300+ (Exclusive)" data-translate="form-budget-4">$300+ (Exclusive)</option>
+                                <option value="" data-translate="form-select-budget">Выберите бюджет</option>
+                                <option value="$30-70 (Simple video)" data-translate="form-budget-1">$30-70 (Простое видео)</option>
+                                <option value="$70-150 (Standard)" data-translate="form-budget-2">$70-150 (Стандарт)</option>
+                                <option value="$150-300 (Premium)" data-translate="form-budget-3">$150-300 (Премиум)</option>
+                                <option value="$300+ (Exclusive)" data-translate="form-budget-4">$300+ (Эксклюзив)</option>
                             </select>
                         </div>
                         
                         <div class="form-group">
-                            <label data-translate="form-description">Project Description *</label>
-                            <textarea name="project_description" data-translate="form-description-placeholder" placeholder="Tell us more about your project: what needs to be filmed, style, special requirements..." rows="4" required></textarea>
+                            <label data-translate="form-description">Описание проекта *</label>
+                            <textarea name="project_description" data-translate="form-description-placeholder" placeholder="Расскажите больше о вашем проекте: что нужно снять, стиль, особые требования..." rows="4" required></textarea>
                         </div>
                         
                         <div class="form-group">
-                            <label data-translate="form-name">Your Name *</label>
-                            <input type="text" name="client_name" data-translate="form-name-placeholder" placeholder="Your name or company name" required>
+                            <label data-translate="form-name">Ваше имя *</label>
+                            <input type="text" name="client_name" data-translate="form-name-placeholder" placeholder="Ваше имя или название компании" required>
                         </div>
                         
                         <div class="form-group">
-                            <label data-translate="form-contact">Contact Information *</label>
-                            <input type="text" name="contact_info" data-translate="form-contact-placeholder" placeholder="Phone or email for contact" required>
+                            <label data-translate="form-contact">Контактная информация *</label>
+                            <input type="text" name="contact_info" data-translate="form-contact-placeholder" placeholder="Телефон или email для связи" required>
                         </div>
                         
                         <div class="form-group">
-                            <label data-translate="form-urgency">Urgency</label>
+                            <label data-translate="form-urgency">Срочность</label>
                             <select name="urgency">
-                                <option value="" data-translate="form-select-timeline">Select timeline</option>
-                                <option value="1-2 days (rush +50%)" data-translate="form-rush">1-2 days (rush +50%)</option>
-                                <option value="3-5 days (standard)" data-translate="form-standard">3-5 days (standard)</option>
-                                <option value="1-2 weeks" data-translate="form-weeks">1-2 weeks</option>
+                                <option value="" data-translate="form-select-timeline">Выберите сроки</option>
+                                <option value="1-2 days (rush +50%)" data-translate="form-rush">1-2 дня (срочно +50%)</option>
+                                <option value="3-5 days (standard)" data-translate="form-standard">3-5 дней (стандарт)</option>
+                                <option value="1-2 weeks" data-translate="form-weeks">1-2 недели</option>
                                 <option value="Not important" data-translate="form-flexible">Timeline not important</option>
                             </select>
                         </div>
                         
-                        <button type="submit" class="submit-btn" data-translate="form-submit">Submit Order</button>
+                        <button type="submit" class="submit-btn" data-translate="form-submit">Отправить заказ</button>
                         
                         <p style="font-size: 0.9rem; opacity: 0.7; margin-top: 1rem; color: var(--text-muted);" data-translate="form-required">
                             * required fields
@@ -1332,7 +1332,7 @@
     <footer>
         <div class="footer-content">
             <div class="footer-logo">ContentBridge</div>
-            <p class="footer-text" data-translate="footer-text">Leading UGC content marketplace in Armenia</p>
+            <p class="footer-text" data-translate="footer-text">Ведущий маркетплейс UGC-контента в Армении</p>
             
             <div class="social-links">
                 <a href="#" class="social-link">📘</a>
@@ -1341,7 +1341,7 @@
                 <a href="#" class="social-link">📱</a>
             </div>
             
-            <p style="color: var(--text-muted); font-size: 1rem;" data-translate="footer-copyright">© 2024 ContentBridge Armenia. All rights reserved.</p>
+            <p style="color: var(--text-muted); font-size: 1rem;" data-translate="footer-copyright">© 2024 ContentBridge Armenia. Все права защищены.</p>
         </div>
         <!-- В footer, в самый конец -->
 <div style="margin-top: 2rem; text-align: center;">
@@ -1350,358 +1350,6 @@
     </footer>
 
     <script>
-        // Translations
-        const translations = {
-            en: {
-                // Navigation
-                'nav-creators': 'Creators',
-                'nav-how': 'How it works',
-                'nav-faq': 'FAQ',
-                'nav-contact': 'Contact',
-                'nav-cta': 'Order Video',
-                
-                // Hero
-                'hero-title': 'UGC Videos',
-                'hero-subtitle': 'from Top Armenian Creators',
-                'hero-description': 'Order authentic video reviews, unboxings and product presentations from verified content creators. Safe, fast, effective.',
-                'hero-cta-primary': 'Order Video',
-                'hero-cta-secondary': 'View Creators',
-                'hero-card-title': 'Your Order',
-                'hero-card-product': 'iPhone 15 Pro Unboxing',
-                'hero-card-creator': 'Beauty Blogger • 5.2K followers',
-                
-                // Stats
-                'stat-creators': 'Verified Creators',
-                'stat-orders': 'Completed Orders',
-                'stat-rating': 'Average Rating',
-                
-                // Benefits
-                'benefits-title': 'Why Choose ContentBridge?',
-                'benefits-subtitle': 'We\'ve created a secure ecosystem for ordering quality UGC content with guaranteed results',
-                'benefit-1-title': 'Security Guarantee',
-                'benefit-1-desc': 'All payments go through our platform. Money is transferred to the creator only after you confirm the quality of work.',
-                'benefit-2-title': 'Fast Delivery',
-                'benefit-2-desc': 'Average completion time is 3-5 days. Rush orders available from 24 hours with only 50% surcharge.',
-                'benefit-3-title': 'Verified Creators',
-                'benefit-3-desc': 'All content creators go through strict moderation. Only the best make it to our catalog.',
-                'benefit-4-title': 'Perfect Match',
-                'benefit-4-desc': 'We match creators to your niche and target audience for maximum effectiveness.',
-                'benefit-5-title': 'Fair Pricing',
-                'benefit-5-desc': 'No hidden fees. The price you see is what you get. Starting from $30 for simple videos.',
-                'benefit-6-title': '24/7 Support',
-                'benefit-6-desc': 'Our team is always ready to help at any stage via WhatsApp, Telegram or email.',
-                
-                // How it works
-                'how-title': 'How It Works',
-                'how-subtitle': 'Simple process from order to receiving finished video',
-                'step-1-title': 'Choose Creator',
-                'step-1-desc': 'Browse portfolios, read reviews and select the right content creator for your project',
-                'step-2-title': 'Place Order',
-                'step-2-desc': 'Describe the brief, set deadlines and make secure payment through our platform',
-                'step-3-title': 'Get Results',
-                'step-3-desc': 'Creator will produce video according to your requirements. Revisions available if needed',
-                'step-4-title': 'Use Content',
-                'step-4-desc': 'Receive finished video and full rights to use it for your marketing campaigns',
-                
-                // Creators
-                'creators-title': 'Top Creators',
-                'creators-subtitle': 'Meet our best content creators',
-                'creator-1-specialty': 'Beauty • Lifestyle',
-                'creator-2-specialty': 'Tech Reviews • Gadgets',
-                'creator-3-specialty': 'Food • Restaurants',
-                'creator-4-specialty': 'Sports • Fitness',
-                'creator-5-specialty': 'Fashion • Style',
-                'creator-6-specialty': 'Auto • Travel',
-                'creator-1-price': 'From $80 per video',
-                'creator-2-price': 'From $120 per video',
-                'creator-3-price': 'From $95 per video',
-                'creator-4-price': 'From $65 per video',
-                'creator-5-price': 'From $110 per video',
-                'creator-6-price': 'From $85 per video',
-                'followers': '📱 {count} followers',
-                'orders': '✅ {count} orders',
-                'view-all-creators': 'View All Creators',
-                
-                // FAQ
-                'faq-title': 'Frequently Asked Questions',
-                'faq-subtitle': 'Answers to the most popular questions about our service',
-                'faq-1-q': 'How much does a UGC video cost?',
-                'faq-1-a': 'Price depends on project complexity and creator popularity. Simple video (up to 30 seconds) costs from $30, standard (1-2 minutes) - from $80, premium (up to 5 minutes) - from $150. Rush orders are charged with 50% surcharge.',
-                'faq-2-q': 'How long does order completion take?',
-                'faq-2-a': 'Standard completion time is 3-5 business days. Rush orders available for completion in 24-48 hours with surcharge. Exact timelines are specified by each creator in their profile.',
-                'faq-3-q': 'What guarantees do you provide?',
-                'faq-3-a': 'We guarantee money back if creator doesn\'t complete order on time without valid reason. We also provide up to 3 free revisions. Payment to creator happens only after you confirm work quality.',
-                'faq-4-q': 'Can I use the video for advertising?',
-                'faq-4-a': 'Yes, after payment you receive full rights to use the video for commercial purposes. You can post on social media, website, advertising campaigns without time restrictions.',
-                'faq-5-q': 'How to choose the right creator?',
-                'faq-5-a': 'Look at portfolio, specialization, rating and reviews. Pay attention to quality of previous work and match with your niche. Our managers can also help select the right creator.',
-                
-                // Contact
-                'contact-title': 'Ready to Order UGC Video?',
-                'contact-subtitle': 'Contact us in any convenient way, and we\'ll help you find the perfect creator for your project',
-                'contact-call': 'Call',
-                
-                // Form
-                'form-title': 'Quick Order',
-                'form-video-type': 'Video Type *',
-                'form-select-type': 'Select type',
-                'form-unboxing': 'Product Unboxing',
-                'form-review': 'Product Review',
-                'form-restaurant': 'Restaurant/Cafe Review',
-                'form-beauty': 'Beauty Content',
-                'form-lifestyle': 'Lifestyle',
-                'form-other': 'Other',
-                'form-budget': 'Budget *',
-                'form-select-budget': 'Select budget',
-                'form-budget-1': '$30-70 (Simple video)',
-                'form-budget-2': '$70-150 (Standard)',
-                'form-budget-3': '$150-300 (Premium)',
-                'form-budget-4': '$300+ (Exclusive)',
-                'form-description': 'Project Description *',
-                'form-description-placeholder': 'Tell us more about your project: what needs to be filmed, style, special requirements...',
-                'form-name': 'Your Name *',
-                'form-name-placeholder': 'Your name or company name',
-                'form-contact': 'Contact Information *',
-                'form-contact-placeholder': 'Phone or email for contact',
-                'form-urgency': 'Urgency',
-                'form-select-timeline': 'Select timeline',
-                'form-rush': '1-2 days (rush +50%)',
-                'form-standard': '3-5 days (standard)',
-                'form-weeks': '1-2 weeks',
-                'form-flexible': 'Timeline not important',
-                'form-submit': 'Submit Order',
-                'form-required': '* required fields',
-                
-                // Footer
-                'footer-text': 'Leading UGC content marketplace in Armenia',
-                'footer-copyright': '© 2024 ContentBridge Armenia. All rights reserved.'
-            },
-            ru: {
-                // Navigation
-                'nav-creators': 'Креаторы',
-                'nav-how': 'Как работает',
-                'nav-faq': 'FAQ',
-                'nav-contact': 'Контакты',
-                'nav-cta': 'Заказать видео',
-                
-                // Hero
-                'hero-title': 'UGC-видео',
-                'hero-subtitle': 'от лучших креаторов Армении',
-                'hero-description': 'Закажите аутентичные видеообзоры, распаковки и презентации товаров от проверенных создателей контента. Безопасно, быстро, эффективно.',
-                'hero-cta-primary': 'Заказать видео',
-                'hero-cta-secondary': 'Посмотреть креаторов',
-                'hero-card-title': 'Ваш заказ',
-                'hero-card-product': 'Распаковка iPhone 15 Pro',
-                'hero-card-creator': 'Бьюти-блогер • 5.2K подписчиков',
-                
-                // Stats
-                'stat-creators': 'Проверенных креаторов',
-                'stat-orders': 'Выполненных заказов',
-                'stat-rating': 'Средний рейтинг',
-                
-                // Benefits
-                'benefits-title': 'Почему выбирают ContentBridge?',
-                'benefits-subtitle': 'Мы создали безопасную экосистему для заказа качественного UGC-контента с гарантией результата',
-                'benefit-1-title': 'Гарантия безопасности',
-                'benefit-1-desc': 'Все платежи проходят через нашу платформу. Деньги передаются креатору только после вашего подтверждения качества работы.',
-                'benefit-2-title': 'Быстрое выполнение',
-                'benefit-2-desc': 'Средний срок выполнения заказа 3-5 дней. Срочные заказы доступны от 24 часов с доплатой всего 50%.',
-                'benefit-3-title': 'Проверенные креаторы',
-                'benefit-3-desc': 'Все создатели контента проходят строгую модерацию. Только лучшие попадают в наш каталог.',
-                'benefit-4-title': 'Точное попадание',
-                'benefit-4-desc': 'Подбираем креаторов под вашу нишу и целевую аудиторию для максимальной эффективности.',
-                'benefit-5-title': 'Честные цены',
-                'benefit-5-desc': 'Никаких скрытых комиссий. Видите цену на сайте - получаете именно её. От $30 за простое видео.',
-                'benefit-6-title': 'Поддержка 24/7',
-                'benefit-6-desc': 'Наша команда всегда готова помочь на любом этапе заказа через WhatsApp, Telegram или email.',
-                
-                // How it works
-                'how-title': 'Как это работает',
-                'how-subtitle': 'Простой процесс от заказа до получения готового видео',
-                'step-1-title': 'Выберите креатора',
-                'step-1-desc': 'Просмотрите портфолио, прочитайте отзывы и выберите подходящего создателя контента для вашего проекта',
-                'step-2-title': 'Оформите заказ',
-                'step-2-desc': 'Опишите техническое задание, укажите сроки и произведите безопасную оплату через нашу платформу',
-                'step-3-title': 'Получите результат',
-                'step-3-desc': 'Креатор создаст видео согласно вашим требованиям. При необходимости доступны правки',
-                'step-4-title': 'Используйте контент',
-                'step-4-desc': 'Получите готовое видео и все права на его использование для ваших маркетинговых кампаний',
-                
-                // Creators
-                'creators-title': 'Топ креаторы',
-                'creators-subtitle': 'Познакомьтесь с нашими лучшими создателями контента',
-                'creator-1-specialty': 'Бьюти • Лайфстайл',
-                'creator-2-specialty': 'Тех-обзоры • Гаджеты',
-                'creator-3-specialty': 'Еда • Рестораны',
-                'creator-4-specialty': 'Спорт • Фитнес',
-                'creator-5-specialty': 'Мода • Стиль',
-                'creator-6-specialty': 'Авто • Путешествия',
-                'creator-1-price': 'От $80 за видео',
-                'creator-2-price': 'От $120 за видео',
-                'creator-3-price': 'От $95 за видео',
-                'creator-4-price': 'От $65 за видео',
-                'creator-5-price': 'От $110 за видео',
-                'creator-6-price': 'От $85 за видео',
-                'followers': '📱 {count} подписчиков',
-                'orders': '✅ {count} заказов',
-                'view-all-creators': 'Посмотреть всех креаторов',
-                
-                // FAQ
-                'faq-title': 'Частые вопросы',
-                'faq-subtitle': 'Ответы на самые популярные вопросы о нашем сервисе',
-                'faq-1-q': 'Сколько стоит UGC-видео?',
-                'faq-1-a': 'Стоимость зависит от сложности проекта и популярности креатора. Простое видео (до 30 секунд) стоит от $30, стандартное (1-2 минуты) - от $80, премиум (до 5 минут) - от $150. Срочные заказы оплачиваются с доплатой 50%.',
-                'faq-2-q': 'Как долго выполняется заказ?',
-                'faq-2-a': 'Стандартный срок выполнения 3-5 рабочих дней. Для срочных заказов доступно выполнение за 24-48 часов с доплатой. Точные сроки указывает каждый креатор в своем профиле.',
-                'faq-3-q': 'Какие гарантии вы предоставляете?',
-                'faq-3-a': 'Мы гарантируем возврат денег, если креатор не выполнил заказ в срок без уважительной причины. Также предоставляем до 3 бесплатных правок. Оплата креатору происходит только после вашего подтверждения качества работы.',
-                'faq-4-q': 'Можно ли использовать видео для рекламы?',
-                'faq-4-a': 'Да, после оплаты вы получаете полные права на использование видео в коммерческих целях. Можете размещать в соцсетях, на сайте, в рекламных кампаниях без ограничений по времени.',
-                'faq-5-q': 'Как выбрать подходящего креатора?',
-                'faq-5-a': 'Смотрите на портфолио, специализацию, рейтинг и отзывы. Обращайте внимание на качество предыдущих работ и соответствие вашей нише. Наши менеджеры также могут помочь с подбором подходящего креатора.',
-                
-                // Contact
-                'contact-title': 'Готовы заказать UGC-видео?',
-                'contact-subtitle': 'Свяжитесь с нами любым удобным способом, и мы поможем подобрать идеального креатора для вашего проекта',
-                'contact-call': 'Звонок',
-                
-                // Form
-                'form-title': 'Быстрый заказ',
-                'form-video-type': 'Тип видео *',
-                'form-select-type': 'Выберите тип',
-                'form-unboxing': 'Распаковка товара',
-                'form-review': 'Обзор продукта',
-                'form-restaurant': 'Обзор ресторана/кафе',
-                'form-beauty': 'Бьюти-контент',
-                'form-lifestyle': 'Лайфстайл',
-                'form-other': 'Другое',
-                'form-budget': 'Бюджет *',
-                'form-select-budget': 'Выберите бюджет',
-                'form-budget-1': '$30-70 (Простое видео)',
-                'form-budget-2': '$70-150 (Стандарт)',
-                'form-budget-3': '$150-300 (Премиум)',
-                'form-budget-4': '$300+ (Эксклюзив)',
-                'form-description': 'Описание проекта *',
-                'form-description-placeholder': 'Расскажите подробнее о вашем проекте: что нужно снять, какой стиль, особые требования...',
-                'form-name': 'Ваше имя *',
-                'form-name-placeholder': 'Ваше имя или название компании',
-                'form-contact': 'Контакт для связи *',
-                'form-contact-placeholder': 'Телефон или email для связи',
-                'form-urgency': 'Срочность',
-                'form-select-timeline': 'Выберите сроки',
-                'form-rush': '1-2 дня (срочно +50%)',
-                'form-standard': '3-5 дней (стандарт)',
-                'form-weeks': '1-2 недели',
-                'form-flexible': 'Сроки не важны',
-                'form-submit': 'Отправить заявку',
-                'form-required': '* обязательные поля',
-                
-                // Footer
-                'footer-text': 'Ведущий маркетплейс UGC-контента в Армении',
-                'footer-copyright': '© 2024 ContentBridge Armenia. Все права защищены.'
-            }
-        };
-
-        // Language switching
-        let currentLanguage = 'en';
-
-        function switchLanguage(lang) {
-            currentLanguage = lang;
-            
-            // Update language buttons
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.dataset.lang === lang) {
-                    btn.classList.add('active');
-                }
-            });
-            
-            // Update document language
-            document.documentElement.lang = lang;
-            
-            // Update all translatable elements
-            document.querySelectorAll('[data-translate]').forEach(element => {
-                const key = element.dataset.translate;
-                if (translations[lang] && translations[lang][key]) {
-                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-                        element.placeholder = translations[lang][key];
-                    } else {
-                        element.textContent = translations[lang][key];
-                    }
-                }
-            });
-            
-            // Update form action language
-            const form = document.getElementById('orderForm');
-            const langInput = form.querySelector('input[name="_language"]');
-            if (langInput) {
-                langInput.value = lang;
-            }
-            
-            // Update form subject
-            const subjectInput = form.querySelector('input[name="_subject"]');
-            if (subjectInput) {
-                if (lang === 'ru') {
-                    subjectInput.value = 'Новый заказ UGC-видео ContentBridge Armenia';
-                } else {
-                    subjectInput.value = 'New UGC Video Order - ContentBridge Armenia';
-                }
-            }
-            
-            // Save language preference
-            localStorage.setItem('preferred_language', lang);
-        }
-
-        // Load saved language preference
-        document.addEventListener('DOMContentLoaded', function() {
-            const savedLang = localStorage.getItem('preferred_language');
-            if (savedLang && (savedLang === 'en' || savedLang === 'ru')) {
-                switchLanguage(savedLang);
-            }
-        });
-
-        // Analytics tracking
-        document.addEventListener('DOMContentLoaded', function() {
-            const orderForm = document.getElementById('orderForm');
-            if (orderForm) {
-                orderForm.addEventListener('submit', function() {
-                    gtag('event', 'generate_lead', {
-                        currency: 'USD',
-                        value: 100,
-                        lead_source: 'website_form',
-                        language: currentLanguage
-                    });
-                });
-            }
-        });
-
-        // Contact tracking
-        document.querySelectorAll('a[href^="tel:"], a[href^="https://wa.me"], a[href^="https://t.me"], a[href^="mailto:"]').forEach(link => {
-            link.addEventListener('click', function() {
-                let contactType = 'other';
-                if (this.href.includes('wa.me')) contactType = 'whatsapp';
-                else if (this.href.includes('t.me')) contactType = 'telegram';
-                else if (this.href.includes('tel:')) contactType = 'phone';
-                else if (this.href.includes('mailto:')) contactType = 'email';
-                
-                gtag('event', 'contact_attempt', {
-                    method: contactType,
-                    contact_location: 'main_page',
-                    language: currentLanguage
-                });
-            });
-        });
-
-        // Creator card tracking
-        document.querySelectorAll('.creator-card').forEach(card => {
-            card.addEventListener('click', function() {
-                gtag('event', 'view_creator', {
-                    creator_name: this.querySelector('.creator-name').textContent,
-                    language: currentLanguage
-                });
-            });
-        });
-
         // FAQ functionality
         function toggleFaq(element) {
             const faqItem = element.parentElement;
@@ -1713,10 +1361,6 @@
             
             if (!isActive) {
                 faqItem.classList.add('active');
-                gtag('event', 'faq_opened', {
-                    faq_question: element.querySelector('span').textContent,
-                    language: currentLanguage
-                });
             }
         }
 
@@ -1734,24 +1378,6 @@
             });
         });
 
-        // Scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-in');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('section').forEach(section => {
-            observer.observe(section);
-        });
-
         // Header scroll effect
         window.addEventListener('scroll', () => {
             const header = document.querySelector('header');
@@ -1761,6 +1387,27 @@
             } else {
                 header.style.background = 'rgba(10, 10, 10, 0.8)';
                 header.style.boxShadow = 'none';
+            }
+        });
+
+        // Analytics tracking
+        document.addEventListener('DOMContentLoaded', function() {
+            const orderForm = document.getElementById('orderForm');
+            if (orderForm) {
+                orderForm.addEventListener('submit', function() {
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'generate_lead', {
+                            currency: 'USD',
+                            value: 100,
+                            lead_source: 'website_form'
+                        });
+                    }
+                });
+            }
+            
+            // Initialize Language Switcher
+            if (typeof LanguageSwitcher !== 'undefined') {
+                new LanguageSwitcher();
             }
         });
     </script>
