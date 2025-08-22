@@ -1351,6 +1351,31 @@
     </div>
 
     <script>
+        <!-- Добавляем в начало <script> секции -->
+<script>
+// Простая защита паролем
+function checkAuth() {
+    const password = localStorage.getItem('admin_auth');
+    if (password !== 'contentbridge2024') {
+        const userPassword = prompt('Enter admin password:');
+        if (userPassword === 'contentbridge2024') {
+            localStorage.setItem('admin_auth', userPassword);
+        } else {
+            alert('Access denied');
+            window.location.href = '/';
+            return false;
+        }
+    }
+    return true;
+}
+
+// Проверяем при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    if (!checkAuth()) return;
+    
+    // Остальной код...
+});
+</script>
         // Tab switching
         function showTab(tabName) {
             // Hide all tab contents
