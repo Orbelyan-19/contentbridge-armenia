@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог креаторов - ContentBridge Armenia</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-bg: #0a0a0a;
+            --secondary-bg: #111111;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --accent-primary: #8b5cf6;
+            --accent-secondary: #06b6d4;
+            --accent-tertiary: #10b981;
+            --accent-warning: #f59e0b;
+            --accent-danger: #ef4444;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --success-color: #22c55e;
+            --gradient-primary: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 50%, #10b981 100%);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Background Pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.05) 0%, transparent 50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-primary);
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+        }
+
+        .filters-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .filters-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .filter-select {
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .specialty-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .specialty-tag {
+            padding: 0.5rem 1rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .specialty-tag:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .specialty-tag.selected {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .creators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .creator-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .creator-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(139, 92, 246, 0.2);
+        }
+
+        .creator-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .creator-avatar {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .creator-info h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .creator-handle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .creator-stats {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .stat {
+            color: var(--text-secondary);
+        }
+
+        .stat-value {
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        .creator-specialties {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .specialty {
+            background: rgba(139, 92, 246, 0.2);
+            color: var(--accent-primary);
+            padding: 0.3rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .creator-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .creator-pricing {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--success-color);
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            color: var(--accent-warning);
+            font-weight: 600;
+        }
+
+        .creator-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+        }
+
+        .page-btn {
+            padding: 0.8rem 1rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-btn:hover,
+        .page-btn.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .results-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .sort-select {
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .creators-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .creator-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">ContentBridge</div>
+            <div class="nav-links">
+                <a href="/">Главная</a>
+                <a href="/creator-register.html">Регистрация</a>
+                <a href="/admin.html">Админ панель</a>
+            </div>
+        </div>
+
+        <h1 class="page-title">Каталог креаторов</h1>
+        <p class="page-subtitle">Найдите идеального креатора для вашего проекта</p>
+
+        <!-- Фильтры -->
+        <div class="filters-section">
+            <h2 class="filters-title">🔍 Фильтры поиска</h2>
+            
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" placeholder="Поиск по имени, специализации..." id="searchInput">
+            </div>
+
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label class="filter-label">Специализация</label>
+                    <div class="specialty-tags">
+                        <span class="specialty-tag" data-specialty="product-reviews">Обзоры продуктов</span>
+                        <span class="specialty-tag" data-specialty="unboxing">Распаковка</span>
+                        <span class="specialty-tag" data-specialty="beauty">Красота</span>
+                        <span class="specialty-tag" data-specialty="lifestyle">Образ жизни</span>
+                        <span class="specialty-tag" data-specialty="food">Еда и рестораны</span>
+                        <span class="specialty-tag" data-specialty="tech">Технологии</span>
+                        <span class="specialty-tag" data-specialty="fashion">Мода</span>
+                        <span class="specialty-tag" data-specialty="fitness">Фитнес</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Бюджет</label>
+                    <select class="filter-select" id="budgetFilter">
+                        <option value="">Любой бюджет</option>
+                        <option value="30-70">$30-70</option>
+                        <option value="70-150">$70-150</option>
+                        <option value="150-300">$150-300</option>
+                        <option value="300+">$300+</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Рейтинг</label>
+                    <select class="filter-select" id="ratingFilter">
+                        <option value="">Любой рейтинг</option>
+                        <option value="4.5+">4.5+ звезд</option>
+                        <option value="4.0+">4.0+ звезд</option>
+                        <option value="3.5+">3.5+ звезд</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Подписчики</label>
+                    <select class="filter-select" id="followersFilter">
+                        <option value="">Любое количество</option>
+                        <option value="10000+">10K+</option>
+                        <option value="5000+">5K+</option>
+                        <option value="1000+">1K+</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Результаты -->
+        <div class="results-info">
+            <span id="resultsCount">Найдено 24 креатора</span>
+            <select class="sort-select" id="sortSelect">
+                <option value="rating">По рейтингу</option>
+                <option value="price-low">По цене (дешевле)</option>
+                <option value="price-high">По цене (дороже)</option>
+                <option value="followers">По подписчикам</option>
+                <option value="orders">По количеству заказов</option>
+            </select>
+        </div>
+
+        <!-- Сетка креаторов -->
+        <div class="creators-grid" id="creatorsGrid">
+            <!-- Креатор 1 -->
+            <div class="creator-card" data-specialty="beauty,product-reviews" data-price="80" data-rating="4.8" data-followers="12500" data-orders="47">
+                <div class="creator-header">
+                    <div class="creator-avatar">АК</div>
+                    <div class="creator-info">
+                        <h3>Анна Карапетян</h3>
+                        <div class="creator-handle">@anna_karapetyan</div>
+                    </div>
+                </div>
+
+                <div class="creator-stats">
+                    <div class="stat">
+                        <span class="stat-value">12.5K</span> подписчиков
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">47</span> заказов
+                    </div>
+                </div>
+
+                <div class="creator-specialties">
+                    <span class="specialty">Красота</span>
+                    <span class="specialty">Обзоры продуктов</span>
+                    <span class="specialty">Образ жизни</span>
+                </div>
+
+                <div class="creator-description">
+                    Специализируюсь на обзорах косметики и продуктов для красоты. Создаю качественный контент уже более 3 лет.
+                </div>
+
+                <div class="creator-pricing">
+                    <div class="price">от $80</div>
+                    <div class="rating">⭐ 4.8</div>
+                </div>
+
+                <div class="creator-actions">
+                    <a href="/creator-profile.html" class="btn btn-secondary">👁️ Профиль</a>
+                    <a href="#contact" class="btn btn-primary">💬 Заказать</a>
+                </div>
+            </div>
+
+            <!-- Креатор 2 -->
+            <div class="creator-card" data-specialty="tech,product-reviews" data-price="120" data-rating="4.6" data-followers="8200" data-orders="32">
+                <div class="creator-header">
+                    <div class="creator-avatar">МА</div>
+                    <div class="creator-info">
+                        <h3>Мгер Авагян</h3>
+                        <div class="creator-handle">@mger_avagyan</div>
+                    </div>
+                </div>
+
+                <div class="creator-stats">
+                    <div class="stat">
+                        <span class="stat-value">8.2K</span> подписчиков
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">32</span> заказа
+                    </div>
+                </div>
+
+                <div class="creator-specialties">
+                    <span class="specialty">Технологии</span>
+                    <span class="specialty">Распаковка</span>
+                    <span class="specialty">Обзоры продуктов</span>
+                </div>
+
+                <div class="creator-description">
+                    Обзоры гаджетов и технологий. Снимаю качественные видео с детальным анализом продуктов.
+                </div>
+
+                <div class="creator-pricing">
+                    <div class="price">от $120</div>
+                    <div class="rating">⭐ 4.6</div>
+                </div>
+
+                <div class="creator-actions">
+                    <a href="/creator-profile.html" class="btn btn-secondary">👁️ Профиль</a>
+                    <a href="#contact" class="btn btn-primary">💬 Заказать</a>
+                </div>
+            </div>
+
+            <!-- Креатор 3 -->
+            <div class="creator-card" data-specialty="food,lifestyle" data-price="95" data-rating="4.9" data-followers="15600" data-orders="63">
+                <div class="creator-header">
+                    <div class="creator-avatar">СМ</div>
+                    <div class="creator-info">
+                        <h3>Софи Мкртчян</h3>
+                        <div class="creator-handle">@sophie_mkrtchyan</div>
+                    </div>
+                </div>
+
+                <div class="creator-stats">
+                    <div class="stat">
+                        <span class="stat-value">15.6K</span> подписчиков
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">63</span> заказа
+                    </div>
+                </div>
+
+                <div class="creator-specialties">
+                    <span class="specialty">Еда и рестораны</span>
+                    <span class="specialty">Образ жизни</span>
+                    <span class="specialty">Путешествия</span>
+                </div>
+
+                <div class="creator-description">
+                    Обзоры ресторанов и кулинарный контент. Показываю лучшие места для еды в Армении.
+                </div>
+
+                <div class="creator-pricing">
+                    <div class="price">от $95</div>
+                    <div class="rating">⭐ 4.9</div>
+                </div>
+
+                <div class="creator-actions">
+                    <a href="/creator-profile.html" class="btn btn-secondary">👁️ Профиль</a>
+                    <a href="#contact" class="btn btn-primary">💬 Заказать</a>
+                </div>
+            </div>
+
+            <!-- Креатор 4 -->
+            <div class="creator-card" data-specialty="fitness,lifestyle" data-price="65" data-rating="4.7" data-followers="6800" data-orders="28">
+                <div class="creator-header">
+                    <div class="creator-avatar">ДА</div>
+                    <div class="creator-info">
+                        <h3>Давид Арутюнян</h3>
+                        <div class="creator-handle">@david_arutyunyan</div>
+                    </div>
+                </div>
+
+                <div class="creator-stats">
+                    <div class="stat">
+                        <span class="stat-value">6.8K</span> подписчиков
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">28</span> заказов
+                    </div>
+                </div>
+
+                <div class="creator-specialties">
+                    <span class="specialty">Фитнес</span>
+                    <span class="specialty">Спорт</span>
+                    <span class="specialty">Здоровье</span>
+                </div>
+
+                <div class="creator-description">
+                    Фитнес-тренер и блогер. Создаю контент о здоровом образе жизни и тренировках.
+                </div>
+
+                <div class="creator-pricing">
+                    <div class="price">от $65</div>
+                    <div class="rating">⭐ 4.7</div>
+                </div>
+
+                <div class="creator-actions">
+                    <a href="/creator-profile.html" class="btn btn-secondary">👁️ Профиль</a>
+                    <a href="#contact" class="btn btn-primary">💬 Заказать</a>
+                </div>
+            </div>
+
+            <!-- Креатор 5 -->
+            <div class="creator-card" data-specialty="fashion,beauty" data-price="110" data-rating="4.5" data-followers="11200" data-orders="41">
+                <div class="creator-header">
+                    <div class="creator-avatar">ЛГ</div>
+                    <div class="creator-info">
+                        <h3>Лусине Григорян</h3>
+                        <div class="creator-handle">@lusine_grigoryan</div>
+                    </div>
+                </div>
+
+                <div class="creator-stats">
+                    <div class="stat">
+                        <span class="stat-value">11.2K</span> подписчиков
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">41</span> заказ
+                    </div>
+                </div>
+
+                <div class="creator-specialties">
+                    <span class="specialty">Мода</span>
+                    <span class="specialty">Красота</span>
+                    <span class="specialty">Стиль</span>
+                </div>
+
+                <div class="creator-description">
+                    Стилист и fashion-блогер. Помогаю создавать стильные образы и обзоры модных трендов.
+                </div>
+
+                <div class="creator-pricing">
+                    <div class="price">от $110</div>
+                    <div class="rating">⭐ 4.5</div>
+                </div>
+
+                <div class="creator-actions">
+                    <a href="/creator-profile.html" class="btn btn-secondary">👁️ Профиль</a>
+                    <a href="#contact" class="btn btn-primary">💬 Заказать</a>
+                </div>
+            </div>
+
+            <!-- Креатор 6 -->
+            <div class="creator-card" data-specialty="tech,unboxing" data-price="85" data-rating="4.8" data-followers="9400" data-orders="35">
+                <div class="creator-header">
+                    <div class="creator-avatar">АС</div>
+                    <div class="creator-info">
+                        <h3>Армен Саргсян</h3>
+                        <div class="creator-handle">@armen_sargsyan</div>
+                    </div>
+                </div>
+
+                <div class="creator-stats">
+                    <div class="stat">
+                        <span class="stat-value">9.4K</span> подписчиков
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">35</span> заказов
+                    </div>
+                </div>
+
+                <div class="creator-specialties">
+                    <span class="specialty">Технологии</span>
+                    <span class="specialty">Распаковка</span>
+                    <span class="specialty">Гаджеты</span>
+                </div>
+
+                <div class="creator-description">
+                    Обзоры и распаковки гаджетов. Детальный анализ технических характеристик и пользовательского опыта.
+                </div>
+
+                <div class="creator-pricing">
+                    <div class="price">от $85</div>
+                    <div class="rating">⭐ 4.8</div>
+                </div>
+
+                <div class="creator-actions">
+                    <a href="/creator-profile.html" class="btn btn-secondary">👁️ Профиль</a>
+                    <a href="#contact" class="btn btn-primary">💬 Заказать</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Пагинация -->
+        <div class="pagination">
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">4</button>
+            <button class="page-btn">→</button>
+        </div>
+    </div>
+
+    <script>
+        // Фильтрация и поиск
+        const searchInput = document.getElementById('searchInput');
+        const budgetFilter = document.getElementById('budgetFilter');
+        const ratingFilter = document.getElementById('ratingFilter');
+        const followersFilter = document.getElementById('followersFilter');
+        const specialtyTags = document.querySelectorAll('.specialty-tag');
+        const creatorsGrid = document.getElementById('creatorsGrid');
+        const resultsCount = document.getElementById('resultsCount');
+        const sortSelect = document.getElementById('sortSelect');
+
+        let selectedSpecialties = [];
+        let allCreators = Array.from(document.querySelectorAll('.creator-card'));
+
+        // Обработка специализаций
+        specialtyTags.forEach(tag => {
+            tag.addEventListener('click', () => {
+                const specialty = tag.dataset.specialty;
+                if (tag.classList.contains('selected')) {
+                    tag.classList.remove('selected');
+                    selectedSpecialties = selectedSpecialties.filter(s => s !== specialty);
+                } else {
+                    tag.classList.add('selected');
+                    selectedSpecialties.push(specialty);
+                }
+                filterCreators();
+            });
+        });
+
+        // Обработка поиска
+        searchInput.addEventListener('input', filterCreators);
+
+        // Обработка фильтров
+        budgetFilter.addEventListener('change', filterCreators);
+        ratingFilter.addEventListener('change', filterCreators);
+        followersFilter.addEventListener('change', filterCreators);
+        sortSelect.addEventListener('change', filterCreators);
+
+        function filterCreators() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const budget = budgetFilter.value;
+            const rating = ratingFilter.value;
+            const followers = followersFilter.value;
+            const sortBy = sortSelect.value;
+
+            let filteredCreators = allCreators.filter(creator => {
+                // Поиск по тексту
+                const creatorText = creator.textContent.toLowerCase();
+                const matchesSearch = searchTerm === '' || creatorText.includes(searchTerm);
+
+                // Фильтр по специализации
+                const creatorSpecialties = creator.dataset.specialty.split(',');
+                const matchesSpecialty = selectedSpecialties.length === 0 || 
+                    selectedSpecialties.some(s => creatorSpecialties.includes(s));
+
+                // Фильтр по бюджету
+                const creatorPrice = parseInt(creator.dataset.price);
+                let matchesBudget = true;
+                if (budget) {
+                    const [min, max] = budget.split('-').map(Number);
+                    if (max) {
+                        matchesBudget = creatorPrice >= min && creatorPrice <= max;
+                    } else {
+                        matchesBudget = creatorPrice >= min;
+                    }
+                }
+
+                // Фильтр по рейтингу
+                const creatorRating = parseFloat(creator.dataset.rating);
+                const matchesRating = !rating || creatorRating >= parseFloat(rating);
+
+                // Фильтр по подписчикам
+                const creatorFollowers = parseInt(creator.dataset.followers);
+                const matchesFollowers = !followers || creatorFollowers >= parseInt(followers);
+
+                return matchesSearch && matchesSpecialty && matchesBudget && matchesRating && matchesFollowers;
+            });
+
+            // Сортировка
+            filteredCreators.sort((a, b) => {
+                switch (sortBy) {
+                    case 'rating':
+                        return parseFloat(b.dataset.rating) - parseFloat(a.dataset.rating);
+                    case 'price-low':
+                        return parseInt(a.dataset.price) - parseInt(b.dataset.price);
+                    case 'price-high':
+                        return parseInt(b.dataset.price) - parseInt(a.dataset.price);
+                    case 'followers':
+                        return parseInt(b.dataset.followers) - parseInt(a.dataset.followers);
+                    case 'orders':
+                        return parseInt(b.dataset.orders) - parseInt(a.dataset.orders);
+                    default:
+                        return 0;
+                }
+            });
+
+            // Обновление отображения
+            creatorsGrid.innerHTML = '';
+            filteredCreators.forEach(creator => {
+                creatorsGrid.appendChild(creator.cloneNode(true));
+            });
+
+            // Обновление счетчика
+            resultsCount.textContent = `Найдено ${filteredCreators.length} креаторов`;
+        }
+
+        // Обработка пагинации
+        document.querySelectorAll('.page-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                // Здесь можно добавить логику загрузки страниц
+            });
+        });
+    </script>
+</body>
+</html>

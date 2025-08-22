@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создать заказ - ContentBridge</title>
+    <style>
+        :root {
+            --primary: #06b6d4;
+            --primary-dark: #0891b2;
+            --secondary: #f59e0b;
+            --accent: #8b5cf6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --dark: #1f2937;
+            --light: #f8fafc;
+            --gray: #6b7280;
+            --border: #e5e7eb;
+            --bg-light: #f9fafb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .order-form {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .form-progress {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            padding: 1.5rem;
+            color: white;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-number {
+            background: white;
+            color: var(--primary);
+        }
+
+        .step.completed .step-number {
+            background: var(--success);
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .form-content {
+            padding: 3rem;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .creator-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .creator-option {
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .creator-option:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .creator-option.selected {
+            border-color: var(--primary);
+            background: rgba(6, 182, 212, 0.05);
+        }
+
+        .creator-option.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 24px;
+            height: 24px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .creator-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .creator-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .creator-details h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .creator-handle {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .creator-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .creator-specialties {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .specialty-tag {
+            padding: 0.25rem 0.75rem;
+            background: rgba(6, 182, 212, 0.1);
+            color: var(--primary);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .creator-price {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .content-type-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .content-type-option {
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .content-type-option:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .content-type-option.selected {
+            border-color: var(--primary);
+            background: rgba(6, 182, 212, 0.05);
+        }
+
+        .content-type-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-type-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .content-type-description {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .budget-slider {
+            margin: 2rem 0;
+        }
+
+        .budget-range {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .budget-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .budget-input {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: var(--border);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .budget-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(6, 182, 212, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--bg-light);
+            color: var(--dark);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .order-summary {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .summary-label {
+            color: var(--gray);
+        }
+
+        .summary-value {
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .back-link {
+                position: static;
+                margin-bottom: 2rem;
+                display: inline-flex;
+            }
+
+            .form-content {
+                padding: 2rem 1.5rem;
+            }
+
+            .progress-steps {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-link">
+        ← Назад на главную
+    </a>
+
+    <div class="container">
+        <div class="header">
+            <h1>Создать заказ</h1>
+            <p>Выберите креатора, тип контента и опишите ваш проект. Мы поможем вам получить качественный контент.</p>
+        </div>
+
+        <form class="order-form" id="orderForm">
+            <div class="form-progress">
+                <div class="progress-steps">
+                    <div class="step active" data-step="1">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Выбор креатора</div>
+                    </div>
+                    <div class="step" data-step="2">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Тип контента</div>
+                    </div>
+                    <div class="step" data-step="3">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Детали проекта</div>
+                    </div>
+                    <div class="step" data-step="4">
+                        <div class="step-number">4</div>
+                        <div class="step-label">Подтверждение</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-content">
+                <!-- Step 1: Creator Selection -->
+                <div class="form-section active" id="step1">
+                    <h2 class="section-title">Выберите креатора</h2>
+                    <p style="color: var(--gray); margin-bottom: 2rem;">
+                        Выберите одного из наших проверенных креаторов для вашего проекта.
+                    </p>
+
+                    <div class="creator-selection">
+                        <div class="creator-option" data-creator="anna">
+                            <div class="creator-info">
+                                <div class="creator-avatar">АП</div>
+                                <div class="creator-details">
+                                    <h3>Анна Петрова</h3>
+                                    <div class="creator-handle">@anna_photo</div>
+                                </div>
+                            </div>
+                            <div class="creator-stats">
+                                <span>⭐ 4.9 (127 отзывов)</span>
+                                <span>📸 45 проектов</span>
+                            </div>
+                            <div class="creator-specialties">
+                                <span class="specialty-tag">Фотография</span>
+                                <span class="specialty-tag">Видеосъемка</span>
+                            </div>
+                            <div class="creator-price">от ₽5,000</div>
+                        </div>
+
+                        <div class="creator-option" data-creator="mikhail">
+                            <div class="creator-info">
+                                <div class="creator-avatar">МС</div>
+                                <div class="creator-details">
+                                    <h3>Михаил Сидоров</h3>
+                                    <div class="creator-handle">@mike_video</div>
+                                </div>
+                            </div>
+                            <div class="creator-stats">
+                                <span>⭐ 4.8 (89 отзывов)</span>
+                                <span>🎥 32 проекта</span>
+                            </div>
+                            <div class="creator-specialties">
+                                <span class="specialty-tag">Видеосъемка</span>
+                                <span class="specialty-tag">Монтаж</span>
+                            </div>
+                            <div class="creator-price">от ₽15,000</div>
+                        </div>
+
+                        <div class="creator-option" data-creator="elena">
+                            <div class="creator-info">
+                                <div class="creator-avatar">ЕК</div>
+                                <div class="creator-details">
+                                    <h3>Елена Козлова</h3>
+                                    <div class="creator-handle">@elena_design</div>
+                                </div>
+                            </div>
+                            <div class="creator-stats">
+                                <span>⭐ 4.9 (156 отзывов)</span>
+                                <span>🎨 67 проектов</span>
+                            </div>
+                            <div class="creator-specialties">
+                                <span class="specialty-tag">Дизайн</span>
+                                <span class="specialty-tag">Анимация</span>
+                            </div>
+                            <div class="creator-price">от ₽8,000</div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <div></div>
+                        <button type="button" class="btn btn-primary" onclick="nextStep()">
+                            Далее
+                            <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Content Type -->
+                <div class="form-section" id="step2">
+                    <h2 class="section-title">Выберите тип контента</h2>
+                    <p style="color: var(--gray); margin-bottom: 2rem;">
+                        Какой тип контента вам нужен?
+                    </p>
+
+                    <div class="content-type-grid">
+                        <div class="content-type-option" data-type="review">
+                            <div class="content-type-icon">📱</div>
+                            <div class="content-type-title">Обзор продукта</div>
+                            <div class="content-type-description">Детальный обзор с демонстрацией функций</div>
+                        </div>
+
+                        <div class="content-type-option" data-type="unboxing">
+                            <div class="content-type-icon">📦</div>
+                            <div class="content-type-title">Распаковка</div>
+                            <div class="content-type-description">Эмоциональная распаковка продукта</div>
+                        </div>
+
+                        <div class="content-type-option" data-type="tutorial">
+                            <div class="content-type-icon">🎓</div>
+                            <div class="content-type-title">Обучающий контент</div>
+                            <div class="content-type-description">Пошаговая инструкция по использованию</div>
+                        </div>
+
+                        <div class="content-type-option" data-type="promo">
+                            <div class="content-type-icon">🎬</div>
+                            <div class="content-type-title">Промо-ролик</div>
+                            <div class="content-type-description">Краткий рекламный ролик</div>
+                        </div>
+
+                        <div class="content-type-option" data-type="lifestyle">
+                            <div class="content-type-icon">🌟</div>
+                            <div class="content-type-title">Lifestyle контент</div>
+                            <div class="content-type-description">Естественное использование в жизни</div>
+                        </div>
+
+                        <div class="content-type-option" data-type="custom">
+                            <div class="content-type-icon">✨</div>
+                            <div class="content-type-title">Кастомный</div>
+                            <div class="content-type-description">Особые требования</div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="prevStep()">
+                            <span>←</span>
+                            Назад
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep()">
+                            Далее
+                            <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Project Details -->
+                <div class="form-section" id="step3">
+                    <h2 class="section-title">Детали проекта</h2>
+                    <p style="color: var(--gray); margin-bottom: 2rem;">
+                        Опишите ваш проект и требования.
+                    </p>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="projectName">Название проекта</label>
+                            <input type="text" id="projectName" name="projectName" placeholder="Например: Обзор нового смартфона" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productName">Название продукта</label>
+                            <input type="text" id="productName" name="productName" placeholder="Например: iPhone 15 Pro" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="duration">Длительность видео</label>
+                            <select id="duration" name="duration" required>
+                                <option value="">Выберите длительность</option>
+                                <option value="30-60">30-60 секунд</option>
+                                <option value="1-3">1-3 минуты</option>
+                                <option value="3-5">3-5 минут</option>
+                                <option value="5-10">5-10 минут</option>
+                                <option value="10+">Более 10 минут</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deadline">Срок выполнения</label>
+                            <select id="deadline" name="deadline" required>
+                                <option value="">Выберите срок</option>
+                                <option value="3">3 дня</option>
+                                <option value="7">1 неделя</option>
+                                <option value="14">2 недели</option>
+                                <option value="30">1 месяц</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Описание проекта</label>
+                        <textarea id="description" name="description" placeholder="Подробно опишите, что вы хотите получить. Укажите ключевые моменты, которые должны быть освещены в видео..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="requirements">Особые требования</label>
+                        <textarea id="requirements" name="requirements" placeholder="Дополнительные требования, стиль подачи, технические детали..."></textarea>
+                    </div>
+
+                    <div class="budget-slider">
+                        <label>Бюджет проекта</label>
+                        <div class="budget-range">
+                            <span>₽5,000</span>
+                            <span class="budget-value" id="budgetValue">₽15,000</span>
+                            <span>₽100,000</span>
+                        </div>
+                        <input type="range" id="budget" name="budget" min="5000" max="100000" step="5000" value="15000" class="budget-input">
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="prevStep()">
+                            <span>←</span>
+                            Назад
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep()">
+                            Далее
+                            <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Confirmation -->
+                <div class="form-section" id="step4">
+                    <h2 class="section-title">Подтверждение заказа</h2>
+                    <p style="color: var(--gray); margin-bottom: 2rem;">
+                        Проверьте детали заказа перед отправкой.
+                    </p>
+
+                    <div class="order-summary">
+                        <div class="summary-title">Сводка заказа</div>
+                        <div class="summary-item">
+                            <span class="summary-label">Креатор:</span>
+                            <span class="summary-value" id="summaryCreator">Не выбран</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Тип контента:</span>
+                            <span class="summary-value" id="summaryType">Не выбран</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Название проекта:</span>
+                            <span class="summary-value" id="summaryProject">Не указано</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Продукт:</span>
+                            <span class="summary-value" id="summaryProduct">Не указано</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Длительность:</span>
+                            <span class="summary-value" id="summaryDuration">Не указано</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Срок выполнения:</span>
+                            <span class="summary-value" id="summaryDeadline">Не указано</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Бюджет:</span>
+                            <span class="summary-value" id="summaryBudget">₽15,000</span>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="prevStep()">
+                            <span>←</span>
+                            Назад
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            Создать заказ
+                            <span>✓</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let selectedCreator = null;
+        let selectedType = null;
+        let orderData = {};
+
+        // Creator selection
+        document.querySelectorAll('.creator-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.creator-option').forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedCreator = option.dataset.creator;
+            });
+        });
+
+        // Content type selection
+        document.querySelectorAll('.content-type-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.content-type-option').forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedType = option.dataset.type;
+            });
+        });
+
+        // Budget slider
+        const budgetSlider = document.getElementById('budget');
+        const budgetValue = document.getElementById('budgetValue');
+
+        budgetSlider.addEventListener('input', (e) => {
+            const value = e.target.value;
+            budgetValue.textContent = `₽${parseInt(value).toLocaleString()}`;
+        });
+
+        // Navigation functions
+        function nextStep() {
+            if (currentStep === 1 && !selectedCreator) {
+                alert('Пожалуйста, выберите креатора');
+                return;
+            }
+            if (currentStep === 2 && !selectedType) {
+                alert('Пожалуйста, выберите тип контента');
+                return;
+            }
+            if (currentStep === 3) {
+                // Validate required fields
+                const requiredFields = ['projectName', 'productName', 'duration', 'deadline', 'description'];
+                for (let field of requiredFields) {
+                    const element = document.getElementById(field);
+                    if (!element.value.trim()) {
+                        alert(`Пожалуйста, заполните поле "${element.previousElementSibling.textContent}"`);
+                        element.focus();
+                        return;
+                    }
+                }
+                updateSummary();
+            }
+
+            if (currentStep < 4) {
+                currentStep++;
+                updateStepDisplay();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStepDisplay();
+            }
+        }
+
+        function updateStepDisplay() {
+            // Update progress steps
+            document.querySelectorAll('.step').forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index + 1 < currentStep) {
+                    step.classList.add('completed');
+                } else if (index + 1 === currentStep) {
+                    step.classList.add('active');
+                }
+            });
+
+            // Update form sections
+            document.querySelectorAll('.form-section').forEach((section, index) => {
+                section.classList.remove('active');
+                if (index + 1 === currentStep) {
+                    section.classList.add('active');
+                }
+            });
+        }
+
+        function updateSummary() {
+            const creators = {
+                'anna': 'Анна Петрова (@anna_photo)',
+                'mikhail': 'Михаил Сидоров (@mike_video)',
+                'elena': 'Елена Козлова (@elena_design)'
+            };
+
+            const types = {
+                'review': 'Обзор продукта',
+                'unboxing': 'Распаковка',
+                'tutorial': 'Обучающий контент',
+                'promo': 'Промо-ролик',
+                'lifestyle': 'Lifestyle контент',
+                'custom': 'Кастомный'
+            };
+
+            const durations = {
+                '30-60': '30-60 секунд',
+                '1-3': '1-3 минуты',
+                '3-5': '3-5 минут',
+                '5-10': '5-10 минут',
+                '10+': 'Более 10 минут'
+            };
+
+            const deadlines = {
+                '3': '3 дня',
+                '7': '1 неделя',
+                '14': '2 недели',
+                '30': '1 месяц'
+            };
+
+            document.getElementById('summaryCreator').textContent = creators[selectedCreator] || 'Не выбран';
+            document.getElementById('summaryType').textContent = types[selectedType] || 'Не выбран';
+            document.getElementById('summaryProject').textContent = document.getElementById('projectName').value || 'Не указано';
+            document.getElementById('summaryProduct').textContent = document.getElementById('productName').value || 'Не указано';
+            document.getElementById('summaryDuration').textContent = durations[document.getElementById('duration').value] || 'Не указано';
+            document.getElementById('summaryDeadline').textContent = deadlines[document.getElementById('deadline').value] || 'Не указано';
+            document.getElementById('summaryBudget').textContent = budgetValue.textContent;
+        }
+
+        // Form submission
+        document.getElementById('orderForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Collect all form data
+            const formData = new FormData(e.target);
+            orderData = {
+                creator: selectedCreator,
+                type: selectedType,
+                projectName: formData.get('projectName'),
+                productName: formData.get('productName'),
+                duration: formData.get('duration'),
+                deadline: formData.get('deadline'),
+                description: formData.get('description'),
+                requirements: formData.get('requirements'),
+                budget: formData.get('budget')
+            };
+
+            // Show loading state
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span>Создание заказа...</span>';
+            submitBtn.disabled = true;
+
+            try {
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                // Redirect to success page
+                window.location.href = '/order-success.html';
+            } catch (error) {
+                console.error('Error creating order:', error);
+                alert('Ошибка при создании заказа. Попробуйте еще раз.');
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

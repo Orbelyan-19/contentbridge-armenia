@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль креатора - ContentBridge Armenia</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-bg: #0a0a0a;
+            --secondary-bg: #111111;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --accent-primary: #8b5cf6;
+            --accent-secondary: #06b6d4;
+            --accent-tertiary: #10b981;
+            --accent-warning: #f59e0b;
+            --accent-danger: #ef4444;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --success-color: #22c55e;
+            --gradient-primary: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 50%, #10b981 100%);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Background Pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.05) 0%, transparent 50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-primary);
+        }
+
+        .profile-header {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .avatar-upload {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--accent-primary);
+            border: 3px solid var(--primary-bg);
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .profile-name {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-handle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .content-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .specialty-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            background: var(--accent-primary);
+            color: white;
+            border-radius: 20px;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .info-item {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.3rem;
+        }
+
+        .info-value {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .portfolio-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .portfolio-item img,
+        .portfolio-item video {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .portfolio-item .placeholder {
+            width: 100%;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--text-muted);
+        }
+
+        .portfolio-item .title {
+            padding: 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .orders-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .orders-table th,
+        .orders-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .orders-table th {
+            background: rgba(255, 255, 255, 0.05);
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--success-color);
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--accent-warning);
+        }
+
+        .status-completed {
+            background: rgba(6, 182, 212, 0.2);
+            color: var(--accent-secondary);
+        }
+
+        .edit-mode {
+            display: none;
+        }
+
+        .edit-mode.active {
+            display: block;
+        }
+
+        .view-mode {
+            display: block;
+        }
+
+        .view-mode.hidden {
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-stats {
+                gap: 1rem;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">ContentBridge</div>
+            <div class="nav-links">
+                <a href="/">Главная</a>
+                <a href="/creator-register.html">Регистрация</a>
+                <a href="/admin.html">Админ панель</a>
+            </div>
+        </div>
+
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <div id="avatarPlaceholder">АК</div>
+                <img id="avatarImage" src="" alt="Avatar" style="display: none;">
+                <div class="avatar-upload" onclick="document.getElementById('avatarInput').click()">
+                    📷
+                </div>
+                <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+            </div>
+
+            <h1 class="profile-name" id="profileName">Анна Карапетян</h1>
+            <p class="profile-handle" id="profileHandle">@anna_karapetyan</p>
+
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <div class="stat-value">47</div>
+                    <div class="stat-label">Заказов</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">4.8</div>
+                    <div class="stat-label">Рейтинг</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">12.5K</div>
+                    <div class="stat-label">Подписчиков</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">$2,450</div>
+                    <div class="stat-label">Заработано</div>
+                </div>
+            </div>
+
+            <div class="profile-actions">
+                <button class="btn btn-secondary" onclick="toggleEditMode()" id="editBtn">✏️ Редактировать</button>
+                <button class="btn btn-primary" onclick="saveProfile()" id="saveBtn" style="display: none;">💾 Сохранить</button>
+                <button class="btn btn-secondary" onclick="cancelEdit()" id="cancelBtn" style="display: none;">❌ Отмена</button>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <!-- Основная информация -->
+            <div class="content-section">
+                <h2 class="section-title">👤 Основная информация</h2>
+                
+                <div class="view-mode" id="basicInfoView">
+                    <div class="specialty-tags">
+                        <span class="tag">Обзоры продуктов</span>
+                        <span class="tag">Красота</span>
+                        <span class="tag">Образ жизни</span>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Email</div>
+                        <div class="info-value">anna.karapetyan@email.com</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Телефон</div>
+                        <div class="info-value">+374 77 123 456</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Город</div>
+                        <div class="info-value">Ереван</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Опыт работы</div>
+                        <div class="info-value">2-5 лет</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Доступность</div>
+                        <div class="info-value">Фриланс</div>
+                    </div>
+                </div>
+
+                <div class="edit-mode" id="basicInfoEdit">
+                    <div class="form-group">
+                        <label>Специализации</label>
+                        <div class="specialty-tags">
+                            <span class="tag" data-value="product-reviews">Обзоры продуктов</span>
+                            <span class="tag" data-value="unboxing">Распаковка</span>
+                            <span class="tag" data-value="beauty">Красота</span>
+                            <span class="tag" data-value="lifestyle">Образ жизни</span>
+                            <span class="tag" data-value="food">Еда и рестораны</span>
+                            <span class="tag" data-value="tech">Технологии</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editEmail">Email</label>
+                        <input type="email" id="editEmail" value="anna.karapetyan@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editPhone">Телефон</label>
+                        <input type="tel" id="editPhone" value="+374 77 123 456">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editCity">Город</label>
+                        <input type="text" id="editCity" value="Ереван">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editExperience">Опыт работы</label>
+                        <select id="editExperience">
+                            <option value="0-1">0-1 год</option>
+                            <option value="1-2">1-2 года</option>
+                            <option value="2-5" selected>2-5 лет</option>
+                            <option value="5+">5+ лет</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editAvailability">Доступность</label>
+                        <select id="editAvailability">
+                            <option value="full-time">Полная занятость</option>
+                            <option value="part-time">Частичная занятость</option>
+                            <option value="freelance" selected>Фриланс</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- О себе -->
+            <div class="content-section">
+                <h2 class="section-title">📝 О себе</h2>
+                
+                <div class="view-mode" id="aboutView">
+                    <div class="info-item">
+                        <div class="info-label">Биография</div>
+                        <div class="info-value">
+                            Привет! Я Анна, контент-креатор из Еревана. Специализируюсь на обзорах косметики и продуктов для красоты. 
+                            Создаю качественный контент уже более 3 лет. Люблю делиться честными отзывами и помогать людям делать правильный выбор.
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Оборудование</div>
+                        <div class="info-value">
+                            Canon EOS R6, Rode VideoMic Pro, LED-освещение, кольцевая лампа
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Тарифы</div>
+                        <div class="info-value">
+                            Простые видео: $50-80<br>
+                            Стандартные: $80-150<br>
+                            Премиум: $150-300
+                        </div>
+                    </div>
+                </div>
+
+                <div class="edit-mode" id="aboutEdit">
+                    <div class="form-group">
+                        <label for="editBio">Биография</label>
+                        <textarea id="editBio">Привет! Я Анна, контент-креатор из Еревана. Специализируюсь на обзорах косметики и продуктов для красоты. 
+Создаю качественный контент уже более 3 лет. Люблю делиться честными отзывами и помогать людям делать правильный выбор.</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editEquipment">Оборудование</label>
+                        <textarea id="editEquipment">Canon EOS R6, Rode VideoMic Pro, LED-освещение, кольцевая лампа</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editPricing">Тарифы</label>
+                        <textarea id="editPricing">Простые видео: $50-80
+Стандартные: $80-150
+Премиум: $150-300</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Портфолио -->
+        <div class="content-section">
+            <h2 class="section-title">🎬 Портфолио</h2>
+            
+            <div class="view-mode" id="portfolioView">
+                <div class="portfolio-grid">
+                    <div class="portfolio-item">
+                        <img src="https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Video+1" alt="Portfolio item">
+                        <div class="title">Обзор косметики</div>
+                    </div>
+                    <div class="portfolio-item">
+                        <img src="https://via.placeholder.com/300x200/06b6d4/ffffff?text=Video+2" alt="Portfolio item">
+                        <div class="title">Распаковка посылки</div>
+                    </div>
+                    <div class="portfolio-item">
+                        <img src="https://via.placeholder.com/300x200/10b981/ffffff?text=Video+3" alt="Portfolio item">
+                        <div class="title">Дневной макияж</div>
+                    </div>
+                    <div class="portfolio-item">
+                        <div class="placeholder">+</div>
+                        <div class="title">Добавить работу</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="edit-mode" id="portfolioEdit">
+                <div class="form-group">
+                    <label>Загрузить новые работы</label>
+                    <input type="file" multiple accept="image/*,video/*">
+                </div>
+                <div class="form-group">
+                    <label for="editPortfolioLinks">Ссылки на работы</label>
+                    <textarea id="editPortfolioLinks" placeholder="Ссылки на YouTube, Instagram, TikTok...">https://youtube.com/watch?v=example1
+https://instagram.com/p/example2
+https://tiktok.com/@username/video/example3</textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Заказы -->
+        <div class="orders-section">
+            <h2 class="section-title">📋 Мои заказы</h2>
+            
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Заказ</th>
+                        <th>Клиент</th>
+                        <th>Тип</th>
+                        <th>Статус</th>
+                        <th>Сумма</th>
+                        <th>Дедлайн</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>#CB2024001</strong></td>
+                        <td>TechCorp Armenia</td>
+                        <td>Обзор продукта</td>
+                        <td><span class="status-badge status-active">В работе</span></td>
+                        <td><strong>$120</strong></td>
+                        <td>25 дек 2024</td>
+                        <td>
+                            <button class="btn btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">👁️</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>#CB2024002</strong></td>
+                        <td>BeautyShop</td>
+                        <td>Распаковка</td>
+                        <td><span class="status-badge status-pending">Ожидает</span></td>
+                        <td><strong>$85</strong></td>
+                        <td>28 дек 2024</td>
+                        <td>
+                            <button class="btn btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">👁️</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>#CB2024003</strong></td>
+                        <td>FoodiePlace</td>
+                        <td>Обзор ресторана</td>
+                        <td><span class="status-badge status-completed">Завершен</span></td>
+                        <td><strong>$95</strong></td>
+                        <td>20 дек 2024</td>
+                        <td>
+                            <button class="btn btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">👁️</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        let isEditMode = false;
+
+        function toggleEditMode() {
+            isEditMode = !isEditMode;
+            
+            if (isEditMode) {
+                // Показать режим редактирования
+                document.querySelectorAll('.edit-mode').forEach(el => el.classList.add('active'));
+                document.querySelectorAll('.view-mode').forEach(el => el.classList.add('hidden'));
+                document.getElementById('editBtn').style.display = 'none';
+                document.getElementById('saveBtn').style.display = 'inline-flex';
+                document.getElementById('cancelBtn').style.display = 'inline-flex';
+            } else {
+                // Показать режим просмотра
+                document.querySelectorAll('.edit-mode').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('.view-mode').forEach(el => el.classList.remove('hidden'));
+                document.getElementById('editBtn').style.display = 'inline-flex';
+                document.getElementById('saveBtn').style.display = 'none';
+                document.getElementById('cancelBtn').style.display = 'none';
+            }
+        }
+
+        function saveProfile() {
+            // Здесь будет логика сохранения данных
+            alert('Профиль сохранен!');
+            toggleEditMode();
+        }
+
+        function cancelEdit() {
+            // Сбросить изменения
+            toggleEditMode();
+        }
+
+        // Обработка загрузки аватара
+        document.getElementById('avatarInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('avatarImage').src = e.target.result;
+                    document.getElementById('avatarImage').style.display = 'block';
+                    document.getElementById('avatarPlaceholder').style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Обработка специализаций в режиме редактирования
+        document.querySelectorAll('.edit-mode .tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                this.classList.toggle('selected');
+            });
+        });
+    </script>
+</body>
+</html>

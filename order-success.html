@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заказ создан - ContentBridge</title>
+    <style>
+        :root {
+            --primary: #06b6d4;
+            --primary-dark: #0891b2;
+            --secondary: #f59e0b;
+            --accent: #8b5cf6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --dark: #1f2937;
+            --light: #f8fafc;
+            --gray: #6b7280;
+            --border: #e5e7eb;
+            --bg-light: #f9fafb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .success-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            position: relative;
+        }
+
+        .success-header {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            color: white;
+            padding: 3rem 2rem;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        .success-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .success-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .success-content {
+            padding: 3rem 2rem;
+        }
+
+        .order-details {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .order-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--dark);
+        }
+
+        .detail-label {
+            color: var(--gray);
+        }
+
+        .detail-value {
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .next-steps {
+            margin-bottom: 2rem;
+        }
+
+        .steps-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .step-content p {
+            color: var(--gray);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(6, 182, 212, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--bg-light);
+            color: var(--dark);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .contact-info {
+            background: rgba(6, 182, 212, 0.05);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .contact-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .back-home {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .back-home:hover {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .success-container {
+                margin: 1rem;
+                border-radius: 16px;
+            }
+
+            .success-header {
+                padding: 2rem 1.5rem;
+            }
+
+            .success-content {
+                padding: 2rem 1.5rem;
+            }
+
+            .contact-links {
+                flex-direction: column;
+            }
+
+            .back-home {
+                position: static;
+                margin-bottom: 2rem;
+                display: inline-flex;
+                color: var(--primary);
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-home">
+        ← На главную
+    </a>
+
+    <div class="success-container">
+        <div class="success-header">
+            <div class="success-icon">✓</div>
+            <h1 class="success-title">Заказ успешно создан!</h1>
+            <p class="success-subtitle">Ваш заказ принят в работу. Мы уведомим вас о статусе.</p>
+        </div>
+
+        <div class="success-content">
+            <div class="order-details">
+                <div class="order-number" id="orderNumber">#ORD-2024-001</div>
+                
+                <div class="detail-item">
+                    <span class="detail-label">Креатор:</span>
+                    <span class="detail-value" id="orderCreator">Анна Петрова</span>
+                </div>
+                
+                <div class="detail-item">
+                    <span class="detail-label">Тип контента:</span>
+                    <span class="detail-value" id="orderType">Обзор продукта</span>
+                </div>
+                
+                <div class="detail-item">
+                    <span class="detail-label">Продукт:</span>
+                    <span class="detail-value" id="orderProduct">iPhone 15 Pro</span>
+                </div>
+                
+                <div class="detail-item">
+                    <span class="detail-label">Срок выполнения:</span>
+                    <span class="detail-value" id="orderDeadline">1 неделя</span>
+                </div>
+                
+                <div class="detail-item">
+                    <span class="detail-label">Бюджет:</span>
+                    <span class="detail-value" id="orderBudget">₽15,000</span>
+                </div>
+            </div>
+
+            <div class="next-steps">
+                <h3 class="steps-title">Что дальше?</h3>
+                
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Подтверждение заказа</h4>
+                        <p>Креатор получит уведомление и подтвердит готовность к работе в течение 24 часов</p>
+                    </div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Начало работы</h4>
+                        <p>После подтверждения креатор начнет работу над вашим проектом</p>
+                    </div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Отслеживание прогресса</h4>
+                        <p>Вы будете получать регулярные обновления о ходе выполнения заказа</p>
+                    </div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Получение результата</h4>
+                        <p>Готовый контент будет отправлен вам в указанные сроки</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-info">
+                <div class="contact-title">Нужна помощь?</div>
+                <div class="contact-links">
+                    <a href="https://wa.me/79001234567" class="contact-link" target="_blank">
+                        <span>📱</span>
+                        WhatsApp
+                    </a>
+                    <a href="https://t.me/contentbridge" class="contact-link" target="_blank">
+                        <span>✈️</span>
+                        Telegram
+                    </a>
+                    <a href="mailto:support@contentbridge.ru" class="contact-link">
+                        <span>📧</span>
+                        Email
+                    </a>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <a href="/client-dashboard.html" class="btn btn-primary">
+                    📊 Перейти в личный кабинет
+                </a>
+                <a href="/create-order.html" class="btn btn-secondary">
+                    ➕ Создать еще один заказ
+                </a>
+                <a href="/" class="btn btn-secondary">
+                    🏠 Вернуться на главную
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generate random order number
+        function generateOrderNumber() {
+            const year = new Date().getFullYear();
+            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            return `#ORD-${year}-${random}`;
+        }
+
+        // Load order data from localStorage or URL params
+        function loadOrderData() {
+            // Try to get order data from localStorage (if coming from create-order.html)
+            const orderData = localStorage.getItem('orderData');
+            
+            if (orderData) {
+                const data = JSON.parse(orderData);
+                
+                // Update order details
+                document.getElementById('orderCreator').textContent = data.creator || 'Анна Петрова';
+                document.getElementById('orderType').textContent = data.type || 'Обзор продукта';
+                document.getElementById('orderProduct').textContent = data.productName || 'iPhone 15 Pro';
+                document.getElementById('orderDeadline').textContent = data.deadline || '1 неделя';
+                document.getElementById('orderBudget').textContent = `₽${parseInt(data.budget || 15000).toLocaleString()}`;
+                
+                // Clear localStorage
+                localStorage.removeItem('orderData');
+            }
+            
+            // Generate and set order number
+            document.getElementById('orderNumber').textContent = generateOrderNumber();
+        }
+
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            loadOrderData();
+        });
+    </script>
+</body>
+</html>

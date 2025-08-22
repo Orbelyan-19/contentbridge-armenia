@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация креатора - ContentBridge Armenia</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-bg: #0a0a0a;
+            --secondary-bg: #111111;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --accent-primary: #8b5cf6;
+            --accent-secondary: #06b6d4;
+            --accent-tertiary: #10b981;
+            --accent-warning: #f59e0b;
+            --accent-danger: #ef4444;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --success-color: #22c55e;
+            --gradient-primary: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 50%, #10b981 100%);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Background Pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.05) 0%, transparent 50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .form-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .form-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .file-upload {
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .file-upload:hover {
+            border-color: var(--accent-primary);
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        .file-upload.dragover {
+            border-color: var(--accent-primary);
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .upload-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+
+        .upload-text {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-hint {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .file-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .file-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .file-item img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+
+        .file-name {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            word-break: break-word;
+        }
+
+        .remove-file {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: var(--accent-danger);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .specialty-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tag:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .tag.selected {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-secondary {
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: var(--border-color);
+            border-radius: 2px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .back-link a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .back-link a:hover {
+            color: var(--accent-primary);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .form-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">ContentBridge</div>
+            <p class="subtitle">Присоединяйтесь к нашей команде креаторов</p>
+        </div>
+
+        <div class="form-container">
+            <h1 class="form-title">Регистрация креатора</h1>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 25%;"></div>
+            </div>
+
+            <form id="creatorForm" action="https://formspree.io/f/mgvzgvag" method="POST">
+                <input type="hidden" name="_subject" value="New Creator Registration - ContentBridge Armenia">
+                <input type="hidden" name="_next" value="https://contentbridge-armenia.vercel.app/creator-success.html">
+
+                <!-- Личная информация -->
+                <div class="form-section">
+                    <h2 class="section-title">Личная информация</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">Имя *</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Фамилия *</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Телефон *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="instagram">Instagram аккаунт</label>
+                        <input type="text" id="instagram" name="instagram" placeholder="@username">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tiktok">TikTok аккаунт</label>
+                        <input type="text" id="tiktok" name="tiktok" placeholder="@username">
+                    </div>
+                </div>
+
+                <!-- Специализация -->
+                <div class="form-section">
+                    <h2 class="section-title">Специализация</h2>
+                    
+                    <div class="form-group">
+                        <label>Выберите специализации *</label>
+                        <div class="specialty-tags">
+                            <span class="tag" data-value="product-reviews">Обзоры продуктов</span>
+                            <span class="tag" data-value="unboxing">Распаковка</span>
+                            <span class="tag" data-value="beauty">Красота</span>
+                            <span class="tag" data-value="lifestyle">Образ жизни</span>
+                            <span class="tag" data-value="food">Еда и рестораны</span>
+                            <span class="tag" data-value="tech">Технологии</span>
+                            <span class="tag" data-value="fashion">Мода</span>
+                            <span class="tag" data-value="fitness">Фитнес</span>
+                            <span class="tag" data-value="travel">Путешествия</span>
+                            <span class="tag" data-value="education">Образование</span>
+                        </div>
+                        <input type="hidden" id="specialties" name="specialties" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="experience">Опыт работы (лет)</label>
+                        <select id="experience" name="experience">
+                            <option value="">Выберите опыт</option>
+                            <option value="0-1">0-1 год</option>
+                            <option value="1-2">1-2 года</option>
+                            <option value="2-5">2-5 лет</option>
+                            <option value="5+">5+ лет</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="followers">Количество подписчиков</label>
+                        <input type="number" id="followers" name="followers" placeholder="Например: 5000">
+                    </div>
+                </div>
+
+                <!-- О себе -->
+                <div class="form-section">
+                    <h2 class="section-title">О себе</h2>
+                    
+                    <div class="form-group">
+                        <label for="bio">Краткая биография *</label>
+                        <textarea id="bio" name="bio" placeholder="Расскажите о себе, своем опыте и стиле контента..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="equipment">Оборудование</label>
+                        <textarea id="equipment" name="equipment" placeholder="Какое оборудование используете для съемки? (камера, микрофон, освещение и т.д.)"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pricing">Тарифы</label>
+                        <textarea id="pricing" name="pricing" placeholder="Опишите ваши тарифы и условия работы..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Портфолио -->
+                <div class="form-section">
+                    <h2 class="section-title">Портфолио</h2>
+                    
+                    <div class="form-group">
+                        <label>Загрузите примеры работ</label>
+                        <div class="file-upload" id="fileUpload">
+                            <div class="upload-icon">📁</div>
+                            <div class="upload-text">Перетащите файлы сюда или кликните для выбора</div>
+                            <div class="upload-hint">Поддерживаются: JPG, PNG, MP4, MOV (макс. 10 файлов)</div>
+                            <input type="file" id="fileInput" multiple accept="image/*,video/*" style="display: none;">
+                        </div>
+                        <div class="file-preview" id="filePreview"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="portfolioLinks">Ссылки на работы</label>
+                        <textarea id="portfolioLinks" name="portfolioLinks" placeholder="Ссылки на ваши лучшие работы (YouTube, Instagram, TikTok и т.д.)"></textarea>
+                    </div>
+                </div>
+
+                <!-- Контактная информация -->
+                <div class="form-section">
+                    <h2 class="section-title">Контактная информация</h2>
+                    
+                    <div class="form-group">
+                        <label for="city">Город *</label>
+                        <input type="text" id="city" name="city" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="availability">Доступность</label>
+                        <select id="availability" name="availability">
+                            <option value="">Выберите доступность</option>
+                            <option value="full-time">Полная занятость</option>
+                            <option value="part-time">Частичная занятость</option>
+                            <option value="freelance">Фриланс</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="preferredContact">Предпочтительный способ связи</label>
+                        <select id="preferredContact" name="preferredContact">
+                            <option value="email">Email</option>
+                            <option value="phone">Телефон</option>
+                            <option value="whatsapp">WhatsApp</option>
+                            <option value="telegram">Telegram</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='/'">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Отправить заявку</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="back-link">
+            <a href="/">← Вернуться на главную</a>
+        </div>
+    </div>
+
+    <script>
+        // Progress bar
+        function updateProgress() {
+            const form = document.getElementById('creatorForm');
+            const inputs = form.querySelectorAll('input[required], textarea[required], select[required]');
+            const filled = Array.from(inputs).filter(input => input.value.trim() !== '').length;
+            const progress = (filled / inputs.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // Specialty tags
+        const tags = document.querySelectorAll('.tag');
+        const specialtiesInput = document.getElementById('specialties');
+        let selectedSpecialties = [];
+
+        tags.forEach(tag => {
+            tag.addEventListener('click', () => {
+                const value = tag.dataset.value;
+                if (tag.classList.contains('selected')) {
+                    tag.classList.remove('selected');
+                    selectedSpecialties = selectedSpecialties.filter(s => s !== value);
+                } else {
+                    tag.classList.add('selected');
+                    selectedSpecialties.push(value);
+                }
+                specialtiesInput.value = selectedSpecialties.join(',');
+                updateProgress();
+            });
+        });
+
+        // File upload
+        const fileUpload = document.getElementById('fileUpload');
+        const fileInput = document.getElementById('fileInput');
+        const filePreview = document.getElementById('filePreview');
+        let uploadedFiles = [];
+
+        fileUpload.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileUpload.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUpload.classList.add('dragover');
+        });
+
+        fileUpload.addEventListener('dragleave', () => {
+            fileUpload.classList.remove('dragover');
+        });
+
+        fileUpload.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUpload.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files);
+            handleFiles(files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            handleFiles(files);
+        });
+
+        function handleFiles(files) {
+            if (uploadedFiles.length + files.length > 10) {
+                alert('Максимум 10 файлов');
+                return;
+            }
+
+            files.forEach(file => {
+                if (file.size > 50 * 1024 * 1024) { // 50MB limit
+                    alert(`Файл ${file.name} слишком большой. Максимум 50MB`);
+                    return;
+                }
+
+                const fileItem = {
+                    file: file,
+                    id: Date.now() + Math.random()
+                };
+                uploadedFiles.push(fileItem);
+                displayFile(fileItem);
+            });
+        }
+
+        function displayFile(fileItem) {
+            const div = document.createElement('div');
+            div.className = 'file-item';
+            div.innerHTML = `
+                ${fileItem.file.type.startsWith('image/') 
+                    ? `<img src="${URL.createObjectURL(fileItem.file)}" alt="${fileItem.file.name}">`
+                    : `<div style="height: 100px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); border-radius: 6px; margin-bottom: 0.5rem;">🎥</div>`
+                }
+                <div class="file-name">${fileItem.file.name}</div>
+                <button type="button" class="remove-file" onclick="removeFile(${fileItem.id})">×</button>
+            `;
+            filePreview.appendChild(div);
+        }
+
+        function removeFile(id) {
+            uploadedFiles = uploadedFiles.filter(f => f.id !== id);
+            filePreview.innerHTML = '';
+            uploadedFiles.forEach(displayFile);
+        }
+
+        // Form validation and progress
+        const formInputs = document.querySelectorAll('input, textarea, select');
+        formInputs.forEach(input => {
+            input.addEventListener('input', updateProgress);
+            input.addEventListener('change', updateProgress);
+        });
+
+        // Form submission
+        document.getElementById('creatorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate specialties
+            if (selectedSpecialties.length === 0) {
+                alert('Пожалуйста, выберите хотя бы одну специализацию');
+                return;
+            }
+
+            // Add files to form data
+            const formData = new FormData(this);
+            uploadedFiles.forEach(fileItem => {
+                formData.append('portfolio_files', fileItem.file);
+            });
+
+            // Submit form
+            fetch(this.action, {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                if (response.ok) {
+                    window.location.href = this.querySelector('input[name="_next"]').value;
+                } else {
+                    alert('Ошибка при отправке формы. Попробуйте еще раз.');
+                }
+            }).catch(error => {
+                alert('Ошибка при отправке формы. Попробуйте еще раз.');
+            });
+        });
+
+        // Initialize progress
+        updateProgress();
+    </script>
+</body>
+</html>

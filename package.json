@@ -1,0 +1,36 @@
+{
+  "name": "contentbridge-armenia",
+  "version": "1.0.0",
+  "description": "Content Bridge Armenia - платформа для заказа видео-контента у креаторов",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server . -p 3000 -o",
+    "dev": "npx http-server . -p 3000 -o --cors",
+    "build": "echo 'Static HTML project - no build required'",
+    "deploy": "git add . && git commit -m 'Auto-deploy update' && git push",
+    "deploy:gh": "npx gh-pages -d .",
+    "lint": "npx htmlhint *.html",
+    "format": "npx prettier --write *.html *.css *.js",
+    "test": "echo 'No tests configured'"
+  },
+  "keywords": [
+    "content-creators",
+    "video-reviews",
+    "armenia",
+    "marketing",
+    "influencer"
+  ],
+  "author": "Content Bridge Armenia",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "gh-pages": "^6.1.0",
+    "htmlhint": "^1.1.4",
+    "prettier": "^3.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/contentbridge-armenia.git"
+  },
+  "homepage": "https://yourusername.github.io/contentbridge-armenia"
+}
