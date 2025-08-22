@@ -33,7 +33,6 @@
             --border-color: rgba(255, 255, 255, 0.1);
             --success-color: #22c55e;
             --gradient-primary: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 50%, #10b981 100%);
-            --shadow-glow: 0 0 50px rgba(139, 92, 246, 0.3);
         }
 
         body {
@@ -41,6 +40,7 @@
             background: var(--primary-bg);
             color: var(--text-primary);
             overflow-x: hidden;
+            min-height: 100vh;
         }
 
         /* Background Pattern */
@@ -58,22 +58,45 @@
             pointer-events: none;
         }
 
+        /* Mobile menu toggle */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1002;
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            backdrop-filter: blur(20px);
+        }
+
         /* Layout */
         .admin-container {
-            display: grid;
-            grid-template-columns: 280px 1fr;
+            display: flex;
             min-height: 100vh;
         }
 
         /* Sidebar */
         .sidebar {
+            width: 280px;
             background: var(--secondary-bg);
             border-right: 1px solid var(--border-color);
             padding: 2rem 0;
             position: fixed;
             height: 100vh;
-            width: 280px;
             overflow-y: auto;
+            left: 0;
+            top: 0;
+            transition: left 0.3s ease;
+            z-index: 1001;
+        }
+
+        .sidebar.hidden {
+            left: -280px;
         }
 
         .logo {
@@ -131,13 +154,23 @@
         .nav-icon {
             margin-right: 0.75rem;
             font-size: 1.2rem;
+            width: 1.5rem;
+            text-align: center;
         }
 
         /* Main Content */
         .main-content {
+            flex: 1;
             margin-left: 280px;
             padding: 2rem;
             min-height: 100vh;
+            width: calc(100% - 280px);
+            transition: margin-left 0.3s ease, width 0.3s ease;
+        }
+
+        .main-content.full-width {
+            margin-left: 0;
+            width: 100%;
         }
 
         /* Header */
@@ -148,6 +181,8 @@
             margin-bottom: 3rem;
             padding-bottom: 2rem;
             border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
         .page-title {
@@ -176,20 +211,32 @@
             font-weight: 700;
         }
 
-        /* Stats Cards */
+        /* Stats Grid - Optimized for wide screens */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
             margin-bottom: 3rem;
+        }
+
+        @media (min-width: 1400px) {
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (min-width: 1800px) {
+            .stats-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
         }
 
         .stat-card {
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
             border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 2rem;
+            border-radius: 16px;
+            padding: 1.5rem;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
@@ -206,8 +253,8 @@
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(139, 92, 246, 0.2);
         }
 
         .stat-header {
@@ -220,15 +267,17 @@
         .stat-title {
             color: var(--text-secondary);
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .stat-icon {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
         }
 
         .stat-value {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 900;
             color: var(--text-primary);
             margin-bottom: 0.5rem;
@@ -252,7 +301,7 @@
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
             border: 1px solid var(--border-color);
-            border-radius: 20px;
+            border-radius: 16px;
             padding: 2rem;
             margin-bottom: 2rem;
         }
@@ -262,6 +311,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
         .section-title {
@@ -270,29 +321,35 @@
             color: var(--text-primary);
         }
 
-        /* Tables */
+        /* Tables - Optimized for wide screens */
         .table-container {
             overflow-x: auto;
+            margin: 0 -2rem;
+            padding: 0 2rem;
         }
 
         .data-table {
             width: 100%;
+            min-width: 800px;
             border-collapse: collapse;
             margin-top: 1rem;
         }
 
         .data-table th,
         .data-table td {
-            padding: 1rem;
+            padding: 1rem 0.75rem;
             text-align: left;
             border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
         }
 
         .data-table th {
             background: rgba(255, 255, 255, 0.05);
             font-weight: 600;
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .data-table tr:hover {
@@ -303,9 +360,11 @@
         .status-badge {
             padding: 0.4rem 0.8rem;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
             display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .status-pending {
@@ -331,7 +390,7 @@
         /* Buttons */
         .btn {
             padding: 0.7rem 1.5rem;
-            border-radius: 12px;
+            border-radius: 8px;
             border: none;
             font-weight: 600;
             cursor: pointer;
@@ -341,6 +400,7 @@
             align-items: center;
             gap: 0.5rem;
             font-size: 0.9rem;
+            line-height: 1;
         }
 
         .btn-primary {
@@ -365,234 +425,8 @@
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
-        }
-
-        /* Filters */
-        .filters {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .filter-label {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            font-weight: 600;
-        }
-
-        .filter-select,
-        .filter-input {
-            padding: 0.7rem;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background: var(--glass-bg);
-            color: var(--text-primary);
-            backdrop-filter: blur(10px);
-        }
-
-        .filter-select:focus,
-        .filter-input:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
-        }
-
-        /* Charts */
-        .chart-container {
-            height: 300px;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 12px;
-            padding: 1rem;
-            margin-top: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--border-color);
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: var(--secondary-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 2rem;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .close-btn:hover {
-            background: var(--glass-bg);
-            color: var(--text-primary);
-        }
-
-        /* Form Elements */
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .form-input,
-        .form-textarea,
-        .form-select {
-            width: 100%;
-            padding: 1rem;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            background: var(--glass-bg);
-            color: var(--text-primary);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .form-input:focus,
-        .form-textarea:focus,
-        .form-select:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
-        }
-
-        /* Tabs */
-        .tab-navigation {
-            display: flex;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 2rem;
-        }
-
-        .tab-btn {
-            padding: 1rem 2rem;
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-weight: 600;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .tab-btn.active {
-            color: var(--text-primary);
-            border-bottom-color: var(--accent-primary);
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .admin-container {
-                grid-template-columns: 1fr;
-            }
-
-            .sidebar {
-                position: fixed;
-                left: -280px;
-                transition: left 0.3s ease;
-                z-index: 1000;
-            }
-
-            .sidebar.open {
-                left: 0;
-            }
-
-            .main-content {
-                margin-left: 0;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--secondary-bg);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent-primary);
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .animate-in {
-            animation: fadeIn 0.5s ease-out;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
         }
 
         /* Action buttons */
@@ -604,7 +438,7 @@
         .action-btn {
             width: 32px;
             height: 32px;
-            border-radius: 8px;
+            border-radius: 6px;
             border: none;
             cursor: pointer;
             display: flex;
@@ -615,7 +449,7 @@
         }
 
         .action-btn:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
 
         .action-view {
@@ -633,36 +467,217 @@
             color: var(--accent-danger);
         }
 
-        /* Revenue chart styles */
+        /* Tab system */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Charts */
+        .chart-container {
+            height: 250px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+        }
+
         .revenue-chart {
             background: var(--glass-bg);
             border-radius: 12px;
             padding: 1rem;
-            height: 200px;
+            height: 180px;
             display: flex;
             align-items: end;
             gap: 0.5rem;
             margin-top: 1rem;
+            justify-content: space-between;
         }
 
         .chart-bar {
             background: var(--gradient-primary);
             border-radius: 4px 4px 0 0;
             min-width: 20px;
+            flex: 1;
+            max-width: 40px;
             transition: all 0.3s ease;
             cursor: pointer;
         }
 
         .chart-bar:hover {
             opacity: 0.8;
-            transform: scaleY(1.05);
+            transform: scaleY(1.02);
+        }
+
+        /* User profile in table */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .profile-handle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .sidebar {
+                left: -280px;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 1rem;
+            }
+
+            .main-content.sidebar-open {
+                margin-left: 0;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .header {
+                margin-bottom: 2rem;
+                padding-bottom: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 0.75rem 0.5rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        /* Wide screen optimizations */
+        @media (min-width: 1600px) {
+            .admin-container {
+                max-width: none;
+            }
+
+            .main-content {
+                padding: 3rem;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 1.2rem 1rem;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--secondary-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-primary);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Overlay for mobile menu */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
         }
     </style>
 </head>
 <body>
+    <!-- Mobile Menu Toggle -->
+    <button class="menu-toggle" onclick="toggleSidebar()">
+        <span style="font-size: 1.2rem;">☰</span>
+    </button>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+
     <div class="admin-container">
         <!-- Sidebar -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebar">
             <div class="logo">
                 <h1>ContentBridge</h1>
                 <p>Admin Panel</p>
@@ -671,49 +686,43 @@
             <nav>
                 <ul class="nav-menu">
                     <li class="nav-item">
-                        <a href="#" class="nav-link active" onclick="showTab('dashboard')">
+                        <a href="#" class="nav-link active" onclick="showTab('dashboard', this)">
                             <span class="nav-icon">📊</span>
                             Dashboard
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="showTab('orders')">
+                        <a href="#" class="nav-link" onclick="showTab('orders', this)">
                             <span class="nav-icon">📋</span>
                             Orders
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="showTab('creators')">
+                        <a href="#" class="nav-link" onclick="showTab('creators', this)">
                             <span class="nav-icon">👥</span>
                             Creators
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="showTab('clients')">
+                        <a href="#" class="nav-link" onclick="showTab('clients', this)">
                             <span class="nav-icon">🏢</span>
                             Clients
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="showTab('analytics')">
+                        <a href="#" class="nav-link" onclick="showTab('analytics', this)">
                             <span class="nav-icon">📈</span>
                             Analytics
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="showTab('finances')">
+                        <a href="#" class="nav-link" onclick="showTab('finances', this)">
                             <span class="nav-icon">💰</span>
                             Finances
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="showTab('moderation')">
-                            <span class="nav-icon">🛡️</span>
-                            Moderation
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="showTab('settings')">
+                        <a href="#" class="nav-link" onclick="showTab('settings', this)">
                             <span class="nav-icon">⚙️</span>
                             Settings
                         </a>
@@ -723,7 +732,7 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="main-content">
+        <main class="main-content" id="mainContent">
             <!-- Header -->
             <header class="header">
                 <h1 class="page-title" id="pageTitle">Dashboard</h1>
@@ -739,7 +748,7 @@
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-header">
-                            <span class="stat-title">TOTAL ORDERS</span>
+                            <span class="stat-title">Total Orders</span>
                             <span class="stat-icon">📋</span>
                         </div>
                         <div class="stat-value">2,347</div>
@@ -748,7 +757,7 @@
 
                     <div class="stat-card">
                         <div class="stat-header">
-                            <span class="stat-title">ACTIVE CREATORS</span>
+                            <span class="stat-title">Active Creators</span>
                             <span class="stat-icon">👥</span>
                         </div>
                         <div class="stat-value">524</div>
@@ -757,7 +766,7 @@
 
                     <div class="stat-card">
                         <div class="stat-header">
-                            <span class="stat-title">MONTHLY REVENUE</span>
+                            <span class="stat-title">Monthly Revenue</span>
                             <span class="stat-icon">💰</span>
                         </div>
                         <div class="stat-value">$47,892</div>
@@ -766,7 +775,7 @@
 
                     <div class="stat-card">
                         <div class="stat-header">
-                            <span class="stat-title">COMPLETION RATE</span>
+                            <span class="stat-title">Completion Rate</span>
                             <span class="stat-icon">✅</span>
                         </div>
                         <div class="stat-value">96.8%</div>
@@ -778,7 +787,7 @@
                 <div class="content-section">
                     <div class="section-header">
                         <h2 class="section-title">Recent Orders</h2>
-                        <button class="btn btn-primary" onclick="showTab('orders')">View All</button>
+                        <button class="btn btn-primary" onclick="showTab('orders')">View All Orders</button>
                     </div>
                     
                     <div class="table-container">
@@ -792,35 +801,54 @@
                                     <th>Status</th>
                                     <th>Amount</th>
                                     <th>Date</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>#CB2024001</td>
+                                    <td><strong>#CB2024001</strong></td>
                                     <td>TechCorp Armenia</td>
                                     <td>Anna Karapetyan</td>
                                     <td>Product Review</td>
                                     <td><span class="status-badge status-active">In Progress</span></td>
-                                    <td>$120</td>
+                                    <td><strong>$120</strong></td>
                                     <td>Today</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-btn action-view" title="View">👁️</button>
+                                            <button class="action-btn action-edit" title="Edit">✏️</button>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td>#CB2024002</td>
+                                    <td><strong>#CB2024002</strong></td>
                                     <td>BeautyShop</td>
                                     <td>Mger Avagyan</td>
                                     <td>Unboxing</td>
                                     <td><span class="status-badge status-pending">Pending</span></td>
-                                    <td>$85</td>
+                                    <td><strong>$85</strong></td>
                                     <td>Yesterday</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-btn action-view" title="View">👁️</button>
+                                            <button class="action-btn action-edit" title="Edit">✏️</button>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td>#CB2024003</td>
+                                    <td><strong>#CB2024003</strong></td>
                                     <td>FoodiePlace</td>
                                     <td>Sophie Mkrtchyan</td>
                                     <td>Restaurant Review</td>
                                     <td><span class="status-badge status-completed">Completed</span></td>
-                                    <td>$95</td>
+                                    <td><strong>$95</strong></td>
                                     <td>2 days ago</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-btn action-view" title="View">👁️</button>
+                                            <button class="action-btn action-edit" title="Edit">✏️</button>
+                                        </div>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -848,38 +876,7 @@
                 <div class="content-section">
                     <div class="section-header">
                         <h2 class="section-title">Order Management</h2>
-                        <button class="btn btn-primary" onclick="openModal('orderModal')">+ New Order</button>
-                    </div>
-
-                    <!-- Filters -->
-                    <div class="filters">
-                        <div class="filter-group">
-                            <label class="filter-label">Status</label>
-                            <select class="filter-select">
-                                <option>All Status</option>
-                                <option>Pending</option>
-                                <option>In Progress</option>
-                                <option>Completed</option>
-                                <option>Cancelled</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label class="filter-label">Creator</label>
-                            <select class="filter-select">
-                                <option>All Creators</option>
-                                <option>Anna Karapetyan</option>
-                                <option>Mger Avagyan</option>
-                                <option>Sophie Mkrtchyan</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label class="filter-label">Date Range</label>
-                            <input type="date" class="filter-input">
-                        </div>
-                        <div class="filter-group">
-                            <label class="filter-label">Search</label>
-                            <input type="text" class="filter-input" placeholder="Order ID, Client...">
-                        </div>
+                        <button class="btn btn-primary">Export Data</button>
                     </div>
 
                     <div class="table-container">
@@ -898,673 +895,33 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>#CB2024001</td>
+                                    <td><strong>#CB2024001</strong></td>
                                     <td>TechCorp Armenia</td>
                                     <td>Anna Karapetyan</td>
                                     <td>Product Review</td>
-                                    <td>$120</td>
+                                    <td><strong>$120</strong></td>
                                     <td><span class="status-badge status-active">In Progress</span></td>
                                     <td>Dec 25, 2024</td>
                                     <td>
                                         <div class="action-buttons">
-                                            <button class="action-btn action-view" title="View">👁️</button>
-                                            <button class="action-btn action-edit" title="Edit">✏️</button>
-                                            <button class="action-btn action-delete" title="Delete">🗑️</button>
+                                            <button class="action-btn action-view" title="View Details">👁️</button>
+                                            <button class="action-btn action-edit" title="Edit Order">✏️</button>
+                                            <button class="action-btn action-delete" title="Cancel Order">🗑️</button>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>#CB2024002</td>
+                                    <td><strong>#CB2024002</strong></td>
                                     <td>BeautyShop</td>
                                     <td>Mger Avagyan</td>
                                     <td>Unboxing</td>
-                                    <td>$85</td>
+                                    <td><strong>$85</strong></td>
                                     <td><span class="status-badge status-pending">Pending</span></td>
                                     <td>Dec 28, 2024</td>
                                     <td>
                                         <div class="action-buttons">
-                                            <button class="action-btn action-view" title="View">👁️</button>
-                                            <button class="action-btn action-edit" title="Edit">✏️</button>
-                                            <button class="action-btn action-delete" title="Delete">🗑️</button>
+                                            <button class="action-btn action-view" title="View Details">👁️</button>
+                                            <button class="action-btn action-edit" title="Edit Order">✏️</button>
+                                            <button class="action-btn action-delete" title="Cancel Order">🗑️</button>
                                         </div>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td>#CB2024003</td>
-                                    <td>FoodiePlace</td>
-                                    <td>Sophie Mkrtchyan</td>
-                                    <td>Restaurant Review</td>
-                                    <td>$95</td>
-                                    <td><span class="status-badge status-completed">Completed</span></td>
-                                    <td>Dec 20, 2024</td>
-                                    <td>
-                                        <div class="action-buttons">
-                                            <button class="action-btn action-view" title="View">👁️</button>
-                                            <button class="action-btn action-edit" title="Edit">✏️</button>
-                                            <button class="action-btn action-delete" title="Delete">🗑️</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Creators Tab -->
-            <div id="creators" class="tab-content">
-                <div class="content-section">
-                    <div class="section-header">
-                        <h2 class="section-title">Creator Management</h2>
-                        <button class="btn btn-primary" onclick="openModal('creatorModal')">+ Add Creator</button>
-                    </div>
-
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Creator</th>
-                                    <th>Specialization</th>
-                                    <th>Followers</th>
-                                    <th>Rating</th>
-                                    <th>Completed Orders</th>
-                                    <th>Revenue</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div style="display: flex; align-items: center; gap: 1rem;">
-                                            <div style="width: 40px; height: 40px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700;">AK</div>
-                                            <div>
-                                                <div style="font-weight: 600;">Anna Karapetyan</div>
-                                                <div style="font-size: 0.8rem; color: var(--text-muted);">@anna_beauty</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>Beauty • Lifestyle</td>
-                                    <td>12.5K</td>
-                                    <td>4.9 ⭐</td>
-                                    <td>89</td>
-                                    <td>$7,120</td>
-                                    <td><span class="status-badge status-active">Active</span></td>
-                                    <td>
-                                        <div class="action-buttons">
-                                            <button class="action-btn action-view" title="View">👁️</button>
-                                            <button class="action-btn action-edit" title="Edit">✏️</button>
-                                            <button class="action-btn action-delete" title="Delete">🗑️</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div style="display: flex; align-items: center; gap: 1rem;">
-                                            <div style="width: 40px; height: 40px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700;">MA</div>
-                                            <div>
-                                                <div style="font-weight: 600;">Mger Avagyan</div>
-                                                <div style="font-size: 0.8rem; color: var(--text-muted);">@mger_tech</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>Tech • Gadgets</td>
-                                    <td>8.2K</td>
-                                    <td>5.0 ⭐</td>
-                                    <td>127</td>
-                                    <td>$15,240</td>
-                                    <td><span class="status-badge status-active">Active</span></td>
-                                    <td>
-                                        <div class="action-buttons">
-                                            <button class="action-btn action-view" title="View">👁️</button>
-                                            <button class="action-btn action-edit" title="Edit">✏️</button>
-                                            <button class="action-btn action-delete" title="Delete">🗑️</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Clients Tab -->
-            <div id="clients" class="tab-content">
-                <div class="content-section">
-                    <div class="section-header">
-                        <h2 class="section-title">Client Management</h2>
-                        <button class="btn btn-primary">+ Add Client</button>
-                    </div>
-
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Client</th>
-                                    <th>Contact</th>
-                                    <th>Orders</th>
-                                    <th>Total Spent</th>
-                                    <th>Last Order</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>TechCorp Armenia</td>
-                                    <td>contact@techcorp.am</td>
-                                    <td>15</td>
-                                    <td>$1,800</td>
-                                    <td>Dec 22, 2024</td>
-                                    <td><span class="status-badge status-active">Active</span></td>
-                                    <td>
-                                        <div class="action-buttons">
-                                            <button class="action-btn action-view" title="View">👁️</button>
-                                            <button class="action-btn action-edit" title="Edit">✏️</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>BeautyShop</td>
-                                    <td>info@beautyshop.am</td>
-                                    <td>8</td>
-                                    <td>$680</td>
-                                    <td>Dec 20, 2024</td>
-                                    <td><span class="status-badge status-active">Active</span></td>
-                                    <td>
-                                        <div class="action-buttons">
-                                            <button class="action-btn action-view" title="View">👁️</button>
-                                            <button class="action-btn action-edit" title="Edit">✏️</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Analytics Tab -->
-            <div id="analytics" class="tab-content">
-                <div class="content-section">
-                    <h2 class="section-title">Analytics & Reports</h2>
-                    
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-header">
-                                <span class="stat-title">CONVERSION RATE</span>
-                                <span class="stat-icon">📊</span>
-                            </div>
-                            <div class="stat-value">3.4%</div>
-                            <div class="stat-change positive">+0.8% from last month</div>
-                        </div>
-
-                        <div class="stat-card">
-                            <div class="stat-header">
-                                <span class="stat-title">AVG ORDER VALUE</span>
-                                <span class="stat-icon">💵</span>
-                            </div>
-                            <div class="stat-value">$104</div>
-                            <div class="stat-change positive">+$12 from last month</div>
-                        </div>
-
-                        <div class="stat-card">
-                            <div class="stat-header">
-                                <span class="stat-title">CLIENT RETENTION</span>
-                                <span class="stat-icon">🔄</span>
-                            </div>
-                            <div class="stat-value">68%</div>
-                            <div class="stat-change positive">+5% from last month</div>
-                        </div>
-
-                        <div class="stat-card">
-                            <div class="stat-header">
-                                <span class="stat-title">CREATOR SATISFACTION</span>
-                                <span class="stat-icon">😊</span>
-                            </div>
-                            <div class="stat-value">4.7</div>
-                            <div class="stat-change positive">+0.2 from last month</div>
-                        </div>
-                    </div>
-
-                    <div class="chart-container">
-                        <div style="text-align: center; color: var(--text-muted);">
-                            📈 Advanced Analytics Dashboard<br>
-                            <small>Revenue trends, user behavior, and performance metrics</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Finances Tab -->
-            <div id="finances" class="tab-content">
-                <div class="content-section">
-                    <div class="section-header">
-                        <h2 class="section-title">Financial Management</h2>
-                        <button class="btn btn-primary">Process Payouts</button>
-                    </div>
-
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-header">
-                                <span class="stat-title">PENDING PAYOUTS</span>
-                                <span class="stat-icon">⏳</span>
-                            </div>
-                            <div class="stat-value">$12,450</div>
-                            <div class="stat-change">24 creators</div>
-                        </div>
-
-                        <div class="stat-card">
-                            <div class="stat-header">
-                                <span class="stat-title">PLATFORM FEE (25%)</span>
-                                <span class="stat-icon">💰</span>
-                            </div>
-                            <div class="stat-value">$11,973</div>
-                            <div class="stat-change positive">This month</div>
-                        </div>
-
-                        <div class="stat-card">
-                            <div class="stat-header">
-                                <span class="stat-title">ESCROW BALANCE</span>
-                                <span class="stat-icon">🔒</span>
-                            </div>
-                            <div class="stat-value">$8,320</div>
-                            <div class="stat-change">15 active orders</div>
-                        </div>
-                    </div>
-
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Creator</th>
-                                    <th>Completed Orders</th>
-                                    <th>Gross Revenue</th>
-                                    <th>Platform Fee (25%)</th>
-                                    <th>Net Payout</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Anna Karapetyan</td>
-                                    <td>12</td>
-                                    <td>$1,440</td>
-                                    <td>$360</td>
-                                    <td>$1,080</td>
-                                    <td><span class="status-badge status-pending">Pending</span></td>
-                                    <td>
-                                        <button class="btn btn-success">Pay Out</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Mger Avagyan</td>
-                                    <td>8</td>
-                                    <td>$960</td>
-                                    <td>$240</td>
-                                    <td>$720</td>
-                                    <td><span class="status-badge status-completed">Paid</span></td>
-                                    <td>
-                                        <button class="btn btn-secondary">View</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Moderation Tab -->
-            <div id="moderation" class="tab-content">
-                <div class="content-section">
-                    <div class="section-header">
-                        <h2 class="section-title">Content Moderation</h2>
-                        <button class="btn btn-primary">Review Queue</button>
-                    </div>
-
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Content</th>
-                                    <th>Creator</th>
-                                    <th>Order ID</th>
-                                    <th>Type</th>
-                                    <th>Submitted</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div style="display: flex; align-items: center; gap: 1rem;">
-                                            <div style="width: 60px; height: 40px; background: var(--glass-bg); border-radius: 8px; display: flex; align-items: center; justify-content: center;">📹</div>
-                                            <span>iPhone Review Video</span>
-                                        </div>
-                                    </td>
-                                    <td>Anna Karapetyan</td>
-                                    <td>#CB2024001</td>
-                                    <td>Product Review</td>
-                                    <td>2 hours ago</td>
-                                    <td><span class="status-badge status-pending">Pending Review</span></td>
-                                    <td>
-                                        <div class="action-buttons">
-                                            <button class="btn btn-success">Approve</button>
-                                            <button class="btn btn-danger">Reject</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Settings Tab -->
-            <div id="settings" class="tab-content">
-                <div class="content-section">
-                    <h2 class="section-title">Platform Settings</h2>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Platform Commission (%)</label>
-                        <input type="number" class="form-input" value="25" style="max-width: 200px;">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Minimum Order Value ($)</label>
-                        <input type="number" class="form-input" value="30" style="max-width: 200px;">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Rush Order Surcharge (%)</label>
-                        <input type="number" class="form-input" value="50" style="max-width: 200px;">
-                    </div>
-
-                    <button class="btn btn-primary">Save Settings</button>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <!-- Modals -->
-    <div id="orderModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Create New Order</h3>
-                <button class="close-btn" onclick="closeModal('orderModal')">&times;</button>
-            </div>
-            
-            <form>
-                <div class="form-group">
-                    <label class="form-label">Client</label>
-                    <select class="form-select">
-                        <option>Select Client</option>
-                        <option>TechCorp Armenia</option>
-                        <option>BeautyShop</option>
-                        <option>FoodiePlace</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Creator</label>
-                    <select class="form-select">
-                        <option>Select Creator</option>
-                        <option>Anna Karapetyan</option>
-                        <option>Mger Avagyan</option>
-                        <option>Sophie Mkrtchyan</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Video Type</label>
-                    <select class="form-select">
-                        <option>Product Review</option>
-                        <option>Unboxing</option>
-                        <option>Restaurant Review</option>
-                        <option>Beauty Content</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Budget ($)</label>
-                    <input type="number" class="form-input" placeholder="120">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Description</label>
-                    <textarea class="form-textarea" rows="4" placeholder="Project details..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Deadline</label>
-                    <input type="date" class="form-input">
-                </div>
-
-                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                    <button type="submit" class="btn btn-primary">Create Order</button>
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('orderModal')">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        <!-- Добавляем в начало <script> секции -->
-<script>
-// Простая защита паролем
-function checkAuth() {
-    const password = localStorage.getItem('admin_auth');
-    if (password !== 'contentbridge2024') {
-        const userPassword = prompt('Enter admin password:');
-        if (userPassword === 'contentbridge2024') {
-            localStorage.setItem('admin_auth', userPassword);
-        } else {
-            alert('Access denied');
-            window.location.href = '/';
-            return false;
-        }
-    }
-    return true;
-}
-
-// Проверяем при загрузке страницы
-document.addEventListener('DOMContentLoaded', function() {
-    if (!checkAuth()) return;
-    
-    // Остальной код...
-});
-</script>
-        // Tab switching
-        function showTab(tabName) {
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Remove active class from all nav links
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.classList.remove('active');
-            });
-            
-            // Show selected tab
-            document.getElementById(tabName).classList.add('active');
-            
-            // Add active class to clicked nav link
-            event.target.classList.add('active');
-            
-            // Update page title
-            const titles = {
-                'dashboard': 'Dashboard',
-                'orders': 'Order Management',
-                'creators': 'Creator Management',
-                'clients': 'Client Management',
-                'analytics': 'Analytics & Reports',
-                'finances': 'Financial Management',
-                'moderation': 'Content Moderation',
-                'settings': 'Platform Settings'
-            };
-            
-            document.getElementById('pageTitle').textContent = titles[tabName] || 'Dashboard';
-        }
-
-        // Modal functions
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.add('active');
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-        }
-
-        // Close modal when clicking outside
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('modal')) {
-                e.target.classList.remove('active');
-            }
-        });
-
-        // Sample data for testing
-        const sampleData = {
-            orders: [
-                { id: 'CB2024001', client: 'TechCorp Armenia', creator: 'Anna Karapetyan', type: 'Product Review', status: 'active', amount: 120 },
-                { id: 'CB2024002', client: 'BeautyShop', creator: 'Mger Avagyan', type: 'Unboxing', status: 'pending', amount: 85 },
-                { id: 'CB2024003', client: 'FoodiePlace', creator: 'Sophie Mkrtchyan', type: 'Restaurant Review', status: 'completed', amount: 95 }
-            ],
-            creators: [
-                { name: 'Anna Karapetyan', specialty: 'Beauty • Lifestyle', followers: '12.5K', rating: 4.9, orders: 89, revenue: 7120 },
-                { name: 'Mger Avagyan', specialty: 'Tech • Gadgets', followers: '8.2K', rating: 5.0, orders: 127, revenue: 15240 }
-            ]
-        };
-
-        // Initialize dashboard
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add fade-in animation to stat cards
-            document.querySelectorAll('.stat-card').forEach((card, index) => {
-                setTimeout(() => {
-                    card.classList.add('animate-in');
-                }, index * 100);
-            });
-
-            // Add hover effects to chart bars
-            document.querySelectorAll('.chart-bar').forEach(bar => {
-                bar.addEventListener('mouseenter', function() {
-                    this.style.transform = 'scaleY(1.05)';
-                });
-                
-                bar.addEventListener('mouseleave', function() {
-                    this.style.transform = 'scaleY(1)';
-                });
-            });
-        });
-
-        // Real-time updates simulation
-        function updateStats() {
-            // Simulate real-time stat updates
-            const statValues = document.querySelectorAll('.stat-value');
-            statValues.forEach(stat => {
-                if (Math.random() > 0.9) { // 10% chance to update
-                    stat.style.transform = 'scale(1.05)';
-                    setTimeout(() => {
-                        stat.style.transform = 'scale(1)';
-                    }, 200);
-                }
-            });
-        }
-
-        // Update stats every 30 seconds
-        setInterval(updateStats, 30000);
-
-        // Search functionality
-        function filterTable(tableId, searchTerm) {
-            const table = document.getElementById(tableId);
-            const rows = table.querySelectorAll('tbody tr');
-            
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(searchTerm.toLowerCase()) ? '' : 'none';
-            });
-        }
-
-        // Export functionality
-        function exportData(format) {
-            console.log(`Exporting data in ${format} format...`);
-            // Implement export logic here
-        }
-
-        // Notification system
-        function showNotification(message, type = 'success') {
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.textContent = message;
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                padding: 1rem 2rem;
-                background: ${type === 'success' ? 'var(--success-color)' : 'var(--accent-danger)'};
-                color: white;
-                border-radius: 12px;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-                z-index: 10000;
-                animation: slideIn 0.3s ease-out;
-            `;
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
-        }
-
-        // Form submissions
-        document.addEventListener('submit', function(e) {
-            e.preventDefault();
-            showNotification('Changes saved successfully!');
-            closeModal('orderModal');
-        });
-    </script>
-    <!-- Добавляем в admin.html перед закрывающим </body> -->
-<script>
-// Получение заказов из Formspree
-async function loadOrders() {
-    try {
-        // Здесь будет API для получения заказов
-        const response = await fetch('https://formspree.io/api/forms/mgvzgvag/submissions', {
-            headers: {
-                'Authorization': 'Bearer YOUR_FORMSPREE_TOKEN'
-            }
-        });
-        const data = await response.json();
-        updateOrdersTable(data);
-    } catch (error) {
-        console.log('Using demo data');
-        // Пока используем демо-данные
-    }
-}
-
-function updateOrdersTable(orders) {
-    // Обновляем таблицу заказов реальными данными
-    const tbody = document.querySelector('#orders .data-table tbody');
-    tbody.innerHTML = orders.map(order => `
-        <tr>
-            <td>#CB${order.id}</td>
-            <td>${order.client_name}</td>
-            <td>Pending Assignment</td>
-            <td>${order.video_type}</td>
-            <td>${order.budget}</td>
-            <td><span class="status-badge status-pending">New</span></td>
-            <td>${new Date().toLocaleDateString()}</td>
-            <td>
-                <div class="action-buttons">
-                    <button class="action-btn action-view" onclick="viewOrder('${order.id}')">👁️</button>
-                    <button class="action-btn action-edit" onclick="assignCreator('${order.id}')">✏️</button>
-                </div>
-            </td>
-        </tr>
-    `).join('');
-}
-</script>
-</body>
-</html>
